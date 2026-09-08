@@ -1,11 +1,1477 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Portfolio</title>
-  </head>
-  <body>
-    <h1>Under Construction</h1>
-  </body>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Elouan Salaun — Portfolio</title>
+<meta name="description" content="Portfolio of Elouan Salaun — data science, machine learning and applied research projects.">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231b1b1a'/><text x='50' y='68' font-family='Georgia,serif' font-size='52' fill='%23fbfbfa' text-anchor='middle'>ES</text></svg>">
+
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="assets/style.css">
+
+<script>
+  /* Runs before paint: avoids a flash of the wrong theme or of open panels. */
+  document.documentElement.classList.add('js');
+  try {
+    var t = localStorage.getItem('theme');
+    if (t) document.documentElement.setAttribute('data-theme', t);
+  } catch (e) {}
+</script>
+</head>
+
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="site-header">
+  <nav class="nav" aria-label="Main">
+    <a class="nav-home" href="#top">ES</a>
+    <ul class="nav-links">
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Switch theme" title="Switch theme">
+      <span aria-hidden="true">◐</span>
+    </button>
+  </nav>
+</header>
+
+<main id="main">
+
+  <!-- ============================================================
+       INTRO
+       ============================================================ -->
+  <section id="top" class="intro">
+    <h1>Elouan Salaun</h1>
+    <p class="tagline">Data scientist and Engineer</p>
+    <ul class="intro-links">
+      <li><a href="https://github.com/elouan-salaun">GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/elouan-salaun">LinkedIn</a></li>
+      <li><a href="mailto:elouan.salaun1909@gmail.com">Email</a></li>
+      <!-- 
+      <li><a href="assets/cv.pdf">CV</a></li> -->
+    </ul>
+  </section>
+
+  <!-- ============================================================
+       ABOUT
+       ============================================================ -->
+  <section id="about" class="section">
+    <h2>About</h2>
+    <p>With a background in general engineering and data science, I solve real-world problems by collecting and then using data with artificial intelligence and relevant data technologies. </p>
+    <p>I develop integrated solutions that meet the needs of end users. The integration of agent-based artificial intelligence is currently one of my areas of interest. </p>
+    
+  </section>
+
+  <!-- ============================================================
+       PROJECTS  —  click a card to expand it
+       ------------------------------------------------------------
+       To add a project, copy one <article class="project"> block and
+       change: the id, the button id, the aria-controls / aria-labelledby
+       pair, and the content. Inside .panel-inner you can write anything:
+       paragraphs, <figure> with images, inline SVG schemes, tables and
+       LaTeX ( $$ ... $$ for display, \( ... \) inline ).
+       ============================================================ -->
+  <section id="projects" class="section">
+    <h2>Projects</h2>
+    <p class="section-note">Click a project to expand it.</p>
+
+    <!-- ---------- PROJECT 1 ---------- -->
+    <article class="project" id="p-forecasting">
+      <h3 class="project-heading">
+        <button class="project-head" id="p-forecasting-btn" type="button"
+                aria-expanded="false" aria-controls="p-forecasting-panel">
+          <span class="project-name">Tender response process leveraging data</span>
+          <span class="project-meta">2026 · Python · Hierarchical RAG · XGBRanker · Azure · Streamlit</span>
+          <span class="project-summary">MSc Thesis, a complete framework and solution for the tender response process using data-driven approaches and machine learning techniques. </span>
+          <span class="chevron" aria-hidden="true"></span>
+        </button>
+      </h3>
+
+      <div class="panel" id="p-forecasting-panel" role="region" aria-labelledby="p-forecasting-btn">
+        <div class="panel-inner">
+
+          <div class="rk">
+
+            <div class="rk-top">
+              <p>Public procurement is about 13% of GDP across OECD countries, and in guarding
+              and patrol services almost every contract is won or lost through a call for tenders.
+              Yet the bid itself is usually priced from memory: a margin that worked on a job that
+              felt comparable, corrected by instinct for a competitor someone met last year. The
+              paradox is that the market publishes nearly everything needed to do better,
+              specifications, opening results, awards, amendments, and almost none of it is used.</p>
+
+              <p>This is my MSc thesis, carried out at Polytechnique Montréal, in collaboration with a leading provider of security services in
+              Québec. It is one system, not five experiments: a scraper that finds the tender, a
+              retrieval pipeline that reads its PDF, a similarity model that finds what the company
+              already knows about contracts like it, a ranking model that proposes a margin, and an
+              interface a bid manager actually opens. Each module is only as useful as the one
+              feeding it, which is the whole difficulty of building it end to end.</p>
+
+              <div class="rk-facts">
+                <div class="rk-fact"><b>1,960</b><span>tender publications collected, Jan 2015 – Mar 2026, award data on 94%</span></div>
+                <div class="rk-fact"><b>87 / 98%</b><span>precision / recall of the RAG extraction on 50 labelled contracts</span></div>
+                <div class="rk-fact"><b>40%</b><span>win rate of the pricing model, against 15% for the reference in use</span></div>
+                <div class="rk-fact"><b>+62%</b><span>projected gains over the reference, 3.52 M$ against 2.17 M$</span></div>
+              </div>
+            </div>
+
+            <!-- ========== 01 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">01 — Architecture</span>
+              <div class="rk-col">
+                <h4>Five modules, one database</h4>
+                <p>The framework is deliberately built around a single store rather than a pipeline
+                of scripts. Modules 1 and 2 write to it, modules 3 and 4 read from it and write back
+                their derived objects, and module 5 only reads. That constraint is what allows a
+                tender scraped on Monday to be scored, compared and priced on Tuesday without
+                anybody exporting a spreadsheet.</p>
+              </div>
+
+              <figure>
+                <div class="rk-frame">
+                  <svg viewBox="0 0 940 430" role="img" aria-label="A central database exchanges data with four modules stacked vertically — monitoring, RAG extraction, contract similarity and pricing — whose outputs all feed the four views of the fifth module, the decision-support interface.">
+                    <defs>
+                      <marker id="tb-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+                      </marker>
+                    </defs>
+
+                    <!-- database -->
+                    <g font-family="IBM Plex Mono, monospace">
+                      <path d="M24,186 L24,264 A66,10 0 0 0 156,264 L156,186" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                      <ellipse cx="90" cy="186" rx="66" ry="10" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                      <text x="90" y="222" text-anchor="middle" fill="currentColor" font-size="12.5">Database</text>
+                      <text x="90" y="240" text-anchor="middle" fill="currentColor" font-size="10" opacity=".65">tenders · contracts</text>
+                      <text x="90" y="253" text-anchor="middle" fill="currentColor" font-size="10" opacity=".65">results · attributes</text>
+                    </g>
+
+                    <!-- trunk -->
+                    <g stroke="currentColor" stroke-width="1.3" fill="none" opacity=".55">
+                      <line x1="156" y1="225" x2="186" y2="225"/>
+                      <line x1="186" y1="74" x2="186" y2="350"/>
+                      <line x1="186" y1="74"  x2="210" y2="74"  marker-end="url(#tb-a)" marker-start="url(#tb-a)"/>
+                      <line x1="186" y1="166" x2="210" y2="166" marker-end="url(#tb-a)" marker-start="url(#tb-a)"/>
+                      <line x1="186" y1="258" x2="210" y2="258" marker-end="url(#tb-a)"/>
+                      <line x1="186" y1="350" x2="210" y2="350" marker-end="url(#tb-a)"/>
+                    </g>
+
+                    <!-- modules 1-4 -->
+                    <g font-family="IBM Plex Mono, monospace">
+                      <rect x="214" y="40" width="250" height="68" rx="2" fill="none" stroke="var(--perf)" stroke-width="1.5"/>
+                      <text x="339" y="66" text-anchor="middle" fill="var(--perf)" font-size="12">1 · monitoring</text>
+                      <text x="339" y="84" text-anchor="middle" fill="var(--perf)" font-size="10.5" opacity=".85">web scraping · entity resolution</text>
+
+                      <rect x="214" y="132" width="250" height="68" rx="2" fill="none" stroke="var(--perf)" stroke-width="1.5"/>
+                      <text x="339" y="158" text-anchor="middle" fill="var(--perf)" font-size="12">2 · document extraction</text>
+                      <text x="339" y="176" text-anchor="middle" fill="var(--perf)" font-size="10.5" opacity=".85">hierarchical RAG · LLM · scoring</text>
+
+                      <rect x="214" y="224" width="250" height="68" rx="2" fill="none" stroke="var(--hedge)" stroke-width="1.5"/>
+                      <text x="339" y="250" text-anchor="middle" fill="var(--hedge)" font-size="12">3 · contract similarity</text>
+                      <text x="339" y="268" text-anchor="middle" fill="var(--hedge)" font-size="10.5" opacity=".85">multi-criteria distance · RankNet</text>
+
+                      <rect x="214" y="316" width="250" height="68" rx="2" fill="none" stroke="var(--hedge)" stroke-width="2.2"/>
+                      <text x="339" y="342" text-anchor="middle" fill="var(--hedge)" font-size="12">4 · pricing</text>
+                      <text x="339" y="360" text-anchor="middle" fill="var(--hedge)" font-size="10.5" opacity=".85">XGBRanker over a margin grid</text>
+                    </g>
+
+                    <!-- chaining -->
+                    <g stroke="currentColor" stroke-width="1.3" fill="none" opacity=".55" marker-end="url(#tb-a)">
+                      <line x1="339" y1="200" x2="339" y2="220"/>
+                      <line x1="339" y1="292" x2="339" y2="312"/>
+                    </g>
+                    <g font-family="Source Sans 3, sans-serif" font-size="10" fill="currentColor" opacity=".6">
+                      <text x="350" y="215">extracted attributes</text>
+                      <text x="350" y="307">top-k similar contracts</text>
+                    </g>
+
+                    <!-- module 5 -->
+                    <text x="560" y="30" font-family="Source Sans 3, sans-serif" font-size="12" fill="currentColor" opacity=".65">5 · decision-support interface (Streamlit)</text>
+                    <rect x="560" y="40" width="356" height="364" rx="4" fill="none" stroke="currentColor" stroke-width="1.6" opacity=".8"/>
+
+                    <g font-family="IBM Plex Mono, monospace" font-size="11">
+                      <rect x="580" y="62" width="316" height="68" rx="2" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".85"/>
+                      <text x="738" y="88" text-anchor="middle" fill="currentColor" font-size="11.5">dashboard</text>
+                      <text x="738" y="106" text-anchor="middle" fill="currentColor" font-size="10" opacity=".65">live tenders + anticipated renewals</text>
+
+                      <rect x="580" y="146" width="316" height="64" rx="2" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".85"/>
+                      <text x="738" y="172" text-anchor="middle" fill="currentColor" font-size="11.5">contract view</text>
+                      <text x="738" y="190" text-anchor="middle" fill="currentColor" font-size="10" opacity=".65">past contract, outcome, applied margin</text>
+
+                      <rect x="580" y="226" width="316" height="64" rx="2" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".85"/>
+                      <text x="738" y="252" text-anchor="middle" fill="currentColor" font-size="11.5">similar contracts</text>
+                      <text x="738" y="270" text-anchor="middle" fill="currentColor" font-size="10" opacity=".65">benchmark set, side by side</text>
+
+                      <rect x="580" y="306" width="316" height="82" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+                      <text x="738" y="332" text-anchor="middle" fill="currentColor" font-size="11.5">market overview</text>
+                      <text x="738" y="350" text-anchor="middle" fill="currentColor" font-size="10" opacity=".65">competitor profiling · margin trends</text>
+                      <text x="738" y="368" text-anchor="middle" fill="var(--hedge)" font-size="10.5">recommended margin</text>
+                    </g>
+
+                    <g stroke="currentColor" stroke-width="1.3" fill="none" opacity=".45" marker-end="url(#tb-a)">
+                      <path d="M464,74 L520,74 L520,96 L574,96"/>
+                      <path d="M464,166 L520,166 L520,178 L574,178"/>
+                      <path d="M464,258 L574,258"/>
+                      <path d="M464,350 L520,350 L520,347 L574,347"/>
+                    </g>
+                  </svg>
+                </div>
+                <figcaption><b>The framework, and the direction of every arrow.</b> Modules 1 and 2 both read and write the store; 3 and 4 consume it and are chained, similarity feeds pricing, so an error in extraction does not stay local, it propagates into the recommended margin. That interdependence is why each module is validated separately below.</figcaption>
+              </figure>
+
+              <div class="rk-blocks">
+                <div class="rk-block">
+                  <div class="rk-nb">01</div>
+                  <div>
+                    <h5>Monitor</h5>
+                    <p>Scrape the Québec tendering system, match live publications against historical contracts, and surface renewals before they are announced.</p>
+                  </div>
+                </div>
+                <div class="rk-block">
+                  <div class="rk-nb">02</div>
+                  <div>
+                    <h5>Read</h5>
+                    <p>Turn a 60-page specification PDF into structured attributes (uniforms, equipment, vehicles), and then into cost-weighted indicators.</p>
+                  </div>
+                </div>
+                <div class="rk-block">
+                  <div class="rk-nb">03</div>
+                  <div>
+                    <h5>Compare</h5>
+                    <p>Aggregate per-variable distances into one similarity score, and tune its weights on rankings produced by a bid expert.</p>
+                  </div>
+                </div>
+                <div class="rk-block">
+                  <div class="rk-nb">04</div>
+                  <div>
+                    <h5>Price</h5>
+                    <p>Rank a grid of candidate markups instead of regressing one, so the objective the model optimizes is the one the business has.</p>
+                  </div>
+                </div>
+                <div class="rk-block">
+                  <div class="rk-nb">05</div>
+                  <div>
+                    <h5>Show</h5>
+                    <p>One Streamlit interface: opportunities, contract analysis, market and competitor profiling, recommended margin.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ========== 02 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">02 — Monitoring</span>
+              <div class="rk-col">
+                <h4>Recognising a contract you have already priced once</h4>
+                <p>Tenders are published on <span class="rk-mono">SEAO</span>, the Québec government
+                electronic tendering system: specifications, submission forms, contractual clauses,
+                addenda. Open Canada gives the publication URLs, scraping gives the rest —
+                descriptions, bid opening results, awards, amendments. Collected over
+                <strong>January 2015 to March 2026</strong>, that is <strong>1,960 publications</strong>,
+                with award information available for <strong>94%</strong> of them: who bid, at what
+                price, and who won.</p>
+                <p>The useful part is not the list, it is the link. A tender that is a renewal of a
+                contract the company already holds, or already lost, is the single most informative
+                prior available at bid time. Nothing in the data says so explicitly, so the match is
+                made on descriptive attributes with sequence-based entity resolution
+                (<span class="rk-mono">SequenceMatcher</span>, Levenshtein distance) across client
+                names, sites and descriptions that are never written the same way twice. Over 2025
+                the process retrieved <strong>60 tenders with 92% concordance</strong>, enough to
+                turn the dashboard into an early-warning list rather than a news feed.</p>
+              </div>
+            </div>
+
+            <!-- ========== 03 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">03 — Reading the documents</span>
+              <div class="rk-col">
+                <h4>A retrieval pipeline shaped like the contracts it reads</h4>
+                <p>What actually drives cost in a guarding contract is buried in prose: how many
+                uniforms of which type, what equipment, whether a patrol vehicle is required and
+                who supplies it. These are sentences in a PDF, spread across sections that vary in
+                position from one client to the next.</p>
+                <p>Because the contracts follow highly regular formats,
+                <span class="rk-mono">PyMuPDF</span> can label headers, paragraphs and lists
+                structurally, and that structure is kept: chunks are built <em>hierarchically</em>,
+                each one carrying the section it belongs to instead of being a flat 500-token
+                window. Retrieval then filters by level before scoring, so a query about vehicles is
+                answered from the operational section rather than from a clause that merely mentions
+                the word.</p>
+                <p>Retrieval is sparse, <strong>BM25</strong> over vectors enriched with a
+                security-domain vocabulary, and that is a deliberate choice over dense embeddings.
+                The vocabulary here is narrow, technical and exact; the difference between two
+                uniform types is one adjective, and lexical matching does not blur it. The retrieved
+                chunks go into a prompt carrying explicit extraction rules and a JSON output schema,
+                and <span class="rk-mono">Ministral-3-14B-instruct</span> returns the structured
+                record.</p>
+              </div>
+
+              <figure>
+                <div class="rk-frame">
+                  <svg viewBox="0 0 940 330" role="img" aria-label="A tender PDF is parsed by PyMuPDF into labelled structure, built into a tree of hierarchical chunks, retrieved with BM25 and a hierarchical filter, and passed with a JSON schema to the Ministral language model, whose JSON output is matched against a cost dictionary with spaCy to produce resource scores.">
+                    <defs>
+                      <marker id="tb-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+                      </marker>
+                      <marker id="tb-bh" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="var(--hedge)"/>
+                      </marker>
+                    </defs>
+
+                    <g font-family="IBM Plex Mono, monospace">
+                      <rect x="10" y="86" width="150" height="60" rx="2" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".9"/>
+                      <text x="86" y="110" text-anchor="middle" fill="currentColor" font-size="11.5">tender PDF</text>
+                      <text x="86" y="128" text-anchor="middle" fill="currentColor" font-size="10" opacity=".65">specs · clauses · addenda</text>
+
+                      <rect x="170" y="86" width="175" height="60" rx="2" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                      <text x="258" y="110" text-anchor="middle" fill="currentColor" font-size="11.5">PyMuPDF parse</text>
+                      <text x="258" y="128" text-anchor="middle" fill="currentColor" font-size="10" opacity=".65">headers · lists · paragraphs</text>
+                    </g>
+
+                    <!-- hierarchical chunk tree -->
+                    <rect x="364" y="52" width="164" height="128" rx="3" fill="none" stroke="currentColor" stroke-width="1" stroke-dasharray="4 3" opacity=".55"/>
+                    <text x="446" y="44" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11" fill="currentColor" opacity=".6">hierarchical chunks</text>
+                    <g stroke="currentColor" stroke-width="1.1" opacity=".5" fill="none">
+                      <path d="M446,84 L404,112"/><path d="M446,84 L488,112"/>
+                      <path d="M404,124 L382,152"/><path d="M404,124 L426,152"/>
+                      <path d="M488,124 L488,152"/>
+                    </g>
+                    <g fill="currentColor">
+                      <rect x="424" y="72" width="44" height="12" rx="2" opacity=".8"/>
+                      <rect x="384" y="112" width="40" height="12" rx="2" opacity=".6"/>
+                      <rect x="468" y="112" width="40" height="12" rx="2" opacity=".6"/>
+                      <rect x="366" y="152" width="32" height="12" rx="2" opacity=".38"/>
+                      <rect x="410" y="152" width="32" height="12" rx="2" opacity=".38"/>
+                      <rect x="472" y="152" width="32" height="12" rx="2" opacity=".38"/>
+                    </g>
+
+                    <g font-family="IBM Plex Mono, monospace">
+                      <rect x="560" y="80" width="164" height="72" rx="2" fill="none" stroke="currentColor" stroke-width="1.5"/>
+                      <text x="642" y="104" text-anchor="middle" fill="currentColor" font-size="11.5">BM25 retrieval</text>
+                      <text x="642" y="122" text-anchor="middle" fill="currentColor" font-size="10" opacity=".65">sparse + security lexicon</text>
+                      <text x="642" y="138" text-anchor="middle" fill="currentColor" font-size="10" opacity=".65">hierarchical filter</text>
+
+                      <rect x="756" y="80" width="164" height="72" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+                      <text x="838" y="104" text-anchor="middle" fill="currentColor" font-size="11.5">Ministral-3-14B</text>
+                      <text x="838" y="122" text-anchor="middle" fill="currentColor" font-size="10" opacity=".65">extraction rules</text>
+                      <text x="838" y="138" text-anchor="middle" fill="currentColor" font-size="10" opacity=".65">+ JSON schema</text>
+                    </g>
+
+                    <g stroke="currentColor" stroke-width="1.4" fill="none" opacity=".6" marker-end="url(#tb-b)">
+                      <line x1="160" y1="116" x2="170" y2="116"/>
+                      <line x1="345" y1="116" x2="365" y2="116"/>
+                      <line x1="528" y1="116" x2="556" y2="116"/>
+                      <line x1="724" y1="116" x2="752" y2="116"/>
+                    </g>
+                    <text x="642" y="66" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="10.5" fill="currentColor" opacity=".55">one query per attribute</text>
+
+                    <!-- output row, right to left -->
+                    <g font-family="IBM Plex Mono, monospace">
+                      <rect x="756" y="212" width="164" height="64" rx="2" fill="none" stroke="var(--hedge)" stroke-width="1.5"/>
+                      <text x="838" y="236" text-anchor="middle" fill="var(--hedge)" font-size="11.5">JSON record</text>
+                      <text x="838" y="254" text-anchor="middle" fill="var(--hedge)" font-size="10" opacity=".85">uniforms · equipment</text>
+                      <text x="838" y="268" text-anchor="middle" fill="var(--hedge)" font-size="10" opacity=".85">vehicles</text>
+
+                      <rect x="504" y="212" width="196" height="64" rx="2" fill="none" stroke="var(--hedge)" stroke-width="1.2"/>
+                      <text x="602" y="236" text-anchor="middle" fill="var(--hedge)" font-size="11.5">cost dictionary</text>
+                      <text x="602" y="254" text-anchor="middle" fill="var(--hedge)" font-size="10" opacity=".85">spaCy exact / partial</text>
+                      <text x="602" y="268" text-anchor="middle" fill="var(--hedge)" font-size="10" opacity=".85">entity matching</text>
+
+                      <rect x="252" y="212" width="196" height="64" rx="2" fill="none" stroke="var(--hedge)" stroke-width="2.2"/>
+                      <text x="350" y="240" text-anchor="middle" fill="var(--hedge)" font-size="12">resource scores</text>
+                      <text x="350" y="260" text-anchor="middle" fill="var(--hedge)" font-size="10" opacity=".85">$ per category, per contract</text>
+                    </g>
+                    <g stroke="var(--hedge)" stroke-width="1.5" fill="none" marker-end="url(#tb-bh)">
+                      <path d="M838,152 L838,208"/>
+                      <line x1="752" y1="244" x2="704" y2="244"/>
+                      <line x1="500" y1="244" x2="452" y2="244"/>
+                    </g>
+                    <text x="252" y="300" font-family="Source Sans 3, sans-serif" font-size="11" fill="currentColor" opacity=".55">→ becomes an input variable of modules 3 and 4</text>
+                  </svg>
+                </div>
+                <figcaption><b>Structure is preserved on the way in, and re-imposed on the way out.</b> The extraction returns text; the cost dictionary turns it into money, which is the only form in which a requirement can be compared across two contracts of different size.</figcaption>
+              </figure>
+
+              <div class="rk-col">
+                <h5>From words to a number that can be compared</h5>
+                <p>Extracted entities are matched against a hand-built cost dictionary using
+                <code>spaCy</code>, exactly where possible and partially otherwise,
+                then aggregated per category. A contract stops being a PDF and becomes three
+                numbers: what its uniform, equipment and vehicle requirements are worth. The
+                validation is indirect but convincing, the distribution of uniform scores lands on
+                the price points the company actually charges.</p>
+              </div>
+
+              <figure>
+                <div class="rk-frame">
+                  <svg viewBox="0 0 940 380" role="img" aria-label="Histogram of uniform requirement scores across contracts, in dollars. The distribution is concentrated below 500 dollars with a long right tail, and the three dashed vertical lines marking the prices the company actually charges for its regular, city and heavy uniforms fall inside the main mass and inside the tail respectively.">
+                    <g stroke="currentColor" opacity=".12" stroke-width="1">
+                      <line x1="80" y1="330.0" x2="880" y2="330.0"/>
+                      <line x1="80" y1="285.0" x2="880" y2="285.0"/>
+                      <line x1="80" y1="240.0" x2="880" y2="240.0"/>
+                      <line x1="80" y1="195.0" x2="880" y2="195.0"/>
+                      <line x1="80" y1="150.0" x2="880" y2="150.0"/>
+                      <line x1="80" y1="105.0" x2="880" y2="105.0"/>
+                      <line x1="80" y1="60.0" x2="880" y2="60.0"/>
+                    </g>
+                    <line x1="80" y1="330" x2="880" y2="330" stroke="currentColor" opacity=".45" stroke-width="1.2"/>
+                    <line x1="80" y1="50" x2="80" y2="330" stroke="currentColor" opacity=".45" stroke-width="1.2"/>
+
+                    <rect x="81.0" y="69.0" width="32.8" height="261.0" rx="2" fill="var(--perf)" opacity=".85"/>
+                      <rect x="115.8" y="303.0" width="32.8" height="27.0" rx="2" fill="var(--perf)" opacity=".85"/>
+                      <rect x="150.6" y="204.0" width="32.8" height="126.0" rx="2" fill="var(--perf)" opacity=".85"/>
+                      <rect x="185.3" y="204.0" width="32.8" height="126.0" rx="2" fill="var(--perf)" opacity=".85"/>
+                      <rect x="220.1" y="123.0" width="32.8" height="207.0" rx="2" fill="var(--perf)" opacity=".85"/>
+                      <rect x="254.9" y="150.0" width="32.8" height="180.0" rx="2" fill="var(--perf)" opacity=".85"/>
+                      <rect x="289.7" y="195.0" width="32.8" height="135.0" rx="2" fill="var(--perf)" opacity=".85"/>
+                      <rect x="324.5" y="87.0" width="32.8" height="243.0" rx="2" fill="var(--perf)" opacity=".85"/>
+                      <rect x="359.3" y="231.0" width="32.8" height="99.0" rx="2" fill="var(--perf)" opacity=".85"/>
+                      <rect x="394.0" y="294.0" width="32.8" height="36.0" rx="2" fill="var(--perf)" opacity=".85"/>
+                      <rect x="428.8" y="231.0" width="32.8" height="99.0" rx="2" fill="var(--perf)" opacity=".85"/>
+                      <rect x="463.6" y="303.0" width="32.8" height="27.0" rx="2" fill="var(--perf)" opacity=".85"/>
+                      <rect x="498.4" y="294.0" width="32.8" height="36.0" rx="2" fill="var(--perf)" opacity=".85"/>
+                      <rect x="533.2" y="312.0" width="32.8" height="18.0" rx="2" fill="var(--perf)" opacity=".85"/>
+                      <rect x="568.0" y="312.0" width="32.8" height="18.0" rx="2" fill="var(--perf)" opacity=".85"/>
+                      <rect x="602.7" y="321.0" width="32.8" height="9.0" rx="2" fill="var(--perf)" opacity=".85"/>
+                      <rect x="637.5" y="321.0" width="32.8" height="9.0" rx="2" fill="var(--perf)" opacity=".85"/>
+                      <rect x="672.3" y="321.0" width="32.8" height="9.0" rx="2" fill="var(--perf)" opacity=".85"/>
+                      <rect x="741.9" y="321.0" width="32.8" height="9.0" rx="2" fill="var(--perf)" opacity=".85"/>
+                      <rect x="776.7" y="321.0" width="32.8" height="9.0" rx="2" fill="var(--perf)" opacity=".85"/>
+                      <rect x="846.2" y="321.0" width="32.8" height="9.0" rx="2" fill="var(--perf)" opacity=".85"/>
+
+                    <line x1="309.6" y1="50" x2="309.6" y2="330" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="5 4"/>
+                      <text x="315.6" y="80" font-family="Source Sans 3, sans-serif" font-size="11.5" fill="var(--accent)" font-weight="600">regular uniform</text>
+                      <line x1="379.1" y1="50" x2="379.1" y2="330" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="5 4"/>
+                      <text x="385.1" y="100" font-family="Source Sans 3, sans-serif" font-size="11.5" fill="var(--accent)" font-weight="600">city uniform</text>
+                      <line x1="671.3" y1="50" x2="671.3" y2="330" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="5 4"/>
+                      <text x="677.3" y="80" font-family="Source Sans 3, sans-serif" font-size="11.5" fill="var(--accent)" font-weight="600">heavy uniform</text>
+
+                    <g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity=".65">
+                      <text x="72" y="334.0" text-anchor="end">0</text>
+                      <text x="72" y="289.0" text-anchor="end">5</text>
+                      <text x="72" y="244.0" text-anchor="end">10</text>
+                      <text x="72" y="199.0" text-anchor="end">15</text>
+                      <text x="72" y="154.0" text-anchor="end">20</text>
+                      <text x="72" y="109.0" text-anchor="end">25</text>
+                      <text x="72" y="64.0" text-anchor="end">30</text>
+                      <text x="80.0" y="352" text-anchor="middle">0</text>
+                      <text x="219.1" y="352" text-anchor="middle">200</text>
+                      <text x="358.3" y="352" text-anchor="middle">400</text>
+                      <text x="497.4" y="352" text-anchor="middle">600</text>
+                      <text x="636.5" y="352" text-anchor="middle">800</text>
+                      <text x="775.7" y="352" text-anchor="middle">1000</text>
+                    </g>
+                    <text x="480" y="372" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" fill="currentColor" opacity=".7">uniform requirement score, $ per contract</text>
+                    <text x="24" y="44" font-family="Source Sans 3, sans-serif" font-size="12" fill="currentColor" opacity=".7">contracts</text>
+                  </svg>
+                </div>
+                <figcaption><b>Scores matching the real prices.</b> The scores are produced by the extraction pipeline and the cost dictionary alone, with no knowledge of the price list; the dashed lines are the company's three real uniform prices. The main mass sits around the regular and city uniforms, the thin right tail around the heavy one, which is the shape you would expect if the pipeline is reading the documents correctly, and is not the shape you would get from noise.</figcaption>
+              </figure>
+            </div>
+
+            <!-- ========== 04 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">04 — Similarity</span>
+              <div class="rk-col">
+                <h4>Teaching a distance what "comparable" means to a bid manager</h4>
+                <p>Every contract is described by operational, financial and contextual variables:
+                region, client type, duration, price, workload, resource requirements, and the
+                attributes coming out of the RAG pipeline. Continuous variables are min-max scaled,
+                and each variable type gets the comparison it deserves, categorical similarity
+                matrices, sequence comparison on names, Euclidean distance on the numeric block, a
+                temporal decay so a 2016 contract counts less than a 2024 one, Jaccard on sets of
+                requirements. The individual distances are then aggregated into a single score.</p>
+                <p>The aggregation weights are the only place where judgment enters, so they are the
+                thing to learn. An expert was asked, over <strong>300 iterations</strong>, to pick
+                and order the three most comparable contracts out of the top 15 returned by the
+                distance score. Note what is being collected: <em>rankings</em>, not ratings.
+                Experts are unreliable when asked how similar two contracts are on a scale, and very
+                reliable when asked which of two is closer.</p>
+                <p>A small neural network (3, 2), initialised with equal weights, is then refined on
+                that base with a <strong>RankNet</strong> pairwise objective, trained on 80% of the
+                expert comparisons and tested on the remaining 20%. It improves both the exact-trio
+                ratio and the mean Spearman rank correlation over the hand-weighted distance, the
+                model ends up agreeing with the expert about ordering, which is what the pricing
+                module downstream consumes.</p>
+              </div>
+
+              <div class="rk-note">
+                <span class="rk-eyebrow">Why this module carries the whole system</span>
+                <p>Module 4 never sees a raw contract. It sees the set of past contracts that module
+                3 declares comparable, and the winning margins attached to them. If the similarity
+                is wrong, the pricing model is confidently answering the wrong question, which is
+                the reason the expert base exists at all, and the reason the evaluation is done on
+                held-out human rankings rather than on the internal loss.</p>
+              </div>
+            </div>
+
+            <!-- ========== 05 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">05 — Pricing</span>
+              <div class="rk-col">
+                <h4>Rank the margins, do not regress them</h4>
+                <p>The decision at the end of the chain is one number: the markup ratio to apply.
+                Two things bear on it, the technical characteristics of this contract and the state
+                of the market right now, and the model is built to hold both. Similar contracts come
+                from module 3, their winning markups are re-indexed to today using market evolution
+                indicators derived from rolling means of past winning ratios, and recent tender
+                results are added on top to capture short-term competitive behaviour.</p>
+                <p>The modelling choice is the interesting part. With only a few exploitable
+                tenders, a regression on the winning margin is both data-hungry and
+                mis-specified: it optimises squared error, while the business loss is violently
+                asymmetric. A margin one point too high loses the contract entirely; a margin one
+                point too low wins it and leaves money on the table. So the problem is reformulated
+                as <strong>Learning to Rank</strong>: an <span class="rk-mono">XGBRanker</span> with
+                a pairwise objective, evaluated with NDCG, orders a grid of candidate markups from
+                1.05 to 3.00. The target is not a value but a position, the highest candidate that
+                still wins.</p>
+              </div>
+
+              <figure>
+                <div class="rk-frame">
+                  <svg viewBox="0 0 940 330" role="img" aria-label="Recent tender results and similar past contracts feed an XGBRanker with a pairwise objective, which orders a grid of candidate markups. Below, an axis from 1.05 to 3.00 shows that candidates below the eventual winning margin are winnable with relevance increasing towards it, candidates above it lose, and the model targets the last winnable candidate.">
+                    <defs>
+                      <marker id="tb-c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+                      </marker>
+                    </defs>
+
+                    <g font-family="IBM Plex Mono, monospace">
+                      <rect x="24" y="34" width="216" height="56" rx="2" fill="none" stroke="var(--perf)" stroke-width="1.5"/>
+                      <text x="132" y="58" text-anchor="middle" fill="var(--perf)" font-size="11.5">recent tender results</text>
+                      <text x="132" y="76" text-anchor="middle" fill="var(--perf)" font-size="10" opacity=".85">short-term market dynamics</text>
+
+                      <rect x="24" y="110" width="216" height="70" rx="2" fill="none" stroke="var(--hedge)" stroke-width="1.5"/>
+                      <text x="132" y="134" text-anchor="middle" fill="var(--hedge)" font-size="11.5">similar contracts</text>
+                      <text x="132" y="152" text-anchor="middle" fill="var(--hedge)" font-size="10" opacity=".85">winning markups, re-indexed</text>
+                      <text x="132" y="166" text-anchor="middle" fill="var(--hedge)" font-size="10" opacity=".85">to today's market level</text>
+
+                      <rect x="300" y="60" width="180" height="76" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+                      <text x="390" y="88" text-anchor="middle" fill="currentColor" font-size="12">XGBRanker</text>
+                      <text x="390" y="106" text-anchor="middle" fill="currentColor" font-size="10" opacity=".65">pairwise objective</text>
+                      <text x="390" y="121" text-anchor="middle" fill="currentColor" font-size="10" opacity=".65">NDCG · leave-one-out</text>
+
+                      <rect x="540" y="60" width="196" height="76" rx="2" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                      <text x="638" y="88" text-anchor="middle" fill="currentColor" font-size="12">ranked candidates</text>
+                      <text x="638" y="106" text-anchor="middle" fill="currentColor" font-size="10" opacity=".65">grid 1.05 → 3.00</text>
+                      <text x="638" y="121" text-anchor="middle" fill="currentColor" font-size="10" opacity=".65">rank 1 = the bid</text>
+                    </g>
+
+                    <g stroke="currentColor" stroke-width="1.4" fill="none" opacity=".55" marker-end="url(#tb-c)">
+                      <path d="M240,62 L272,62 L272,88 L296,88"/>
+                      <path d="M240,145 L272,145 L272,110 L296,110"/>
+                      <line x1="480" y1="98" x2="536" y2="98"/>
+                    </g>
+
+                    <!-- relevance axis -->
+                    <text x="80" y="190" font-family="Source Sans 3, sans-serif" font-size="12" fill="currentColor" opacity=".65">How a candidate margin is labelled, once the opening results are known</text>
+                    <line x1="120" y1="264" x2="860" y2="264" stroke="currentColor" stroke-width="1.3" opacity=".5"/>
+                    <g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity=".6">
+                      <text x="120" y="290" text-anchor="middle">1.05</text>
+                      <text x="860" y="290" text-anchor="middle">3.00</text>
+                    </g>
+
+                    <g stroke="var(--hedge)" stroke-width="2">
+                      <line x1="150" y1="264" x2="150" y2="256"/>
+                      <line x1="200" y1="264" x2="200" y2="253"/>
+                      <line x1="250" y1="264" x2="250" y2="250"/>
+                      <line x1="300" y1="264" x2="300" y2="246"/>
+                      <line x1="350" y1="264" x2="350" y2="242"/>
+                      <line x1="400" y1="264" x2="400" y2="237"/>
+                      <line x1="450" y1="264" x2="450" y2="231"/>
+                      <line x1="500" y1="264" x2="500" y2="224"/>
+                    </g>
+                    <g stroke="currentColor" stroke-width="2" opacity=".25">
+                      <line x1="600" y1="264" x2="600" y2="258"/>
+                      <line x1="650" y1="264" x2="650" y2="258"/>
+                      <line x1="700" y1="264" x2="700" y2="258"/>
+                      <line x1="750" y1="264" x2="750" y2="258"/>
+                      <line x1="800" y1="264" x2="800" y2="258"/>
+                    </g>
+
+                    <line x1="548" y1="196" x2="548" y2="284" stroke="var(--risk)" stroke-width="1.6" stroke-dasharray="5 4"/>
+                    <text x="556" y="208" font-family="Source Sans 3, sans-serif" font-size="11.5" fill="var(--risk)" font-weight="600">winning margin of the competition</text>
+                    <text x="556" y="224" font-family="Source Sans 3, sans-serif" font-size="10.5" fill="var(--risk)" opacity=".85">unknown at bid time, revealed at the opening</text>
+
+                    <circle cx="500" cy="224" r="5.5" fill="var(--hedge)"/>
+                    <text x="500" y="214" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11.5" fill="var(--hedge)" font-weight="600">rank 1</text>
+                    <text x="140" y="308" font-family="Source Sans 3, sans-serif" font-size="11" fill="var(--hedge)">contract won — relevance grows with the margin</text>
+                    <text x="600" y="308" font-family="Source Sans 3, sans-serif" font-size="11" fill="currentColor" opacity=".55">contract lost — relevance 0</text>
+                  </svg>
+                </div>
+                <figcaption><b>The objective, drawn.</b> Every candidate below the competition's winning margin would have taken the contract, but they are not equally good: the higher one is, the more profit it keeps. Above the line, all candidates are equally worthless. Ranking encodes that shape directly; a squared error does not.</figcaption>
+              </figure>
+
+              <div class="rk-col">
+                <h5>What is measured</h5>
+                <p>A bid is not evaluated on its distance to the winning price alone, because a bid
+                that is always close and never first earns nothing. Six metrics are tracked, and
+                they deliberately disagree with each other.</p>
+              </div>
+
+              <div class="rk-tablewrap">
+                <table>
+                  <caption>Over N tenders, with \(r_i\) the rank of the bid at the opening, \(m_i\) the predicted margin, \(w_i\) the winning margin and \(p_i\) the contract price.</caption>
+                  <thead>
+                    <tr><th>Metric</th><th>Formula</th><th style="text-align:left">What it captures</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Rank score (RS)</td><td style="white-space:nowrap">\(\sum_i^N 1/r_i\)</td><td style="text-align:left">Consistency of strong placements, not just wins</td></tr>
+                    <tr><td>Mean rank (MR)</td><td style="white-space:nowrap">\(\frac{1}{N}\sum_i^N r_i\)</td><td style="text-align:left">Average competitive position across all tenders</td></tr>
+                    <tr><td>Win rate (WR)</td><td style="white-space:nowrap">\(\frac{1}{N}\sum_i^N \mathbf{1}(r_i = 1)\)</td><td style="text-align:left">Proportion of tenders ranked first, the raw success rate</td></tr>
+                    <tr><td>Mean distance (MD)</td><td style="white-space:nowrap">\(\frac{1}{N}\sum_i^N |m_i - w_i|\)</td><td style="text-align:left">Average gap between the predicted and the winning margin</td></tr>
+                    <tr><td>Cumulative distance (CD)</td><td style="white-space:nowrap">\(\sum_i^N |m_i - w_i|\)</td><td style="text-align:left">Total pricing error over the test period</td></tr>
+                    <tr class="rk-hero"><td>Dollar gains (DG)</td><td style="white-space:nowrap">\(\sum_{r_i=1} (m_i - 1)\,p_i\)</td><td style="text-align:left">Profit actually captured on tenders won, the bottom line</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="rk-col">
+                <h5>Results</h5>
+                <p>Evaluation uses chronological leave-one-out on 54 historical tenders, the 20 most
+                recent forming the test set, so that every prediction is made with only the past
+                available to it, the condition the model would face in production.</p>
+              </div>
+
+              <div class="rk-tablewrap">
+                <table>
+                  <caption>Comparative results. Arrows give the direction of improvement. The industry reference is the partner's own pricing practice over the same tenders.</caption>
+                  <thead>
+                    <tr><th>Model</th><th>RS ↑</th><th>MR ↓</th><th>WR ↑</th><th>MD ↓</th><th>CD ↓</th><th>DG ↑</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Industry reference</td><td>0.26</td><td>6.20</td><td>15%</td><td>0.362</td><td>7.25</td><td>2.17 M$</td></tr>
+                    <tr><td>Gates / Friedman</td><td>0.18</td><td>8.80</td><td>17%</td><td>0.412</td><td>8.29</td><td class="rk-bad">0.72 M$</td></tr>
+                    <tr><td>Means</td><td>0.35</td><td>6.50</td><td>25%</td><td>0.318</td><td>6.36</td><td>1.50 M$</td></tr>
+                    <tr><td>Regression</td><td class="rk-good">0.50</td><td>4.15</td><td>40%</td><td class="rk-good">0.250</td><td class="rk-good">4.99</td><td>1.59 M$</td></tr>
+                    <tr class="rk-hero"><td>LTR</td><td>0.49</td><td class="rk-good">3.55</td><td class="rk-good">40%</td><td>0.280</td><td>5.58</td><td class="rk-good">3.52 M$</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <figure>
+                <div class="rk-frame">
+                  <svg viewBox="0 0 940 330" role="img" aria-label="Two bar panels over the same five models. On win rate, regression and the learning-to-rank model both reach 40 percent against 15 percent for the industry reference. On projected gains, the learning-to-rank model reaches 3.52 million dollars, well above the regression at 1.59 and the industry reference at 2.17.">
+                    <g stroke="currentColor" opacity=".12" stroke-width="1">
+                      <line x1="227.8" y1="56" x2="227.8" y2="292"/>
+                      <line x1="285.6" y1="56" x2="285.6" y2="292"/>
+                      <line x1="343.3" y1="56" x2="343.3" y2="292"/>
+                      <line x1="401.1" y1="56" x2="401.1" y2="292"/>
+                      <line x1="655.0" y1="56" x2="655.0" y2="292"/>
+                      <line x1="730.0" y1="56" x2="730.0" y2="292"/>
+                      <line x1="805.0" y1="56" x2="805.0" y2="292"/>
+                    </g>
+                    <line x1="170" y1="56" x2="170" y2="292" stroke="currentColor" opacity=".45" stroke-width="1.2"/>
+                    <line x1="580" y1="56" x2="580" y2="292" stroke="currentColor" opacity=".45" stroke-width="1.2"/>
+
+                    <g font-family="Source Sans 3, sans-serif" font-size="12" fill="currentColor" opacity=".7">
+                      <text x="170" y="40">win rate</text>
+                      <text x="580" y="40">projected gains, M$ over the test period</text>
+                    </g>
+
+                    <text x="150" y="77" text-anchor="end" font-family="Source Sans 3, sans-serif" font-size="12" fill="currentColor" font-weight="400">Industry reference</text>
+                      <rect x="170" y="62" width="86.7" height="22" rx="2" fill="currentColor" opacity=".38"/>
+                      <text x="264.7" y="77" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" opacity=".8">15%</text>
+                      <rect x="580" y="62" width="162.8" height="22" rx="2" fill="currentColor" opacity=".38"/>
+                      <text x="750.8" y="77" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" opacity=".8">2.17</text>
+                      <text x="150" y="125" text-anchor="end" font-family="Source Sans 3, sans-serif" font-size="12" fill="currentColor" font-weight="400">Gates / Friedman</text>
+                      <rect x="170" y="110" width="98.2" height="22" rx="2" fill="currentColor" opacity=".38"/>
+                      <text x="276.2" y="125" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" opacity=".8">17%</text>
+                      <rect x="580" y="110" width="54.0" height="22" rx="2" fill="currentColor" opacity=".38"/>
+                      <text x="642.0" y="125" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" opacity=".8">0.72</text>
+                      <text x="150" y="173" text-anchor="end" font-family="Source Sans 3, sans-serif" font-size="12" fill="currentColor" font-weight="400">Means</text>
+                      <rect x="170" y="158" width="144.4" height="22" rx="2" fill="currentColor" opacity=".38"/>
+                      <text x="322.4" y="173" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" opacity=".8">25%</text>
+                      <rect x="580" y="158" width="112.5" height="22" rx="2" fill="currentColor" opacity=".38"/>
+                      <text x="700.5" y="173" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" opacity=".8">1.50</text>
+                      <text x="150" y="221" text-anchor="end" font-family="Source Sans 3, sans-serif" font-size="12" fill="currentColor" font-weight="400">Regression</text>
+                      <rect x="170" y="206" width="231.1" height="22" rx="2" fill="currentColor" opacity=".38"/>
+                      <text x="409.1" y="221" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" opacity=".8">40%</text>
+                      <rect x="580" y="206" width="119.2" height="22" rx="2" fill="currentColor" opacity=".38"/>
+                      <text x="707.2" y="221" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" opacity=".8">1.59</text>
+                      <text x="150" y="269" text-anchor="end" font-family="Source Sans 3, sans-serif" font-size="12" fill="currentColor" font-weight="600">LTR (this work)</text>
+                      <rect x="170" y="254" width="231.1" height="22" rx="2" fill="var(--hedge)" opacity="1"/>
+                      <text x="409.1" y="269" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" opacity=".8">40%</text>
+                      <rect x="580" y="254" width="264.0" height="22" rx="2" fill="var(--hedge)" opacity="1"/>
+                      <text x="852.0" y="269" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor" opacity=".8">3.52</text>
+
+                    <g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity=".6">
+                      <text x="170.0" y="308" text-anchor="middle">0%</text>
+                      <text x="227.8" y="308" text-anchor="middle">10%</text>
+                      <text x="285.6" y="308" text-anchor="middle">20%</text>
+                      <text x="343.3" y="308" text-anchor="middle">30%</text>
+                      <text x="401.1" y="308" text-anchor="middle">40%</text>
+                      <text x="580.0" y="308" text-anchor="middle">0</text>
+                      <text x="655.0" y="308" text-anchor="middle">1</text>
+                      <text x="730.0" y="308" text-anchor="middle">2</text>
+                      <text x="805.0" y="308" text-anchor="middle">3</text>
+                    </g>
+                  </svg>
+                </div>
+                <figcaption><b>The same win rate, twice the money.</b> Regression and LTR win the same proportion of tenders; only one of them gets paid for it. Bars are direct-labelled, so the highlight on LTR carries emphasis, not identity.</figcaption>
+              </figure>
+
+              <div class="rk-note">
+                <span class="rk-eyebrow">The result the whole module turns on</span>
+                <p>Regression wins the distance metrics, MD 0.250 against 0.280, and loses the
+                money, 1.59 M$ against 3.52 M$. It is not a contradiction, it is the mechanism: to
+                minimise absolute error against an unknown winning margin, the safest move is to
+                shade every bid downwards, which converts wins into thin wins. The LTR model takes
+                exactly the same 40% win rate and prices those wins 62% above the reference in use.
+                Being close to the winning margin is not the objective; being just under it is.</p>
+              </div>
+
+              <div class="rk-col">
+                <p>A second run on 57 tenders, with chronological training sets growing from 31 to
+                117 contracts, checks that this is not an artefact of one test window: the model
+                ranks first on <strong>33 tenders (59%)</strong> and within the top three on
+                <strong>83%</strong>, with only two badly underestimated bids.</p>
+              </div>
+            </div>
+
+            <!-- ========== 06 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">06 — Interface</span>
+              <div class="rk-col">
+                <h4>The part that decides whether any of it is used</h4>
+                <p>All of the above reaches bid managers through a single Streamlit application with
+                two entry points. The first is monitoring: ongoing tenders, upcoming renewals, and a
+                one-click path from an opportunity into its analysis. The second is the contract
+                view, where technical characteristics can be entered or loaded and the models answer
+                the historical contract this one renews, its outcome and applied margin, the
+                comparable contracts retrieved by module 3, and links back to the original
+                procurement sources so that every number can be traced.</p>
+                <p>The market overview is the view that changed conversations the most: historical
+                and market-adjusted margins by contract group, and competitor profiling by
+                participation rate, win rate and pricing behaviour. A bid meeting that used to open
+                on "what did we charge last time" now opens on what the market charged, who showed
+                up, and where the margin has drifted since.</p>
+              </div>
+            </div>
+
+            <div class="rk-sec">
+              <span class="rk-eyebrow">Limits</span>
+              <div class="rk-col">
+                <h4>What this does not yet establish</h4>
+                <p>The evaluation is retrospective. Every result above answers "what would this have
+                bid, had it existed", on 54 to 57 exploitable tenders, a small dataset by any
+                standard, and one where a handful of large contracts move the dollar figures. A
+                retrospective win is also a simplification: it assumes competitors would have bid
+                the same way against a different price, which they would not. And the pricing
+                recommendations have not yet been validated prospectively by the experts who would
+                have to sign them.</p>
+                <p>The natural continuation is a deployment with a feedback loop, so each new
+                opening result retrains the ranker; enrichment of the historical base; extension
+                beyond guarding to other service sectors; and the step the framework makes visible
+                but does not take, optimising a portfolio of simultaneous bids rather than each
+                tender on its own.</p>
+              </div>
+            </div>
+
+            <p class="rk-foot">Based on E. Salaun, M. Belmouadden, R. Pellerin, A. Neumann, C. Vasseur,
+            “Leveraging artificial intelligence and strategic data for tender response processes”,
+            CENTERIS 2026, <em>Procedia Computer Science</em>, Elsevier. Work carried out at the
+            Département de mathématiques et de génie industriel, Polytechnique Montréal, and
+            CIRRELT, with Commissionnaires du Québec; funded by Mitacs. Figures are redrawn for this
+            page; the underlying contractual data is confidential and no code is public.</p>
+
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- ---------- PROJECT 2 ---------- -->
+    <article class="project" id="p-causal">
+      <h3 class="project-heading">
+        <button class="project-head" id="p-causal-btn" type="button"
+                aria-expanded="false" aria-controls="p-causal-panel">
+          <span class="project-name">Portfolio Optimization with Python</span>
+          <span class="project-meta">2025 · Python · portfolio · Markowitz · Monte Carlo · CPPI</span>
+          <span class="project-summary">Building a diversified investment portfolio using Python and optimization techniques with liabilities constraints.</span>
+          <span class="chevron" aria-hidden="true"></span>
+        </button>
+      </h3>
+
+      <div class="panel" id="p-causal-panel" role="region" aria-labelledby="p-causal-btn">
+        <div class="panel-inner">
+
+          <div class="rk">
+           
+            <div class="rk-sec">
+              <span class="rk-eyebrow">01 — Architecture</span>
+              <div class="rk-col">
+                <h4>One module, fed by the notebooks</h4>
+                <p>Each notebook prototypes an idea in cells, then freezes it into a function pasted into <code>risk_kit.py</code>; later notebooks import it rather than rewrite it. Three layers: loaders, engines, backtests.</p>
+              </div>
+
+              <figure>
+                <div class="rk-frame">
+                  <svg viewBox="0 0 940 330" role="img" aria-label="CSV data files feed loaders, which feed three engines — risk measurement, optimization, simulation — whose outputs converge into the backtests and terminal statistics.">
+                    <defs>
+                      <marker id="rk-a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+                      </marker>
+                    </defs>
+                    <g fill="none" stroke="currentColor" stroke-width="1.4" opacity=".55" marker-end="url(#rk-a1)">
+                      <line x1="176" y1="112" x2="228" y2="112"/>
+                      <line x1="176" y1="196" x2="228" y2="196"/>
+                      <line x1="392" y1="112" x2="446" y2="70"/>
+                      <line x1="392" y1="150" x2="446" y2="150"/>
+                      <line x1="392" y1="196" x2="446" y2="232"/>
+                      <line x1="656" y1="70" x2="712" y2="140"/>
+                      <line x1="656" y1="150" x2="712" y2="152"/>
+                      <line x1="656" y1="232" x2="712" y2="166"/>
+                    </g>
+
+                    <g font-family="IBM Plex Mono, monospace" font-size="11.5">
+                      <rect x="24" y="86" width="152" height="52" rx="2" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".9"/>
+                      <text x="100" y="107" text-anchor="middle" fill="currentColor" font-size="11">data/ind30_*.csv</text>
+                      <text x="100" y="124" text-anchor="middle" fill="currentColor" font-size="11">edhec-hfi.csv</text>
+
+                      <rect x="24" y="170" width="152" height="52" rx="2" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".9"/>
+                      <text x="100" y="191" text-anchor="middle" fill="currentColor" font-size="11">F-F factors</text>
+                      <text x="100" y="208" text-anchor="middle" fill="currentColor" font-size="11">nfirms · size</text>
+
+                      <rect x="228" y="86" width="164" height="126" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                      <text x="310" y="110" text-anchor="middle" fill="currentColor" font-size="11.5">get_ind_returns()</text>
+                      <text x="310" y="128" text-anchor="middle" fill="currentColor" font-size="11.5">get_hfi_returns()</text>
+                      <text x="310" y="146" text-anchor="middle" fill="currentColor" font-size="11.5">get_ind_nfirms()</text>
+                      <text x="310" y="164" text-anchor="middle" fill="currentColor" font-size="11.5">get_ind_size()</text>
+                      <text x="310" y="190" text-anchor="middle" fill="currentColor" font-size="10.5" opacity=".65">→ PeriodIndex('M')</text>
+
+                      <rect x="446" y="44" width="210" height="52" rx="2" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                      <text x="551" y="66" text-anchor="middle" fill="currentColor">risk measurement</text>
+                      <text x="551" y="83" text-anchor="middle" fill="currentColor" font-size="10.5" opacity=".65">VaR · CVaR · drawdown</text>
+
+                      <rect x="446" y="124" width="210" height="52" rx="2" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                      <text x="551" y="146" text-anchor="middle" fill="currentColor">optimization</text>
+                      <text x="551" y="163" text-anchor="middle" fill="currentColor" font-size="10.5" opacity=".65">SLSQP · MSR · GMV</text>
+
+                      <rect x="446" y="206" width="210" height="52" rx="2" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                      <text x="551" y="228" text-anchor="middle" fill="currentColor">simulation</text>
+                      <text x="551" y="245" text-anchor="middle" fill="currentColor" font-size="10.5" opacity=".65">GBM · CIR · bonds</text>
+                    </g>
+
+                    <g font-family="IBM Plex Mono, monospace" font-size="11.5">
+                      <rect x="712" y="112" width="204" height="84" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+                      <text x="814" y="138" text-anchor="middle" fill="currentColor" font-size="12">run_cppi()</text>
+                      <text x="814" y="157" text-anchor="middle" fill="currentColor" font-size="12">bt_mix(r1, r2, allocator)</text>
+                      <text x="814" y="178" text-anchor="middle" fill="currentColor" font-size="10.5" opacity=".65">summary_stats · terminal_stats</text>
+                    </g>
+
+                    <g font-family="Source Sans 3, sans-serif" font-size="11" fill="currentColor" opacity=".6">
+                      <text x="100" y="72" text-anchor="middle">raw data</text>
+                      <text x="310" y="72" text-anchor="middle">loaders</text>
+                      <text x="551" y="30" text-anchor="middle">engines</text>
+                      <text x="814" y="98" text-anchor="middle">backtests</text>
+                    </g>
+
+                    <g font-family="Source Sans 3, sans-serif" font-size="10.5" fill="currentColor" opacity=".55">
+                      <text x="400" y="79">series</text>
+                      <text x="410" y="143">Σ, μ</text>
+                      <text x="390" y="243">scenarios</text>
+                    </g>
+                  </svg>
+                </div>
+                <figcaption><b>Processing chain.</b> The loaders are the only contact with disk; everything downstream manipulates T×N <span class="rk-mono">DataFrame</span>s, which is why the same functions serve both historical backtests and Monte Carlo.</figcaption>
+              </figure>
+
+              <div class="rk-blocks">
+                <div class="rk-block">
+                  <div class="rk-nb">01 → 05</div>
+                  <div>
+                    <h5>Measure</h5>
+                    <p>Annualized volatility, Sharpe, drawdown, skewness / kurtosis, Jarque-Bera, historic, Gaussian and Cornish-Fisher VaR, CVaR.</p>
+                  </div>
+                </div>
+                <div class="rk-block">
+                  <div class="rk-nb">06 → 09</div>
+                  <div>
+                    <h5>Optimize — and watch it fall apart</h5>
+                    <p>Efficient frontier, max-Sharpe and global-minimum-variance portfolios, estimation-error sensitivity, rolling correlations.</p>
+                  </div>
+                </div>
+                <div class="rk-block">
+                  <div class="rk-nb">10 → 12</div>
+                  <div>
+                    <h5>Insure</h5>
+                    <p>CPPI, explicit drawdown constraint, geometric Brownian motion, interactive Monte Carlo.</p>
+                  </div>
+                </div>
+                <div class="rk-block">
+                  <div class="rk-nb">13 → 18</div>
+                  <div>
+                    <h5>Drive by the liability</h5>
+                    <p>Funding ratio, CIR rates, bond pricing and total return, Macaulay duration, PSP/GHP, dynamic allocators.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="rk-sec">
+              <span class="rk-eyebrow">02 — Markowitz</span>
+              <div class="rk-col">
+                <h4>A constrained optimizer, and the reason not to trust it</h4>
+                <p>The whole frontier rests on one <span class="rk-mono">scipy.optimize.minimize</span> call with <span class="rk-mono">SLSQP</span>. <code>minimize_vol</code> minimizes <span class="rk-mono">√(wᵀΣw)</span> under two equality constraints, weights sum to 1, and portfolio return equals a target, with bounds <span class="rk-mono">(0, 1)</span> on every weight, which is how the repo forbids short selling. <code>optimal_weights</code> sweeps a grid of target returns between <span class="rk-mono">er.min()</span> and <span class="rk-mono">er.max()</span> and traces the curve.</p>
+                <p>Two portfolios on that curve are found without a target return. <code>msr</code> maximizes the Sharpe ratio by minimizing its negative. <code>gmv</code> is the neat trick : <code>msr(0, np.repeat(1, n), cov)</code>  feed the optimizer identical expected returns for every asset, and since it can no longer improve the Sharpe ratio through the numerator, it can only lower volatility. The global minimum variance portfolio falls out of the max-Sharpe solver, and it never touches an expected-return estimate.</p>
+              </div>
+
+              <figure>
+                <div class="rk-frame">
+                  <svg viewBox="0 0 940 460" role="img" aria-label="Efficient frontier of the 30 industry portfolios over 1996-2000, showing the equally weighted, global minimum variance and max Sharpe ratio portfolios together with the capital market line from a 10 percent risk-free rate.">
+                    <g stroke="currentColor" opacity=".14" stroke-width="1">
+                      <line x1="80" y1="72.7" x2="880" y2="72.7"/>
+                      <line x1="80" y1="138.2" x2="880" y2="138.2"/>
+                      <line x1="80" y1="203.6" x2="880" y2="203.6"/>
+                      <line x1="80" y1="269.1" x2="880" y2="269.1"/>
+                      <line x1="80" y1="334.5" x2="880" y2="334.5"/>
+                      <line x1="240" y1="40" x2="240" y2="400"/>
+                      <line x1="400" y1="40" x2="400" y2="400"/>
+                      <line x1="560" y1="40" x2="560" y2="400"/>
+                      <line x1="720" y1="40" x2="720" y2="400"/>
+                    </g>
+                    <g stroke="currentColor" opacity=".45" stroke-width="1.2">
+                      <line x1="80" y1="400" x2="880" y2="400"/>
+                      <line x1="80" y1="40" x2="80" y2="400"/>
+                    </g>
+
+                    <g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity=".65">
+                      <text x="80" y="418" text-anchor="middle">0%</text>
+                      <text x="240" y="418" text-anchor="middle">10%</text>
+                      <text x="400" y="418" text-anchor="middle">20%</text>
+                      <text x="560" y="418" text-anchor="middle">30%</text>
+                      <text x="720" y="418" text-anchor="middle">40%</text>
+                      <text x="880" y="418" text-anchor="middle">50%</text>
+                      <text x="72" y="404" text-anchor="end">−10%</text>
+                      <text x="72" y="338" text-anchor="end">0%</text>
+                      <text x="72" y="273" text-anchor="end">10%</text>
+                      <text x="72" y="207" text-anchor="end">20%</text>
+                      <text x="72" y="142" text-anchor="end">30%</text>
+                      <text x="72" y="76" text-anchor="end">40%</text>
+                    </g>
+                    <text x="480" y="443" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" fill="currentColor" opacity=".7">annualized volatility</text>
+                    <text x="24" y="52" font-family="Source Sans 3, sans-serif" font-size="12" fill="currentColor" opacity=".7">annualized return</text>
+
+                    <line x1="80" y1="269.1" x2="333.3" y2="161.3" stroke="var(--perf)" stroke-width="1.6" stroke-dasharray="6 4"/>
+                    <text x="88" y="306" font-family="Source Sans 3, sans-serif" font-size="11.5" fill="var(--perf)">capital market line (r&#8320; = 10%)</text>
+
+                    <polyline points="357.7,359.0 340.5,348.5 325.5,337.9 311.1,327.3 298.4,316.7 287.3,306.2 277.3,295.6 270.1,285.1 264.0,274.5 259.6,263.9 256.8,253.3 255.1,242.8 254.0,232.2 255.1,221.6 257.4,211.1 264.0,200.5 276.8,190.0 294.5,179.4 316.1,168.8 340.5,158.2 367.1,147.7 402.6,137.1 448.0,126.5 499.6,115.9 556.1,105.4 617.6,94.8 686.4,84.2 760.1,73.7 836.6,63.1"
+                      fill="none" stroke="currentColor" stroke-width="2.4"/>
+                    <text x="700" y="104" font-family="Source Sans 3, sans-serif" font-size="12" fill="currentColor">efficient frontier</text>
+
+                    <line x1="250" y1="236" x2="240" y2="248" stroke="var(--hedge)" stroke-width="1" opacity=".6"/>
+                    <circle cx="254.0" cy="230.9" r="6" fill="var(--hedge)"/>
+                    <text x="238" y="256" text-anchor="end" font-family="Source Sans 3, sans-serif" font-size="12" fill="var(--hedge)" font-weight="600">GMV</text>
+                    <text x="238" y="271" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--hedge)" opacity=".85">10.9% vol · 15.8%</text>
+
+                    <circle cx="315.0" cy="246.6" r="6" fill="currentColor"/>
+                    <text x="327" y="262" font-family="Source Sans 3, sans-serif" font-size="12" fill="currentColor" font-weight="600">equally weighted</text>
+                    <text x="327" y="277" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity=".7">14.7% vol · 13.4%</text>
+
+                    <circle cx="333.3" cy="161.3" r="6" fill="var(--perf)"/>
+                    <text x="345" y="158" font-family="Source Sans 3, sans-serif" font-size="12" fill="var(--perf)" font-weight="600">tangency (MSR)</text>
+                    <text x="345" y="173" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--perf)" opacity=".85">15.8% vol · 26.5%</text>
+                  </svg>
+                </div>
+                <figcaption><b>Recomputed from <span class="rk-mono">ind30_m_vw_rets.csv</span>, 1996-2000 window, 30 assets, long only.</b> Volatilities are annualized here; <span class="rk-mono">plot_ef</span> plots the monthly ones against annualized returns. The lower branch's isolated kink is the optimizer failing to converge on the lowest return target.</figcaption>
+              </figure>
+
+              <div class="rk-col">
+                <h5>Estimation error is amplified, not absorbed</h5>
+                <p>Notebook 8 is the demolition. Take two industries whose true annualized returns over the window are almost identical, Food at 11.68%, Steel at 11.58%, and perturb the estimates by a point or two. The optimizer does not spread the error; it goes to a corner.</p>
+              </div>
+
+              <div class="rk-tablewrap">
+                <table>
+                  <caption>Max Sharpe weights on a two-asset problem, <span class="rk-mono">rk.msr(0.10, er, cov)</span>, covariance held fixed and correct. Only the expected returns move.</caption>
+                  <thead>
+                    <tr><th>Expected returns fed to the optimizer</th><th>w Food</th><th>w Steel</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr class="rk-hero"><td>True values — 11.68% / 11.58%</td><td>75%</td><td>25%</td></tr>
+                    <tr><td>Off by ~0.5 pt — 11% / 12%</td><td>58%</td><td>42%</td></tr>
+                    <tr><td>Off by ~1.5 pt — 10% / 13%</td><td class="rk-bad">0%</td><td class="rk-bad">100%</td></tr>
+                    <tr><td>Same error, reversed — 13% / 10%</td><td class="rk-bad">100%</td><td class="rk-bad">0%</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="rk-col">
+                <p>The same pathology shows up at 30 assets: the tangency portfolio holds only 6 of them, 46% of it in <span class="rk-mono">Hlth</span>; the GMV holds 10, 48% in <span class="rk-mono">Util</span>. Both look precise and are neither diversified nor stable.</p>
+                <p>Notebook 9 closes the argument from the other side. Rolling 36-month average pairwise correlation across the 30 industries is <em>negatively</em> correlated with the trailing 36-month market return: when the market falls, correlations rise and the diversification you optimized for evaporates exactly when it is needed.</p>
+              </div>
+
+              <div class="rk-note rk-warn">
+                <span class="rk-eyebrow">What the repo concludes</span>
+                <p>Two escapes are proposed, both consisting of estimating less. The equally weighted portfolio requires no estimation at all and sits well inside the frontier but survives contact with the future. The GMV requires only a covariance matrix, a far more stable object than expected returns. Neither is optimal <em>ex ante</em>; both are defensible <em>ex post</em>.</p>
+              </div>
+            </div>
+
+            <div class="rk-sec">
+              <span class="rk-eyebrow">03 — The pivot</span>
+              <div class="rk-col">
+                <h4>Cash is not the risk-free asset</h4>
+                <p>Measured in absolute value, cash never loses. Measured as a <strong>funding ratio</strong>, assets over the present value of the liability, it collapses as soon as rates fall, because the liability's present value rises. The genuinely risk-free asset becomes the one whose price moves <em>like</em> the liability: a zero-coupon bond of matching maturity, approximated in practice by a bond portfolio of matching Macaulay duration.</p>
+              </div>
+
+              <figure>
+                <div class="rk-frame">
+                  <svg viewBox="0 0 940 300" role="img" aria-label="Two frames side by side: under asset-only measurement cash rises steadily and never falls, while under funding-ratio measurement cash decays as rates fall and the zero-coupon bond tracks the liability flat at one hundred percent.">
+                    <defs>
+                      <marker id="rk-a2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+                      </marker>
+                    </defs>
+
+                    <text x="40" y="30" font-family="Source Sans 3, sans-serif" font-size="12.5" fill="currentColor" opacity=".65">Frame A — asset-only: you measure value</text>
+                    <g stroke="currentColor" stroke-width="1.2" fill="none" opacity=".5">
+                      <line x1="40" y1="230" x2="420" y2="230" marker-end="url(#rk-a2)"/>
+                      <line x1="40" y1="230" x2="40" y2="56" marker-end="url(#rk-a2)"/>
+                    </g>
+                    <text x="424" y="234" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity=".55">t</text>
+                    <text x="40" y="48" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity=".55" text-anchor="middle">V</text>
+                    <polyline points="52,180 130,172 208,164 286,156 364,148" fill="none" stroke="currentColor" stroke-width="2.2"/>
+                    <text x="372" y="142" font-family="Source Sans 3, sans-serif" font-size="11.5" fill="currentColor">cash</text>
+                    <line x1="52" y1="230" x2="400" y2="230" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 4" opacity=".45"/>
+                    <text x="56" y="248" font-family="Source Sans 3, sans-serif" font-size="11" fill="currentColor" opacity=".55">benchmark = 0 · cash never goes down</text>
+
+                    <line x1="470" y1="40" x2="470" y2="270" stroke="currentColor" stroke-width="1" opacity=".22"/>
+
+                    <text x="500" y="30" font-family="Source Sans 3, sans-serif" font-size="12.5" fill="currentColor" opacity=".65">Frame B — liability-driven: you measure the funding ratio</text>
+                    <g stroke="currentColor" stroke-width="1.2" fill="none" opacity=".5">
+                      <line x1="500" y1="230" x2="900" y2="230" marker-end="url(#rk-a2)"/>
+                      <line x1="500" y1="230" x2="500" y2="56" marker-end="url(#rk-a2)"/>
+                    </g>
+                    <text x="500" y="48" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity=".55" text-anchor="middle">A / PV(L)</text>
+                    <line x1="512" y1="140" x2="880" y2="140" stroke="currentColor" stroke-width="1.5" stroke-dasharray="4 4" opacity=".45"/>
+                    <text x="884" y="144" font-family="Source Sans 3, sans-serif" font-size="11" fill="currentColor" opacity=".55">100%</text>
+                    <polyline points="512,140 590,142 668,141 746,139 824,140" fill="none" stroke="var(--hedge)" stroke-width="2.6"/>
+                    <text x="640" y="128" font-family="Source Sans 3, sans-serif" font-size="11.5" fill="var(--hedge)" font-weight="600">10-year zero-coupon bond</text>
+                    <polyline points="512,140 590,158 668,180 746,199 824,214" fill="none" stroke="var(--risk)" stroke-width="2.6"/>
+                    <text x="700" y="215" font-family="Source Sans 3, sans-serif" font-size="11.5" fill="var(--risk)" font-weight="600">cash</text>
+                    <text x="516" y="252" font-family="Source Sans 3, sans-serif" font-size="11" fill="currentColor" opacity=".55">rates fall → PV(L) rises → cash falls behind</text>
+                  </svg>
+                </div>
+                <figcaption><b>Same asset, opposite verdicts.</b> What changes is not the portfolio but the denominator (notebooks 13-15). This is what turns the allocation problem into a two-building-block problem: a performance-seeking portfolio and a goal-hedging portfolio.</figcaption>
+              </figure>
+            </div>
+
+            <div class="rk-sec">
+              <span class="rk-eyebrow">04 — Monte Carlo</span>
+              <div class="rk-col">
+                <h4>Two generators, and a distribution instead of an average</h4>
+                <p>Simulation is what lets the repo test strategies that have no closed form. Two processes feed everything downstream.</p>
+                <p><strong>GBM</strong> (<code>gbm</code>) draws <span class="rk-mono">(n_steps, n_scenarios)</span> normal shocks in one <span class="rk-mono">numpy</span> call and cumulative-products them into price paths, no Python loop. Returns are drawn already in <span class="rk-mono">1+R</span> form, and the first row is forced to 1 so every path starts at <span class="rk-mono">s_0</span>.</p>
+                <p><strong>CIR</strong> (<code>cir</code>) is the interest rate side: <span class="rk-mono">dr = a(b − r)dt + σ√r dW</span>. The mean-reversion term pulls rates back to <span class="rk-mono">b</span>, and the <span class="rk-mono">√r</span> factor shuts volatility down as rates approach zero, which is what keeps them positive. Because the model works in the instantaneous short rate, <code>ann_to_inst</code> / <code>inst_to_ann</code> (<span class="rk-mono">log1p</span> / <span class="rk-mono">expm1</span>) convert at both ends. The same function also returns the analytic zero-coupon price <span class="rk-mono">P = A(t,T)e<sup>−B(t,T)r</sup></span>, so one call gives you both the rate path and the price of the hedging asset.</p>
+              </div>
+
+              <figure>
+                <div class="rk-frame">
+                  <svg viewBox="0 0 940 316" role="img" aria-label="The CIR model produces rates and zero-coupon prices that feed bond pricing and then bond total return, while GBM produces equity returns; both streams enter bt_mix and then terminal statistics.">
+                    <defs>
+                      <marker id="rk-a3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+                      </marker>
+                      <marker id="rk-a3g" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="var(--perf)"/>
+                      </marker>
+                      <marker id="rk-a3t" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="var(--hedge)"/>
+                      </marker>
+                    </defs>
+
+                    <g font-family="IBM Plex Mono, monospace" font-size="11.5">
+                      <rect x="24" y="40" width="188" height="46" rx="2" fill="none" stroke="var(--perf)" stroke-width="1.6"/>
+                      <text x="118" y="60" text-anchor="middle" fill="var(--perf)" font-size="12">gbm(μ=7%, σ=15%)</text>
+                      <text x="118" y="76" text-anchor="middle" fill="var(--perf)" font-size="10.5" opacity=".8">equity price paths</text>
+
+                      <rect x="284" y="40" width="164" height="46" rx="2" fill="none" stroke="var(--perf)" stroke-width="1.2"/>
+                      <text x="366" y="60" text-anchor="middle" fill="var(--perf)" font-size="11.5">pct_change()</text>
+                      <text x="366" y="76" text-anchor="middle" fill="var(--perf)" font-size="10.5" opacity=".8">rets_eq</text>
+                    </g>
+                    <line x1="212" y1="63" x2="280" y2="63" stroke="var(--perf)" stroke-width="1.6" marker-end="url(#rk-a3g)"/>
+
+                    <g font-family="IBM Plex Mono, monospace" font-size="11.5">
+                      <rect x="24" y="150" width="188" height="60" rx="2" fill="none" stroke="var(--hedge)" stroke-width="1.6"/>
+                      <text x="118" y="172" text-anchor="middle" fill="var(--hedge)" font-size="12">cir(a, b, σ)</text>
+                      <text x="118" y="189" text-anchor="middle" fill="var(--hedge)" font-size="10.5" opacity=".8">annualized rates</text>
+                      <text x="118" y="203" text-anchor="middle" fill="var(--hedge)" font-size="10.5" opacity=".8">+ analytic ZC prices</text>
+
+                      <rect x="284" y="150" width="164" height="60" rx="2" fill="none" stroke="var(--hedge)" stroke-width="1.2"/>
+                      <text x="366" y="172" text-anchor="middle" fill="var(--hedge)" font-size="11.5">bond_price()</text>
+                      <text x="366" y="189" text-anchor="middle" fill="var(--hedge)" font-size="10.5" opacity=".8">recursive over t</text>
+                      <text x="366" y="203" text-anchor="middle" fill="var(--hedge)" font-size="10.5" opacity=".8">shrinking maturity</text>
+
+                      <rect x="520" y="150" width="164" height="60" rx="2" fill="none" stroke="var(--hedge)" stroke-width="1.2"/>
+                      <text x="602" y="176" text-anchor="middle" fill="var(--hedge)" font-size="11.5">bond_total_return()</text>
+                      <text x="602" y="196" text-anchor="middle" fill="var(--hedge)" font-size="10.5" opacity=".8">price + coupons</text>
+                    </g>
+                    <line x1="212" y1="180" x2="280" y2="180" stroke="var(--hedge)" stroke-width="1.6" marker-end="url(#rk-a3t)"/>
+                    <line x1="448" y1="180" x2="516" y2="180" stroke="var(--hedge)" stroke-width="1.6" marker-end="url(#rk-a3t)"/>
+
+                    <path d="M448,63 L742,63 L742,110" fill="none" stroke="var(--perf)" stroke-width="1.6" marker-end="url(#rk-a3g)"/>
+                    <path d="M684,180 L742,180 L742,158" fill="none" stroke="var(--hedge)" stroke-width="1.6" marker-end="url(#rk-a3t)"/>
+                    <text x="756" y="60" font-family="Source Sans 3, sans-serif" font-size="11" fill="var(--perf)">PSP</text>
+                    <text x="756" y="184" font-family="Source Sans 3, sans-serif" font-size="11" fill="var(--hedge)">GHP</text>
+
+                    <g font-family="IBM Plex Mono, monospace" font-size="12">
+                      <rect x="648" y="110" width="188" height="48" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+                      <text x="742" y="132" text-anchor="middle" fill="currentColor">bt_mix(r1, r2,</text>
+                      <text x="742" y="148" text-anchor="middle" fill="currentColor">allocator)</text>
+                    </g>
+                    <line x1="742" y1="158" x2="742" y2="244" stroke="currentColor" stroke-width="1.4" opacity=".6" marker-end="url(#rk-a3)"/>
+                    <g font-family="IBM Plex Mono, monospace" font-size="11.5">
+                      <rect x="648" y="248" width="188" height="42" rx="2" fill="none" stroke="currentColor" stroke-width="1.2"/>
+                      <text x="742" y="266" text-anchor="middle" fill="currentColor">terminal_stats()</text>
+                      <text x="742" y="282" text-anchor="middle" fill="currentColor" font-size="10.5" opacity=".65">p_breach · e_short</text>
+                    </g>
+
+                    <text x="40" y="288" font-family="Source Sans 3, sans-serif" font-size="11" fill="currentColor" opacity=".55">Every matrix is T×N — 120 steps × 5,000 scenarios in notebook 18.</text>
+                  </svg>
+                </div>
+                <figcaption><b>Two blocks, one junction.</b> The <span style="color:var(--perf);font-weight:600">PSP</span> takes the risk, the <span style="color:var(--hedge);font-weight:600">GHP</span> replicates the liability. Note the bond leg: a bond's return is <em>not</em> <span class="rk-mono">pct_change()</span> on its price, <code>bond_total_return</code> adds the coupons back, without which a bond bought above par posts a negative return.</figcaption>
+              </figure>
+
+              <div class="rk-note rk-warn">
+                <span class="rk-eyebrow">The discretization trap</span>
+                <p>Notebook 11 spends real effort on one line. Drawing per-step returns centred on <span class="rk-mono">mu*dt + 1</span> looks right and is not: over 10 years at μ = 7%, terminal prices average <strong>200.4</strong> against a theoretical <strong>196.7</strong>, a consistent upward bias of nearly 2%. Centring on <span class="rk-mono">(1+mu)**dt</span> instead gives <strong>196.2</strong>. Compounding is multiplicative; the drift has to be too. It is the kind of error a simulation will never flag on its own.</p>
+              </div>
+
+              <div class="rk-col">
+                <h5>Why the average is the wrong summary</h5>
+                <p>The repo makes a point of not collapsing 5,000 scenarios into one number. <code>terminal_stats</code> reports the mean and standard deviation of terminal wealth, but also <span class="rk-mono">p_breach</span> (probability of finishing below a floor) and <span class="rk-mono">e_short</span> (expected shortfall conditional on breaching). You live one path, not the average of five thousand, so the shape of the distribution is the result, and the mean is a footnote.</p>
+              </div>
+
+              <figure>
+                <div class="rk-frame">
+                  <svg viewBox="0 0 940 430" role="img" aria-label="Distribution of terminal wealth per dollar over 5,000 scenarios for three strategies: 100 percent equities spreads widely including below the floor, the fixed 70-30 mix is narrow and centred lower, and the floor allocator keeps the equity upside while piling mass just above the 0.75 floor and nothing below it.">
+                    <g stroke="currentColor" opacity=".14" stroke-width="1">
+                      <line x1="184.3" y1="48" x2="184.3" y2="360"/>
+                      <line x1="358.3" y1="48" x2="358.3" y2="360"/>
+                      <line x1="532.2" y1="48" x2="532.2" y2="360"/>
+                      <line x1="706.1" y1="48" x2="706.1" y2="360"/>
+                    </g>
+                    <line x1="80" y1="360" x2="880" y2="360" stroke="currentColor" opacity=".45" stroke-width="1.2"/>
+
+                    <line x1="140.9" y1="48" x2="140.9" y2="360" stroke="var(--risk)" stroke-width="1.5" stroke-dasharray="5 4"/>
+                    <text x="146" y="62" font-family="Source Sans 3, sans-serif" font-size="11.5" fill="var(--risk)" font-weight="600">floor = 0.75</text>
+
+                    <polyline points="88.7,360 88.7,344.2 106.1,332.1 123.5,303.5 140.9,280.9 158.3,253.0 175.7,201.0 193.0,202.5 210.4,164.1 227.8,178.4 245.2,164.1 262.6,136.2 280.0,144.5 297.4,163.3 314.8,170.8 332.2,205.5 349.6,187.4 367.0,225.1 384.3,243.2 401.7,244.7 419.1,256.8 436.5,256.0 453.9,277.1 471.3,289.2 488.7,277.1 506.1,298.2 523.5,293.7 540.9,307.2 558.3,307.2 575.7,320.1 593.0,322.3 610.4,325.3 627.8,331.4 645.2,335.9 662.6,336.6 680.0,339.7 697.4,337.4 714.8,345.7 732.2,344.9 749.6,342.7 767.0,346.4 784.3,347.9 801.7,347.9 819.1,347.9 836.5,355.5 853.9,353.2 853.9,360"
+                      fill="none" stroke="var(--risk)" stroke-width="2" opacity=".85"/>
+                    <polyline points="88.7,360 88.7,360.0 106.1,357.0 123.5,346.4 140.9,323.1 158.3,296.7 175.7,243.9 193.0,185.2 210.4,152.0 227.8,118.1 245.2,83.4 262.6,48.0 280.0,57.0 297.4,74.4 314.8,109.0 332.2,138.4 349.6,181.4 367.0,195.0 384.3,206.3 401.7,228.1 419.1,237.9 436.5,269.6 453.9,280.1 471.3,299.0 488.7,308.0 506.1,322.3 523.5,324.6 540.9,326.1 558.3,332.1 575.7,336.6 593.0,350.2 610.4,347.9 627.8,351.0 645.2,354.0 662.6,356.2 680.0,355.5 697.4,359.2 714.8,352.5 732.2,356.2 749.6,358.5 767.0,358.5 784.3,358.5 801.7,357.7 819.1,360.0 836.5,359.2 853.9,359.2 853.9,360"
+                      fill="none" stroke="currentColor" stroke-width="2" opacity=".6"/>
+                    <polyline points="88.7,360 88.7,360.0 106.1,360.0 123.5,360.0 140.9,278.6 158.3,94.0 175.7,115.8 193.0,188.9 210.4,195.7 227.8,197.2 245.2,178.4 262.6,148.2 280.0,165.6 297.4,162.6 314.8,195.7 332.2,202.5 349.6,196.5 367.0,238.7 384.3,238.7 401.7,251.5 419.1,259.0 436.5,258.3 453.9,276.3 471.3,288.4 488.7,280.1 506.1,298.2 523.5,299.0 540.9,304.2 558.3,311.0 575.7,321.6 593.0,323.1 610.4,323.1 627.8,334.4 645.2,334.4 662.6,338.1 680.0,338.1 697.4,339.7 714.8,344.9 732.2,344.2 749.6,341.9 767.0,347.9 784.3,347.2 801.7,349.4 819.1,347.9 836.5,355.5 853.9,353.2 853.9,360"
+                      fill="none" stroke="var(--hedge)" stroke-width="2.6"/>
+
+                    <g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity=".65">
+                      <text x="184.3" y="378" text-anchor="middle">1.0</text>
+                      <text x="358.3" y="378" text-anchor="middle">2.0</text>
+                      <text x="532.2" y="378" text-anchor="middle">3.0</text>
+                      <text x="706.1" y="378" text-anchor="middle">4.0</text>
+                      <text x="871" y="378" text-anchor="middle">5.0+</text>
+                    </g>
+                    <text x="480" y="400" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" fill="currentColor" opacity=".7">terminal wealth per dollar invested, after 10 years</text>
+
+                    <g font-family="Source Sans 3, sans-serif" font-size="12">
+                      <line x1="600" y1="118" x2="628" y2="118" stroke="var(--risk)" stroke-width="2" opacity=".85"/>
+                      <text x="636" y="122" fill="currentColor">100% equities — 3.6% breach the floor</text>
+                      <line x1="600" y1="140" x2="628" y2="140" stroke="currentColor" stroke-width="2" opacity=".6"/>
+                      <text x="636" y="144" fill="currentColor">fixed 70/30 — narrower, and 0.8% still breach</text>
+                      <line x1="600" y1="162" x2="628" y2="162" stroke="var(--hedge)" stroke-width="2.6"/>
+                      <text x="636" y="166" fill="currentColor">floor 75%, m = 3 — no path below the floor</text>
+                    </g>
+                  </svg>
+                </div>
+                <figcaption><b>5,000 scenarios, 10 years, binned terminal wealth.</b> The fixed mix buys safety by cutting off both tails. The floor allocator does something else entirely: it stacks the failures into a spike just <em>above</em> 0.75 and leaves the right tail alone, its 95th percentile and its maximum are the same as pure equities'.</figcaption>
+              </figure>
+            </div>
+
+            <div class="rk-sec">
+              <span class="rk-eyebrow">05 — CPPI</span>
+              <div class="rk-col">
+                <h4>The feedback loop that turns a wish into a guarantee</h4>
+                <p>Constant Proportion Portfolio Insurance is the one genuinely dynamic algorithm in the repo, and everything in notebooks 10 through 18 is a variation on it. At each step: compute the <strong>cushion</strong>, the fraction of account value sitting above the floor; invest a multiple <span class="rk-mono">m</span> of that cushion in the risky asset, clipped to [0, 1]; put the rest in the safe asset; let the market move; repeat. Because the cushion shrinks as you approach the floor, the risky weight goes to zero before the floor is hit, the protection is mechanical, not predictive.</p>
+                <p>Notebook 10 also makes a performance point in passing: this is one of the rare places where a Python <span class="rk-mono">for</span> loop is unavoidable, because each step depends on the previous account value. Everything else in the toolkit vectorizes; this cannot.</p>
+              </div>
+
+              <figure>
+                <div class="rk-frame">
+                  <svg viewBox="0 0 940 268" role="img" aria-label="CPPI loop: at each step the cushion is computed from account value and floor, multiplied by m and clipped to zero-one to give the risky weight, the account value is recomputed, and then the floor is updated according to the chosen variant.">
+                    <defs>
+                      <marker id="rk-a4" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+                      </marker>
+                      <marker id="rk-a4r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="var(--risk)"/>
+                      </marker>
+                    </defs>
+
+                    <g font-family="IBM Plex Mono, monospace" font-size="11.5">
+                      <rect x="24" y="70" width="150" height="54" rx="2" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                      <text x="99" y="93" text-anchor="middle" fill="currentColor" font-size="12">cushion</text>
+                      <text x="99" y="111" text-anchor="middle" fill="currentColor" font-size="10.5" opacity=".7">(V − F) / V</text>
+
+                      <rect x="234" y="70" width="150" height="54" rx="2" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                      <text x="309" y="93" text-anchor="middle" fill="currentColor" font-size="12">w = m × cushion</text>
+                      <text x="309" y="111" text-anchor="middle" fill="currentColor" font-size="10.5" opacity=".7">clip(0, 1)</text>
+
+                      <rect x="444" y="70" width="170" height="54" rx="2" fill="none" stroke="currentColor" stroke-width="1.4"/>
+                      <text x="529" y="93" text-anchor="middle" fill="currentColor" font-size="12">allocate</text>
+                      <text x="529" y="111" text-anchor="middle" fill="currentColor" font-size="10.5" opacity=".7">w·PSP + (1−w)·GHP</text>
+
+                      <rect x="674" y="70" width="150" height="54" rx="2" fill="none" stroke="currentColor" stroke-width="2"/>
+                      <text x="749" y="93" text-anchor="middle" fill="currentColor" font-size="12">V ← V(1+r)</text>
+                      <text x="749" y="111" text-anchor="middle" fill="currentColor" font-size="10.5" opacity=".7">next step</text>
+                    </g>
+
+                    <g stroke="currentColor" stroke-width="1.5" fill="none" marker-end="url(#rk-a4)">
+                      <line x1="174" y1="97" x2="230" y2="97"/>
+                      <line x1="384" y1="97" x2="440" y2="97"/>
+                      <line x1="614" y1="97" x2="670" y2="97"/>
+                    </g>
+
+                    <path d="M749,124 L749,180 L99,180 L99,128" fill="none" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 4" marker-end="url(#rk-a4)"/>
+                    <text x="424" y="174" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="11.5" fill="currentColor" opacity=".7">feedback: the new account value redefines the cushion</text>
+
+                    <rect x="180" y="206" width="590" height="46" rx="2" fill="none" stroke="var(--risk)" stroke-width="1.3"/>
+                    <text x="200" y="224" font-family="Source Sans 3, sans-serif" font-size="11.5" fill="var(--risk)" font-weight="600">The floor F:</text>
+                    <g font-family="IBM Plex Mono, monospace" font-size="11" fill="var(--risk)">
+                      <text x="200" y="242">fixed: start × 0.8</text>
+                      <text x="380" y="242">discounted: floor × P_ZC(t)</text>
+                      <text x="596" y="242">ratcheting: (1−dd) × peak</text>
+                    </g>
+                    <path d="M445,206 L445,186 L200,186 L200,182" fill="none" stroke="var(--risk)" stroke-width="1.3" stroke-dasharray="4 3" marker-end="url(#rk-a4r)"/>
+                    <text x="212" y="200" font-family="Source Sans 3, sans-serif" font-size="10.5" fill="var(--risk)" opacity=".85">recomputed at every step</text>
+
+                    <text x="24" y="48" font-family="Source Sans 3, sans-serif" font-size="12.5" fill="currentColor" opacity=".65">One time step of <tspan font-family="IBM Plex Mono, monospace" font-size="11.5">run_cppi</tspan> / <tspan font-family="IBM Plex Mono, monospace" font-size="11.5">floor_allocator</tspan> / <tspan font-family="IBM Plex Mono, monospace" font-size="11.5">drawdown_allocator</tspan></text>
+                  </svg>
+                </div>
+                <figcaption><b>One engine, three definitions of the floor.</b> The three dynamic functions share this exact loop and differ only in the line that updates <span class="rk-mono">F</span>, which is what makes the jump from classic CPPI to liability-driven allocation nearly free.</figcaption>
+              </figure>
+
+              <div class="rk-col">
+                <h5>The multiplier is the whole risk decision</h5>
+                <p><span class="rk-mono">m</span> sets how aggressively the cushion is levered, and its reciprocal is the tolerance: <span class="rk-mono">1/m</span> is the largest single-period drop the strategy can absorb before the floor is breached. At m = 3 that is a 33% monthly loss, comfortable. At m = 10 it is 10%, and rebalancing monthly is no longer often enough. This is gap risk, and it is visible in the numbers.</p>
+              </div>
+
+              <div class="rk-tablewrap">
+                <table>
+                  <caption>Floor allocator at 0.75, PSP = GBM(7%, 15%), GHP = CIR zero-coupon, 5,000 scenarios, 10 years, monthly rebalancing.</caption>
+                  <thead>
+                    <tr><th>Multiplier</th><th>Mean terminal wealth</th><th>Std dev</th><th>Max absorbable drop</th><th>Floor breaches</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>m = 1</td><td>1.62</td><td>0.44</td><td>100%</td><td class="rk-good">none</td></tr>
+                    <tr class="rk-hero"><td>m = 3</td><td>1.94</td><td>1.00</td><td>33%</td><td class="rk-good">none</td></tr>
+                    <tr><td>m = 5</td><td>1.95</td><td>1.01</td><td>20%</td><td class="rk-good">none</td></tr>
+                    <tr><td>m = 10</td><td>1.96</td><td>1.01</td><td>10%</td><td class="rk-bad">2.8% of paths</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="rk-col">
+                <p>Going from m = 3 to m = 10 buys 0.02 of expected terminal wealth and breaks the guarantee on 138 paths out of 5,000. The interesting region is small and sits at the low end.</p>
+
+                <h5>The allocator as an argument</h5>
+                <p>The cleanest piece of engineering in the repo is that <code>bt_mix(r1, r2, allocator, **kwargs)</code> knows nothing about the strategy. It receives a function that returns a T×N weight matrix, then computes <span class="rk-mono">w·r1 + (1−w)·r2</span>. Adding a strategy means writing an allocator, not touching the backtester. Only the allocators that read the account state back can guarantee anything.</p>
+              </div>
+
+              <div class="rk-tablewrap">
+                <table>
+                  <caption>Cushion = <span class="rk-mono">(V − floor)/V</span>; risky weight = <span class="rk-mono">clip(m × cushion, 0, 1)</span>.</caption>
+                  <thead>
+                    <tr><th>Allocator</th><th>Signal</th><th>Feedback</th><th>Guarantees a floor</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td><span class="rk-mono">fixedmix_allocator</span></td><td>constant <span class="rk-mono">w1</span></td><td style="text-align:left">none</td><td class="rk-bad">no</td></tr>
+                    <tr><td><span class="rk-mono">glidepath_allocator</span></td><td>time remaining</td><td style="text-align:left">none</td><td class="rk-bad">no</td></tr>
+                    <tr class="rk-hero"><td><span class="rk-mono">floor_allocator</span></td><td>cushion vs <span class="rk-mono">floor × P<sub>ZC</sub>(t)</span></td><td style="text-align:left">account value</td><td class="rk-good">yes</td></tr>
+                    <tr class="rk-hero"><td><span class="rk-mono">drawdown_allocator</span></td><td>cushion vs <span class="rk-mono">(1−maxDD) × peak</span></td><td style="text-align:left">account value + peak</td><td class="rk-good">yes</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="rk-tablewrap">
+                <table>
+                  <caption>Terminal wealth per dollar, 5,000 scenarios, 10 years, floor tested at 0.75. Notebook 18, fixed seed. <span class="rk-mono">e_short</span> is the expected shortfall given a breach.</caption>
+                  <thead>
+                    <tr><th>Strategy</th><th>Mean</th><th>Std dev</th><th>p_breach</th><th>e_short</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>100% equities</td><td>1.97</td><td>1.00</td><td class="rk-bad">3.6%</td><td>0.118</td></tr>
+                    <tr><td>100% zero-coupon</td><td>1.34</td><td>0.00</td><td>—</td><td>—</td></tr>
+                    <tr><td>Fixed mix 70/30</td><td>1.76</td><td>0.60</td><td class="rk-bad">0.8%</td><td>0.071</td></tr>
+                    <tr><td>Glidepath 80 → 20</td><td>1.62</td><td>0.41</td><td class="rk-bad">0.2%</td><td>0.037</td></tr>
+                    <tr class="rk-hero"><td>Floor 75% (m = 3)</td><td>1.94</td><td>1.00</td><td class="rk-good">0%</td><td>—</td></tr>
+                    <tr><td>MaxDD 25% (m = 3)</td><td>1.63</td><td>0.55</td><td class="rk-good">0%</td><td>—</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="rk-note">
+                <span class="rk-eyebrow">The result the whole repo builds toward</span>
+                <p>The fixed mix and the glidepath buy risk reduction with return, and never fully eliminate failure, 70/30 gives up 0.21 of mean wealth and still breaches on 0.8% of paths. The floor allocator eliminates every breach while giving up 0.03. It can do this because it knows the price of the hedging asset at every instant, so it always knows exactly how much cushion it has; the other two allocate blind.</p>
+              </div>
+
+              <div class="rk-col">
+                <h5>On real data</h5>
+                <p>Simulation is not proof, so notebook 18 ends on the reconstructed cap-weighted market index. A drawdown-constrained CPPI holds its constraint and improves risk-adjusted return, at a real cost in raw return.</p>
+              </div>
+
+              <div class="rk-tablewrap">
+                <table>
+                  <caption>Cap-weighted index rebuilt from the 30 industries, 1990-2018, safe asset at 3%, <span class="rk-mono">run_cppi(drawdown=0.25)</span>.</caption>
+                  <thead>
+                    <tr><th></th><th>Ann. return</th><th>Ann. vol</th><th>Sharpe</th><th>Max drawdown</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Market</td><td>9.9%</td><td>14.5%</td><td>0.46</td><td class="rk-bad">−50.0%</td></tr>
+                    <tr class="rk-hero"><td>CPPI, maxDD 25%</td><td>7.7%</td><td>8.4%</td><td class="rk-good">0.55</td><td class="rk-good">−22.1%</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="rk-col">
+                <p>Worth noting what does <em>not</em> work: a <em>fixed</em> floor at 80% of the initial stake changes nothing over this period. Wealth grew more than tenfold, so the cushion stayed saturated and the risky weight stayed at 100% throughout, max drawdown unchanged at −50%. An absolute floor only protects the first few years, which is precisely why the ratcheting and discounted floors exist.</p>
+              </div>
+            </div>
+
+            <div class="rk-sec">
+              <span class="rk-eyebrow">06 — Screenshots</span>
+              <div class="rk-col">
+                <h4>Few screenshots of the simulations and widgets develloped</h4>
+              </div>
+              
+            </div>
+
+            
+          </div>
+
+          <p class="project-links">
+            <a href="https://github.com/elouansalaun/Portfolio-Construction-and-Analysis">Repository ↗</a>
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <!-- ---------- PROJECT 3 ---------- -->
+    <article class="project" id="p-vision">
+      <h3 class="project-heading">
+        <button class="project-head" id="p-vision-btn" type="button"
+                aria-expanded="false" aria-controls="p-vision-panel">
+          <span class="project-name">Still building</span>
+          <span class="project-meta">2024</span>
+          <span class="project-summary">Still in progress, continuing to add pasts projects to the portfolio.</span>
+          <span class="chevron" aria-hidden="true"></span>
+        </button>
+      </h3>
+
+      <div class="panel" id="p-vision-panel" role="region" aria-labelledby="p-vision-btn">
+        <div class="panel-inner">
+          <p>To complete</p>
+          
+      
+        </div>
+      </div>
+    </article>
+
+  </section>
+
+  <!-- ============================================================
+       EDUCATION
+       ============================================================ -->
+  <section id="education" class="section">
+    <h2>Education</h2>
+
+    <ol class="timeline">
+      <li>
+        <div class="tl-when">
+          <span class="tl-date">2024 — 2026</span>
+          <img class="tl-logo tl-logo--invert" src="assets/img/logo_Polytechnique_Montreal.svg" alt="Polytechnique Montréal" width="235" height="93" loading="lazy" decoding="async">
+        </div>
+        <div class="tl-what">
+          <h3>MSc</h3>
+          <p class="tl-where">Polytechnique Montréal · Montréal</p>
+          <p>Thesis: <em>Tender response process : levaraging contractual and concurrential data</em> </p>
+          <p>GPA: 4.0/4.0, Award of Excellence, Conference Article @ Centeris2026 Procedia Computer Science</p>
+        </div>
+      </li>
+      <li>
+        <div class="tl-when">
+          <span class="tl-date">2022 — 2026</span>
+          <img class="tl-logo tl-logo--wide" src="assets/img/arts-et-metiers-seeklogo.png" alt="Arts et Métiers ParisTech" width="601" height="123" loading="lazy" decoding="async">
+        </div>
+        <div class="tl-what">
+          <h3>Engineering Diploma</h3>
+          <p class="tl-where">Arts et Métiers ParisTech · Paris</p>
+          <p>Top french engineering school with a strong focus on mechanical and industrial engineering.</p>
+          <p>Top 10% student, Alumni Scholarship Recipient</p>
+        </div>
+      </li>
+      <li>
+        <div class="tl-when">
+          <span class="tl-date">2020 — 2022</span>
+          <img class="tl-logo tl-logo--square" src="assets/img/logo_livet.svg" alt="Lycée Livet" width="1456" height="1456" loading="lazy" decoding="async">
+        </div>
+        <div class="tl-what">
+          <h3>Preparatory Classes PTSI/PT*</h3>
+          <p class="tl-where">Lycée Livet · Angers</p>
+          <p>Two years of intensive studies in mathematics and physics to prepare for the french top engineering school entrance exams.</p>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ============================================================
+       SKILLS
+       ============================================================ -->
+  <section id="skills" class="section">
+    <h2>Skills</h2>
+    <dl class="skills">
+      <div>
+        <dt>Languages</dt>
+        <dd>French (native) · English (fluent)</dd>
+      </div>
+      <div>
+        <dt>Programming and environment</dt>
+        <dd>Python · SQL · Docker · Azure · VBA · MCP · Local LLMs · Git</dd>
+      </div>
+      <div>
+        <dt>Certifications</dt>
+        <dd><a href="https://www.coursera.org/account/accomplishments/specialization/certificate/QJYRKJUJGPRS">IBM Data Science (160H)</a> · <a href="https://www.coursera.org/account/accomplishments/specialization/5B8GGTTRE6DC">Stanford Machine Learning (80H)</a></dd>
+      </div>
+      <div>
+        <dt>Open courses</dt>
+        <dd>Stanford CS229 Machine Learning ·  Stanford CS224n NLP with Deep Learning · Stanford CS230 Deep Learning</dd>
+      </div>
+    </dl>
+  </section>
+
+  <!-- ============================================================
+       CONTACT
+       ============================================================ -->
+  <section id="contact" class="section">
+    <h2>Contact</h2>
+    <p>Feel free to reach out if you have any questions or would like to collaborate!</p>
+    <ul class="contact-list">
+      <li><span>Email</span><a href="mailto:elouan.salaun1909@gmail.com">elouan.salaun1909@gmail.com</a></li>
+      <li><span>GitHub</span><a href="https://github.com/elouan-salaun">github.com/elouan-salaun</a></li>
+      <li><span>LinkedIn</span><a href="https://www.linkedin.com/in/elouan-salaun">linkedin.com/in/elouan-salaun</a></li>
+    </ul>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <p>© <span id="year">2026</span> Elouan Salaun</p>
+</footer>
+
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js" crossorigin="anonymous"></script>
+<script defer src="assets/main.js"></script>
+</body>
 </html>
