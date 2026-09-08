@@ -180,7 +180,7 @@ main { max-width: var(--measure); margin: 0 auto; padding: 0 var(--pad) 5rem; }
 
 .project-head {
   display: block; position: relative; width: 100%;
-  background: none; border: 0; padding: 1.4rem 2.5rem 1.4rem 0;
+  background: none; border: 0; padding: 1.4rem 10rem 1.4rem 0;
   font: inherit; color: inherit; text-align: left; cursor: pointer;
 }
 .project-head:hover .project-name { color: var(--accent); }
@@ -215,6 +215,25 @@ main { max-width: var(--measure); margin: 0 auto; padding: 0 var(--pad) 5rem; }
 }
 .project-head:hover .chevron { border-color: var(--accent); }
 .project.open .chevron { transform: rotate(-135deg); }
+
+/* Stack pictogram, sitting just left of the chevron. The marks are drawn in
+   black line art, so flip them on the dark background like the school logos. */
+.project-icon {
+  position: absolute; right: 2rem; top: 1.2rem;
+  width: 7rem; height: 2.3rem;
+  object-fit: contain; object-position: right center;
+  opacity: .72; pointer-events: none;
+  transition: opacity .15s ease;
+}
+.project-head:hover .project-icon { opacity: 1; }
+[data-theme="dark"] .project-icon { filter: invert(1); }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .project-icon { filter: invert(1); }
+}
+@media (max-width: 34rem) {
+  .project-head { padding-right: 2.5rem; }
+  .project-icon { display: none; }
+}
 
 /* Collapse animation: 0fr -> 1fr on a grid row.
    Panels are open by default so the page still works without JS;
