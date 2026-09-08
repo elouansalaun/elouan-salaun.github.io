@@ -785,6 +785,549 @@
     </article>
 
     <!-- ---------- PROJECT 2 ---------- -->
+    <article class="project" id="p-seao">
+      <h3 class="project-heading">
+        <button class="project-head" id="p-seao-btn" type="button"
+                aria-expanded="false" aria-controls="p-seao-panel">
+          <span class="project-name">SEAO Database MCP</span>
+          <span class="project-meta">2026 · Python · MCP · FastMCP · SQLite · FTS5 · OCDS</span>
+          <span class="project-summary">A local MCP server that lets an LLM analyst interrogate Quebec's SEAO public-procurement open data in plain language. A small pipeline downloads the raw OCDS feed, filters it, and normalizes it into a query-ready SQLite database. </span>
+          <span class="chevron" aria-hidden="true"></span>
+        </button>
+      </h3>
+
+      <div class="panel" id="p-seao-panel" role="region" aria-labelledby="p-seao-btn">
+        <div class="panel-inner">
+
+          <div class="rk">
+
+            <div class="rk-top">
+              <p>Quebec publishes everything about its public procurement. Every call for tenders,
+              every bid amount, every award and every amendment is released as open data in the
+              Open Contracting Data Standard, weekly, since 2020. It is also, as published, close to
+              unusable: multi-gigabyte JSON dumps of deeply nested releases, which is an excellent
+              archive format and a terrible way to answer a question.</p>
+
+              <p>And the questions are simple ones. Who holds this buyer's security contract today,
+              and until when. What does guarding actually go for in Montreal. Does this buyer rotate
+              suppliers or renew the same one. How much of the market do the top three firms hold.
+              Each is three joins and one modelling decision away from the raw feed, and it is the
+              modelling decision, never the joins, that quietly returns a plausible wrong number.</p>
+
+              <p>So this repository is two things. A three-script pipeline that turns the feed into a
+              query-ready SQLite file, and a read-only <a href="https://modelcontextprotocol.io">MCP</a>
+              server that hands a language model a tool surface over it. The point is not to give a
+              model SQL access, a generic SQLite MCP server would do that in one line. It is to give
+              it the <em>correct</em> SQL, frozen into tools, for the handful of questions where the
+              obvious query is wrong.</p>
+
+             
+            </div>
+
+            <!-- ========== 01 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">01 — Architecture</span>
+              <div class="rk-col">
+                <h4>Three scripts to build, one server to serve</h4>
+                <p>The build side is deliberately three separate scripts writing three separate
+                artifacts, rather than one pipeline object. Each stage is idempotent and can be re-run
+                alone: the fetcher compares the feed's <span class="rk-mono">updated</span> timestamp
+                against local file mtimes and downloads only what moved, the filter is a pure function
+                of the dumps on disk, and the normalizer rebuilds the database from scratch every time.
+                Refreshing the data next month is three commands, not a migration.</p>
+                <p>Nothing in <span class="rk-mono">DATA/</span> is committed. The weekly dumps are
+                several gigabytes and the database is a derived artifact, so the repository ships the
+                recipe and not the result.</p>
+              </div>
+
+              <figure>
+                <div class="rk-frame">
+                  <svg viewBox="0 0 940 370" role="img" aria-label="A build pipeline in which the open.canada.ca Atom feed is downloaded by fetch_seao_opendata.py, filtered by build_raw_json_db.py and normalized by build_work_sqlite_db.py into DATA/seao.db; below, an LLM client exchanges tool calls and markdown answers with seao_mcp_server.py, which reads that database read-only.">
+                    <defs>
+                      <marker id="sm-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+                      </marker>
+                    </defs>
+
+                    <g font-family="Source Sans 3, sans-serif" font-size="11.5" fill="currentColor" opacity=".55">
+                      <text x="16" y="30">build — run once, refresh weekly</text>
+                      <text x="16" y="228">serve — stdio, on demand</text>
+                    </g>
+
+                    <!-- row 1 : build -->
+                    <g font-family="IBM Plex Mono, monospace">
+                      <rect x="16" y="48" width="140" height="76" rx="2" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3" opacity=".85"/>
+                      <text x="86" y="76" text-anchor="middle" fill="currentColor" font-size="11">open.canada.ca</text>
+                      <text x="86" y="95" text-anchor="middle" fill="currentColor" font-size="9.5" opacity=".65">Atom feed · OCDS</text>
+                      <text x="86" y="110" text-anchor="middle" fill="currentColor" font-size="9.5" opacity=".65">weekly releases</text>
+
+                      <rect x="186" y="48" width="180" height="76" rx="2" fill="none" stroke="var(--perf)" stroke-width="1.5"/>
+                      <text x="276" y="73" text-anchor="middle" fill="var(--perf)" font-size="11.5">1 · fetch</text>
+                      <text x="276" y="92" text-anchor="middle" fill="var(--perf)" font-size="9.5" opacity=".9">fetch_seao_opendata.py</text>
+                      <text x="276" y="108" text-anchor="middle" fill="var(--perf)" font-size="9" opacity=".75">→ DATA/week_*.json · GBs</text>
+
+                      <rect x="398" y="48" width="180" height="76" rx="2" fill="none" stroke="var(--perf)" stroke-width="1.5"/>
+                      <text x="488" y="73" text-anchor="middle" fill="var(--perf)" font-size="11.5">2 · filter</text>
+                      <text x="488" y="92" text-anchor="middle" fill="var(--perf)" font-size="9.5" opacity=".9">build_raw_json_db.py</text>
+                      <text x="488" y="108" text-anchor="middle" fill="var(--perf)" font-size="9" opacity=".75">→ filtered_records.json</text>
+
+                      <rect x="610" y="48" width="180" height="76" rx="2" fill="none" stroke="var(--hedge)" stroke-width="1.5"/>
+                      <text x="700" y="73" text-anchor="middle" fill="var(--hedge)" font-size="11.5">3 · normalize</text>
+                      <text x="700" y="92" text-anchor="middle" fill="var(--hedge)" font-size="9.5" opacity=".9">build_work_sqlite_db.py</text>
+                      <text x="700" y="108" text-anchor="middle" fill="var(--hedge)" font-size="9" opacity=".75">→ 18 tables · 5 views · FTS5</text>
+
+                      <path d="M806,58 L806,116 A60,9 0 0 0 926,116 L926,58" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                      <ellipse cx="866" cy="58" rx="60" ry="9" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                      <text x="866" y="88" text-anchor="middle" fill="currentColor" font-size="11">DATA/seao.db</text>
+                      <text x="866" y="104" text-anchor="middle" fill="currentColor" font-size="8.5" opacity=".6">not committed</text>
+                    </g>
+
+                    <g stroke="currentColor" stroke-width="1.3" fill="none" opacity=".55" marker-end="url(#sm-a)">
+                      <line x1="156" y1="86" x2="182" y2="86"/>
+                      <line x1="366" y1="86" x2="394" y2="86"/>
+                      <line x1="578" y1="86" x2="606" y2="86"/>
+                      <line x1="790" y1="86" x2="802" y2="86"/>
+                    </g>
+
+                    <!-- row 2 : serve -->
+                    <g font-family="IBM Plex Mono, monospace">
+                      <rect x="16" y="250" width="210" height="92" rx="2" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3" opacity=".85"/>
+                      <text x="121" y="280" text-anchor="middle" fill="currentColor" font-size="11.5">LLM client</text>
+                      <text x="121" y="300" text-anchor="middle" fill="currentColor" font-size="9.5" opacity=".7">Claude Code · Desktop</text>
+                      <text x="121" y="317" text-anchor="middle" fill="currentColor" font-size="9.5" opacity=".7">ChatGPT via mcp-proxy</text>
+                      <text x="121" y="334" text-anchor="middle" fill="currentColor" font-size="9" opacity=".55">plain-language question</text>
+
+                      <rect x="326" y="244" width="300" height="104" rx="2" fill="none" stroke="var(--hedge)" stroke-width="2.2"/>
+                      <text x="476" y="274" text-anchor="middle" fill="var(--hedge)" font-size="12.5">seao_mcp_server.py</text>
+                      <text x="476" y="296" text-anchor="middle" fill="var(--hedge)" font-size="10" opacity=".85">FastMCP · stdio · read-only</text>
+                      <text x="476" y="316" text-anchor="middle" fill="var(--hedge)" font-size="10" opacity=".85">3 core + 6 curated tools</text>
+                      <text x="476" y="336" text-anchor="middle" fill="var(--hedge)" font-size="9" opacity=".6">unaccent() · 5 s watchdog</text>
+                    </g>
+
+                    <g stroke="currentColor" stroke-width="1.3" fill="none" opacity=".55" marker-end="url(#sm-a)">
+                      <line x1="226" y1="278" x2="318" y2="278"/>
+                      <line x1="318" y1="316" x2="226" y2="316"/>
+                      <path d="M866,126 L866,296 L636,296"/>
+                    </g>
+                    <g font-family="Source Sans 3, sans-serif" font-size="9.5" fill="currentColor" opacity=".6">
+                      <text x="272" y="270" text-anchor="middle">tool call</text>
+                      <text x="272" y="308" text-anchor="middle">markdown</text>
+                    </g>
+                    <text x="876" y="205" font-family="IBM Plex Mono, monospace" font-size="9.5" fill="currentColor" opacity=".6">mode=ro</text>
+                  </svg>
+                </div>
+                <figcaption><b>Build once, serve on demand.</b> The three build scripts touch the network and the disk; the server never does either beyond opening one SQLite file read-only. Only <span class="rk-mono">requests</span> and the MCP SDK are third-party dependencies, the whole normalization step is standard library.</figcaption>
+              </figure>
+
+              <div class="rk-col">
+                <h5>What gets kept</h5>
+                <p>The filter is the one place where the scope of the whole project is decided, and it
+                is eight lines at the bottom of <code>build_raw_json_db.py</code>: a release is kept if
+                its title matches one of eight French keywords ( <span class="rk-mono">gardiennage</span>,
+                <span class="rk-mono">agents de sécurité</span>, <span class="rk-mono">service de surveillance</span>,
+                <span class="rk-mono">patrouill</span> and so on ) and does not mention
+                <span class="rk-mono">incendie</span>, or if its first item carries one of six UNSPSC
+                codes in the public-safety family. Releases are then deduplicated on
+                <span class="rk-mono">ocid</span>, since a process reappears in every weekly dump it
+                was touched in. Point those two lists at another sector and the rest of the repository
+                is unchanged.</p>
+              </div>
+            </div>
+
+            <!-- ========== 02 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">02 — Schema</span>
+              <div class="rk-col">
+                <h4>OCDS is nested, questions are relational</h4>
+                <p>An OCDS release is one deeply nested object per contracting process: parties,
+                tender, items, lots, bids, awards, contracts, amendments and payment transactions all
+                hanging off a single <span class="rk-mono">ocid</span>. Normalizing it is mostly
+                patient work, the source mixes <span class="rk-mono">NEQ</span>/<span class="rk-mono">neq</span>,
+                <span class="rk-mono">totalAmount</span>/<span class="rk-mono">totalamount</span>,
+                <span class="rk-mono">durationInDay</span>/<span class="rk-mono">durationInDays</span>,
+                so every field goes through a <code>pick()</code> helper that takes the first present
+                case variant, but two structural decisions carry the whole design.</p>
+                <p>The first: <b>party ids are release-scoped</b>. The <span class="rk-mono">OP-387</span>
+                in one process is not the <span class="rk-mono">OP-387</span> in another, so every
+                party-keyed table carries the <span class="rk-mono">ocid</span> and every join is on the
+                pair <span class="rk-mono">(ocid, party_id)</span>. The second: the only identifier that
+                <em>is</em> stable across processes is the <b>NEQ</b>, Quebec's enterprise number, which
+                is why it gets its own index and why every aggregate in the server keys on it.</p>
+              </div>
+
+              <figure>
+                <div class="rk-frame">
+                  <svg viewBox="0 0 940 450" role="img" aria-label="Relational schema centred on the process table keyed by ocid: on the left the tender with its items, lots and the FTS5 full-text index; on the right the award, award_supplier and contract chain; in the middle the party table holding the NEQ, joined from award_supplier to derive winners and from the bid table to identify bidders.">
+                    <defs>
+                      <marker id="sm-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+                      </marker>
+                    </defs>
+
+                    <g font-family="Source Sans 3, sans-serif" font-size="11" fill="currentColor" opacity=".5">
+                      <text x="138" y="126" text-anchor="middle">what was asked for</text>
+                      <text x="802" y="126" text-anchor="middle">what was awarded</text>
+                    </g>
+
+                    <g font-family="IBM Plex Mono, monospace">
+                      <rect x="372" y="24" width="196" height="58" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+                      <text x="470" y="49" text-anchor="middle" fill="currentColor" font-size="12.5">process</text>
+                      <text x="470" y="67" text-anchor="middle" fill="currentColor" font-size="9.5" opacity=".7">ocid PK · buyer_name</text>
+
+                      <rect x="40" y="140" width="196" height="58" rx="2" fill="none" stroke="currentColor" stroke-width="1.3"/>
+                      <text x="138" y="165" text-anchor="middle" fill="currentColor" font-size="11.5">tender</text>
+                      <text x="138" y="183" text-anchor="middle" fill="currentColor" font-size="9.5" opacity=".7">method · status · area</text>
+
+                      <rect x="40" y="234" width="92" height="50" rx="2" fill="none" stroke="currentColor" stroke-width="1.1" opacity=".9"/>
+                      <text x="86" y="257" text-anchor="middle" fill="currentColor" font-size="10.5">item</text>
+                      <text x="86" y="273" text-anchor="middle" fill="currentColor" font-size="9" opacity=".65">UNSPSC</text>
+
+                      <rect x="144" y="234" width="92" height="50" rx="2" fill="none" stroke="currentColor" stroke-width="1.1" opacity=".9"/>
+                      <text x="190" y="257" text-anchor="middle" fill="currentColor" font-size="10.5">lot</text>
+                      <text x="190" y="273" text-anchor="middle" fill="currentColor" font-size="9" opacity=".65">periods</text>
+
+                      <rect x="40" y="330" width="196" height="58" rx="2" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3" opacity=".85"/>
+                      <text x="138" y="355" text-anchor="middle" fill="currentColor" font-size="11">process_fts</text>
+                      <text x="138" y="373" text-anchor="middle" fill="currentColor" font-size="9" opacity=".65">FTS5 · remove_diacritics</text>
+
+                      <rect x="704" y="140" width="196" height="54" rx="2" fill="none" stroke="currentColor" stroke-width="1.3"/>
+                      <text x="802" y="163" text-anchor="middle" fill="currentColor" font-size="11.5">award</text>
+                      <text x="802" y="181" text-anchor="middle" fill="currentColor" font-size="9.5" opacity=".7">value_amount · date</text>
+
+                      <rect x="704" y="228" width="196" height="54" rx="2" fill="none" stroke="var(--hedge)" stroke-width="2"/>
+                      <text x="802" y="251" text-anchor="middle" fill="var(--hedge)" font-size="11.5">award_supplier</text>
+                      <text x="802" y="269" text-anchor="middle" fill="var(--hedge)" font-size="9.5" opacity=".8">who won, per lot</text>
+
+                      <rect x="704" y="316" width="196" height="54" rx="2" fill="none" stroke="currentColor" stroke-width="1.3"/>
+                      <text x="802" y="339" text-anchor="middle" fill="currentColor" font-size="11.5">contract</text>
+                      <text x="802" y="357" text-anchor="middle" fill="currentColor" font-size="9.5" opacity=".7">signed value · period</text>
+
+                      <rect x="372" y="232" width="196" height="68" rx="2" fill="none" stroke="var(--hedge)" stroke-width="2.2"/>
+                      <text x="470" y="256" text-anchor="middle" fill="var(--hedge)" font-size="12.5">party</text>
+                      <text x="470" y="274" text-anchor="middle" fill="var(--hedge)" font-size="9.5" opacity=".85">(ocid, party_id)</text>
+                      <text x="470" y="291" text-anchor="middle" fill="var(--hedge)" font-size="9.5" opacity=".85">neq · name · address</text>
+
+                      <rect x="372" y="352" width="196" height="72" rx="2" fill="none" stroke="var(--perf)" stroke-width="1.8"/>
+                      <text x="470" y="376" text-anchor="middle" fill="var(--perf)" font-size="11.5">bid</text>
+                      <text x="470" y="394" text-anchor="middle" fill="var(--perf)" font-size="9.5" opacity=".85">value_amount · value_unit</text>
+                      <text x="470" y="411" text-anchor="middle" fill="var(--perf)" font-size="9" opacity=".7">bid_related_lot → lot</text>
+                    </g>
+
+                    <g stroke="currentColor" stroke-width="1.3" fill="none" opacity=".5" marker-end="url(#sm-b)">
+                      <line x1="372" y1="62" x2="242" y2="150"/>
+                      <line x1="568" y1="62" x2="698" y2="150"/>
+                      <line x1="470" y1="82" x2="470" y2="228"/>
+                      <line x1="802" y1="194" x2="802" y2="224"/>
+                      <line x1="802" y1="282" x2="802" y2="312"/>
+                      <line x1="704" y1="256" x2="574" y2="264"/>
+                      <line x1="470" y1="352" x2="470" y2="304"/>
+                      <line x1="138" y1="198" x2="100" y2="230"/>
+                      <line x1="160" y1="198" x2="184" y2="230"/>
+                    </g>
+
+                    <g stroke="currentColor" stroke-width="1.1" fill="none" opacity=".35" stroke-dasharray="4 3" marker-end="url(#sm-b)">
+                      <line x1="86" y1="284" x2="86" y2="326"/>
+                      <line x1="190" y1="284" x2="190" y2="326"/>
+                    </g>
+
+                    <g font-family="Source Sans 3, sans-serif" font-size="9.5" fill="currentColor" opacity=".6">
+                      <text x="300" y="98">ocid</text>
+                      <text x="596" y="98">ocid</text>
+                      <text x="478" y="150">ocid</text>
+                      <text x="636" y="238" text-anchor="middle">(ocid, party_id)</text>
+                      <text x="478" y="336">bidder</text>
+                      <text x="138" y="406" text-anchor="middle" opacity=".8">title · buyer · suppliers · items</text>
+                    </g>
+                    <g font-family="Source Sans 3, sans-serif" font-size="10" fill="var(--hedge)">
+                      <text x="636" y="222" text-anchor="middle" font-weight="600">won = row exists</text>
+                      <text x="356" y="264" text-anchor="end" font-weight="600">supplier identity</text>
+                      <text x="356" y="280" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="9" opacity=".85">= party.neq</text>
+                    </g>
+                  </svg>
+                </div>
+                <figcaption><b>The spine is the ocid, the identity is the NEQ.</b> Eighteen tables, five denormalized views and twelve indexes on exactly the columns a model filters, joins or aggregates on. Bids are a flat SEAO list rather than OCDS <span class="rk-mono">bids.details</span>, so a bidder is only identifiable by walking <span class="rk-mono">bid.party_id → party.neq</span>.</figcaption>
+              </figure>
+
+              <div class="rk-col">
+                <h5>Two things the database carries for the model, not for me</h5>
+                <p>An <b>FTS5 index</b> built with <span class="rk-mono">tokenize = 'unicode61 remove_diacritics 2'</span>,
+                aggregating per process the title, the buyer, the supplier names, the item descriptions
+                and every party name. French procurement text is written with and without accents in
+                the same corpus; this makes <span class="rk-mono">securite</span> and
+                <span class="rk-mono">sécurité</span> the same token, so the model never has to guess
+                the spelling.</p>
+                <p>And a <b>data dictionary inside the database itself</b>, a
+                <span class="rk-mono">schema_doc</span> table of table/column/description rows. The
+                server's <code>describe_schema</code> reads it and hands the model the same notes a
+                new analyst would be given, that <span class="rk-mono">value_unit</span> is a SEAO
+                code and not a currency, that <span class="rk-mono">municipal</span> is a flag,
+                that <span class="rk-mono">value_total_amount</span> is the full-term figure. The
+                documentation travels with the artifact instead of living in a README the model
+                will never read.</p>
+              </div>
+            </div>
+
+            <!-- ========== 03 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">03 — Why not a generic SQL server</span>
+              <div class="rk-col">
+                <h4>Three traps that return a plausible wrong number</h4>
+                <p>The tempting answer to all of this is to point an off-the-shelf SQLite MCP server
+                at the file and let the model write its own SQL. It works, in the sense that it always
+                returns a table. Three properties of this data make that table wrong often enough to
+                be worse than useless, and none of the three announce themselves: the query succeeds,
+                the number looks reasonable, and it is off by a factor.</p>
+              </div>
+
+              <div class="rk-tablewrap">
+                <table class="rk-prose">
+                  <caption>The three modelling decisions the curated tools take out of the model's hands.</caption>
+                  <thead>
+                    <tr><th>Trap</th><th>What the data actually does</th><th>How the tools handle it</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Supplier identity</td>
+                      <td>One firm, many spellings and many legal entities, Garda alone resolves to 9 NEQs across 6 name spellings. <span class="rk-mono">GROUP BY supplier_name</span> shatters a market leader into a handful of small players.</td>
+                      <td>Every supplier metric runs a name through <code>resolve_supplier</code> to a <em>set</em> of NEQs and aggregates over all of them, with the most frequent spelling used as display name.</td>
+                    </tr>
+                    <tr>
+                      <td>Win and loss</td>
+                      <td>Not stored anywhere. A bidder won a process if and only if its <span class="rk-mono">(ocid, party_id)</span> appears in <span class="rk-mono">award_supplier</span>, and since bids span lots, counting bid rows double-counts.</td>
+                      <td>Win rate, head-to-head and margins derive the outcome from that membership test, and count <b>distinct processes</b>, not rows. A process is won if the firm took at least one award in it.</td>
+                    </tr>
+                    <tr>
+                      <td>Gré à gré</td>
+                      <td><span class="rk-mono">direct</span> awards are sole-sourced and carry <b>no bids at all</b>. Include them in a win rate and a firm that was simply handed three contracts scores 100%.</td>
+                      <td>Win-rate and margin tools restrict to <span class="rk-mono">open</span> and <span class="rk-mono">limited</span> tenders. Totals and spend keep all three methods, and the method mix is always reported alongside.</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="rk-note">
+                <span class="rk-eyebrow">The cheap fix that matters most</span>
+                <p>The server also ships an <span class="rk-mono">instructions</span> string in its
+                FastMCP handshake, the three rules above, in eighty words, plus the note that coverage
+                skews to 2021–2025 and figures are indicative. The model reads it before its first tool
+                call, which is considerably more reliable than hoping it calls
+                <code>describe_schema</code> first.</p>
+              </div>
+            </div>
+
+            <!-- ========== 04 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">04 — Tool surface</span>
+              <div class="rk-col">
+                <h4>A flexible core, and six answers already worked out</h4>
+                <p>The surface is deliberately hybrid. Six curated tools cover the questions worth
+                getting right, with the modelling baked in and nothing left for the model to decide;
+                three flexible tools cover everything else. <code>describe_schema</code> is the map,
+                <code>search_processes</code> is the usual entry point, and <code>run_sql</code> is the
+                escape hatch for the long tail, the questions I did not anticipate, which are most of
+                them.</p>
+                <p>What the curated tools return is not rows. It is a short report: amounts formatted
+                in dollars, region codes expanded to names (<span class="rk-mono">6 → Montreal</span>),
+                bid unit codes translated to what they mean, percentiles rather than raw
+                distributions, and a closing line stating what was excluded and why. The tool answers
+                in the analyst's vocabulary so the model does not have to reconstruct it from
+                integers.</p>
+              </div>
+
+              <figure>
+                <div class="rk-frame">
+                  <svg viewBox="0 0 940 460" role="img" aria-label="An analyst question is routed either to the flexible core of describe_schema, run_sql and search_processes, or to four groups of curated analytical tools; both go through a single read-only connect() helper that opens DATA/seao.db in mode=ro with a five-second watchdog.">
+                    <defs>
+                      <marker id="sm-c" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+                      </marker>
+                    </defs>
+
+                    <g font-family="IBM Plex Mono, monospace">
+                      <rect x="16" y="176" width="150" height="76" rx="2" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3" opacity=".85"/>
+                      <text x="91" y="208" text-anchor="middle" fill="currentColor" font-size="11">analyst question</text>
+                      <text x="91" y="228" text-anchor="middle" fill="currentColor" font-size="9.5" opacity=".6">plain language</text>
+
+                      <rect x="230" y="40" width="286" height="120" rx="2" fill="none" stroke="var(--perf)" stroke-width="1.6"/>
+                      <text x="248" y="68" fill="var(--perf)" font-size="11.5" font-family="Source Sans 3, sans-serif" font-weight="600">flexible core</text>
+                      <text x="248" y="94" fill="var(--perf)" font-size="10.5">describe_schema(table?)</text>
+                      <text x="248" y="116" fill="var(--perf)" font-size="10.5">search_processes(…)</text>
+                      <text x="248" y="138" fill="var(--perf)" font-size="10.5">run_sql(sql, limit?)</text>
+                      <g font-family="Source Sans 3, sans-serif" font-size="9.5" fill="var(--perf)" opacity=".65" text-anchor="end">
+                        <text x="502" y="94">the map</text>
+                        <text x="502" y="116">the way in</text>
+                        <text x="502" y="138">the escape hatch</text>
+                      </g>
+
+                      <rect x="230" y="188" width="286" height="240" rx="2" fill="none" stroke="var(--hedge)" stroke-width="1.6"/>
+                      <text x="248" y="214" fill="var(--hedge)" font-size="11.5" font-family="Source Sans 3, sans-serif" font-weight="600">curated analytics</text>
+                      <text x="248" y="231" fill="var(--hedge)" font-size="9" font-family="Source Sans 3, sans-serif" opacity=".7">names resolved to NEQ · direct awards excluded</text>
+
+                      <g font-family="Source Sans 3, sans-serif" font-size="9.5" fill="var(--hedge)" opacity=".6">
+                        <text x="248" y="256">1 · evaluating a tender</text>
+                        <text x="248" y="300">2 · competitor analysis</text>
+                        <text x="248" y="344">3 · buyer behaviour</text>
+                        <text x="248" y="388">4 · market trends</text>
+                      </g>
+                      <g fill="var(--hedge)" font-size="10">
+                        <text x="248" y="272">incumbent · price_benchmark</text>
+                        <text x="248" y="316">supplier_profile · head_to_head</text>
+                        <text x="248" y="360">buyer_profile</text>
+                        <text x="248" y="404">market_overview</text>
+                      </g>
+
+                      <rect x="580" y="170" width="190" height="118" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                      <text x="675" y="196" text-anchor="middle" fill="currentColor" font-size="11.5">connect()</text>
+                      <text x="596" y="220" fill="currentColor" font-size="9.5" opacity=".8">mode=ro (SQLite URI)</text>
+                      <text x="596" y="238" fill="currentColor" font-size="9.5" opacity=".8">SELECT / WITH only</text>
+                      <text x="596" y="256" fill="currentColor" font-size="9.5" opacity=".8">auto LIMIT · one statement</text>
+                      <text x="596" y="274" fill="currentColor" font-size="9.5" opacity=".8">5 s interrupt watchdog</text>
+
+                      <path d="M810,196 L810,262 A58,9 0 0 0 926,262 L926,196" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                      <ellipse cx="868" cy="196" rx="58" ry="9" fill="none" stroke="currentColor" stroke-width="1.6"/>
+                      <text x="868" y="232" text-anchor="middle" fill="currentColor" font-size="11">DATA/seao.db</text>
+                      <text x="868" y="248" text-anchor="middle" fill="currentColor" font-size="9" opacity=".6">read-only</text>
+                    </g>
+
+                    <g stroke="currentColor" stroke-width="1.3" fill="none" opacity=".5">
+                      <line x1="166" y1="214" x2="196" y2="214"/>
+                      <line x1="196" y1="100" x2="196" y2="300"/>
+                      <line x1="196" y1="100" x2="224" y2="100" marker-end="url(#sm-c)" marker-start="url(#sm-c)"/>
+                      <line x1="196" y1="300" x2="224" y2="300" marker-end="url(#sm-c)" marker-start="url(#sm-c)"/>
+                    </g>
+                    <g stroke="currentColor" stroke-width="1.3" fill="none" opacity=".55" marker-end="url(#sm-c)">
+                      <line x1="516" y1="100" x2="574" y2="200"/>
+                      <line x1="516" y1="300" x2="574" y2="256"/>
+                      <line x1="770" y1="229" x2="804" y2="229"/>
+                    </g>
+                    <g font-family="Source Sans 3, sans-serif" font-size="9.5" fill="currentColor" opacity=".6">
+                      <text x="91" y="272" text-anchor="middle">tool call ⇄ markdown</text>
+                    </g>
+                  </svg>
+                </div>
+                <figcaption><b>Nine tools, one door.</b> Curated or ad-hoc, every call goes through the same <code>connect()</code> helper, a fresh connection per call, opened read-only, with a Python <span class="rk-mono">unaccent()</span> function registered so <span class="rk-mono">LIKE</span> matching survives French diacritics.</figcaption>
+              </figure>
+
+              <div class="rk-blocks">
+                <div class="rk-block">
+                  <div class="rk-nb">objective 1</div>
+                  <div>
+                    <h5>Evaluating a tender you are about to bid on</h5>
+                    <p><code>incumbent(buyer, service?)</code> returns every award for that buyer, most recent first, supplier, awarded value, signed contract value, contract end. <code>price_benchmark(unspsc?, text?, area?)</code> gives the awarded-value distribution and, for competitive tenders only, the winning bid distribution and the winner-versus-next-lowest-rival margin.</p>
+                  </div>
+                </div>
+                <div class="rk-block">
+                  <div class="rk-nb">objective 2</div>
+                  <div>
+                    <h5>Knowing who you are bidding against</h5>
+                    <p><code>supplier_profile(name)</code> resolves the firm to its NEQs and reports win rate over open and limited tenders, total won, method mix, top buyers, areas targeted and the rivals it meets most often. <code>head_to_head(a, b)</code> counts the tenders where both submitted, and who took each one, including the both-won-different-lots case.</p>
+                  </div>
+                </div>
+                <div class="rk-block">
+                  <div class="rk-nb">objective 3</div>
+                  <div>
+                    <h5>Reading a buyer</h5>
+                    <p><code>buyer_profile(name)</code> reports open versus gré à gré mix, total spend, distinct supplier count and the top supplier's share of value, over 50% is flagged as loyal, below as rotating, with awarded volume by year.</p>
+                  </div>
+                </div>
+                <div class="rk-block">
+                  <div class="rk-nb">objective 4</div>
+                  <div>
+                    <h5>Sizing the market</h5>
+                    <p><code>market_overview(year?, unspsc?, top_n?)</code> gives total awarded value by year, the share held by the top-N firms as a consolidation measure, the procurement-method trend and the busiest delivery areas.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="rk-tablewrap">
+                <table class="rk-prose">
+                  <caption>The tool catalogue is designed backwards from the questions, so the mapping is meant to be obvious.</caption>
+                  <thead>
+                    <tr><th>Analyst asks</th><th>Server calls</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Who held security at CSS Marguerite-Bourgeoys, and for how much?</td><td><span class="rk-mono">incumbent("Marguerite-Bourgeoys", "securite")</span></td></tr>
+                    <tr><td>Average winning bid for guarding in Montreal?</td><td><span class="rk-mono">price_benchmark(unspsc="90152100", delivery_area="6")</span></td></tr>
+                    <tr><td>Garda's win rate on open tenders?</td><td><span class="rk-mono">supplier_profile("Garda")</span></td></tr>
+                    <tr><td>Commissionnaires versus Neptune, who wins more?</td><td><span class="rk-mono">head_to_head("Commissionnaires", "Neptune")</span></td></tr>
+                    <tr><td>Does the Sûreté du Québec rotate suppliers?</td><td><span class="rk-mono">buyer_profile("Surete du Quebec")</span></td></tr>
+                    <tr><td>Top-3 firms' share of the market?</td><td><span class="rk-mono">market_overview(top_n=3)</span></td></tr>
+                    <tr><td>Anything else</td><td><span class="rk-mono">run_sql(…)</span>, guided by <span class="rk-mono">describe_schema()</span></td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- ========== 05 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">05 — Guardrails</span>
+              <div class="rk-col">
+                <h4>Read-only by construction, not by instruction</h4>
+                <p>A tool that executes model-written SQL is a tool that executes model-written SQL.
+                Asking politely for <span class="rk-mono">SELECT</span> only is not a control, so
+                <code>run_sql</code> is fenced at four independent levels and none of them depends on
+                the model behaving.</p>
+              </div>
+
+              <ul class="rk-plain">
+                <li><b>The connection cannot write.</b> Every call opens <span class="rk-mono">file:…/seao.db?mode=ro</span> through the SQLite URI interface. A write is refused by SQLite itself, whatever passed the parser.</li>
+                <li><b>One statement, one verb.</b> The query must start with <span class="rk-mono">SELECT</span> or <span class="rk-mono">WITH</span>, may not contain a semicolon, and is matched against a whole-word blocklist of twelve verbs, <span class="rk-mono">insert</span>, <span class="rk-mono">drop</span>, <span class="rk-mono">attach</span>, <span class="rk-mono">pragma</span>, <span class="rk-mono">vacuum</span> and the rest — so stacked statements have nowhere to go.</li>
+                <li><b>Bounded results.</b> A <span class="rk-mono">LIMIT</span> is appended when the model omits one, and the caller's limit is itself clamped to 2,000 rows. An unbounded scan cannot flood the context window.</li>
+                <li><b>Bounded time.</b> Each query runs under a <span class="rk-mono">threading.Timer</span> that fires <code>conn.interrupt</code> after five seconds. A pathological join is cancelled rather than hanging the client.</li>
+                <li><b>No shared state.</b> A fresh connection per call, which keeps things thread-safe under FastMCP's worker pool and costs nothing on a database this size.</li>
+              </ul>
+
+              <div class="rk-col">
+                <p>The same logic runs in reverse for correctness: <code>test_mcp_tools.py</code> calls
+                all nine tools with the README's own example questions against the built database, and
+                includes a <span class="rk-mono">DELETE</span> that is expected to be refused. It is a
+                smoke test rather than a suite, but it is the one that catches a broken build before a
+                model has to discover it mid-conversation.</p>
+              </div>
+            </div>
+
+            <!-- ========== 06 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">06 — Running it</span>
+              <div class="rk-col">
+                <h4>Local by default, remote if you insist</h4>
+                <p>The server speaks stdio and finds its database at <span class="rk-mono">DATA/seao.db</span>
+                next to the script, overridable with <span class="rk-mono">SEAO_DB_PATH</span>. In
+                Claude Code a project-scoped <span class="rk-mono">.mcp.json</span> is committed, so
+                opening the repository is enough to be prompted to enable it; Claude Desktop takes the
+                same command and arguments in its own config file.</p>
+                <p>ChatGPT is the awkward one. It only connects to <em>remote</em> MCP servers over
+                HTTP or SSE and cannot spawn a local process, so reaching it means wrapping the stdio
+                server in <span class="rk-mono">mcp-proxy</span> and exposing that through a tunnel.
+                It works, and the README walks through it, but it is worth being honest about what it
+                costs.</p>
+              </div>
+
+              <div class="rk-note rk-warn">
+                <span class="rk-eyebrow">What the tunnel actually does</span>
+                <p>For as long as it runs, a local database is reachable from the internet with no
+                authentication. The server is read-only and the underlying data is public, so the
+                exposure is bounded, but it is real, and the right posture is to keep the tunnel up
+                only while a conversation needs it. Locally over stdio, none of this applies: nothing
+                listens on a port.</p>
+              </div>
+            </div>
+
+            <p class="rk-foot">Source data is Quebec's SEAO open data, published through open.canada.ca in
+            OCDS format; the code is MIT-licensed, the data stays under its publisher's terms. Coverage
+            skews to 2021–2025 and the subset is security services only, so figures the server returns
+            are indicative rather than exhaustive.</p>
+
+          </div>
+
+          <p class="project-links">
+            <a href="https://github.com/elouansalaun/SEAO_MCP">Repository ↗</a>
+          </p>
+        </div>
+      </div>
+    </article>
+
+    <!-- ---------- PROJECT 3 ---------- -->
     <article class="project" id="p-causal">
       <h3 class="project-heading">
         <button class="project-head" id="p-causal-btn" type="button"
@@ -1358,7 +1901,8 @@
       </div>
     </article>
 
-    <!-- ---------- PROJECT 3 ---------- -->
+
+    <!-- ---------- PROJECT X ---------- -->
     <article class="project" id="p-vision">
       <h3 class="project-heading">
         <button class="project-head" id="p-vision-btn" type="button"
@@ -1420,7 +1964,7 @@
         <div class="tl-what">
           <h3>Preparatory Classes PTSI/PT*</h3>
           <p class="tl-where">Lycée Livet · Angers</p>
-          <p>Two years of intensive studies in mathematics and physics to prepare for the french top engineering school entrance exams.</p>
+          <p>Two years of intensive studies in mathematics and physics to prepare for the french top engineering schools entrance exams.</p>
         </div>
       </li>
     </ol>

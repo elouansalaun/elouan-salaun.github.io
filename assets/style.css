@@ -538,6 +538,11 @@ td:not(:first-child), th:not(:first-child) { font-variant-numeric: tabular-nums;
 .rk th:first-child, .rk td:first-child {
   text-align: left; font-variant-numeric: normal;
 }
+
+/* prose tables: text columns read left-aligned, unlike the numeric default */
+.rk table.rk-prose th, .rk table.rk-prose td {
+  text-align: left; font-variant-numeric: normal;
+}
 .rk thead th {
   font-family: var(--mono);
   font-size: .7rem; letter-spacing: .08em; text-transform: uppercase;
