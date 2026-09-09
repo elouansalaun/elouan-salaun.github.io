@@ -773,6 +773,55 @@
               </div>
             </div>
 
+            <div class="rk-sec">
+              <span class="rk-eyebrow">07 — Few Screenshots and complements</span>
+              <div class="rk-col">
+                <h4>Here is two screenshots of the tool as analysts can use it</h4>
+                <p>The first screenshot shows the monitoring view, where analysts can track ongoing tenders and upcoming renewals. The second screenshot shows the contract view, where technical characteristics can be entered or loaded and the models provide insights into the historical contract this one renews, its outcome and applied margin.</p>
+              </div>
+
+              <div class="rk-shots">
+                <figure>
+                  <div class="rk-frame rk-frame--img">
+                    <img src="assets/img/MSc/Page1_MSC.svg" alt="Monitoring view of the Streamlit application: a table of ongoing SEAO tender publications with buyer, closing date, region, duration, last awarded amount and incumbent competitor, a selected notice with a button to launch its analysis, and below it a table of upcoming renewals filtered by a horizon slider." width="1558" height="1449" loading="lazy" decoding="async">
+                  </div>
+                  <figcaption><b>Monitoring.</b> Ongoing publications and upcoming renewals in one view; selecting a line opens it in the analysis page.</figcaption>
+                </figure>
+                <figure>
+                  <div class="rk-frame rk-frame--img">
+                    <img src="assets/img/MSc/Page2_MSC.svg" alt="Contract view of the Streamlit application, in three panels: matching past contracts with the bid analysis of every submitter and their margins, the ten most similar contracts retrieved by the similarity module, and a general analysis with market margin charts, competitor profiling by participation and win rate, and the recommended margin." width="1948" height="2154" loading="lazy" decoding="async">
+                  </div>
+                  <figcaption><b>Contract analysis.</b> Matching past contracts, the contracts retrieved as similar, and the market view that ends on a recommended margin.</figcaption>
+                </figure>
+              </div>
+
+              <div class="rk-col">
+                <h4>Complementary materials</h4>
+                <p>Additional materials, such as the RAG and retrieval structures and the ranking model used.</p>
+              </div>
+
+              <figure>
+                <div class="rk-frame rk-frame--img">
+                  <img src="assets/img/MSc/MSc_rag_model.svg" alt="RAG pipeline: the contract and addenda PDFs go through section detection, producing parsed chunks with metadata; hybrid hierarchical retrieval returns the retrieved chunks, which are routed by an addenda test into a prompt carrying critical rules and a JSON response schema; Ministral-14B-instruct runs in batches per chunk and returns the JSON output." width="2550" height="1210" loading="lazy" decoding="async">
+                </div>
+                <figcaption><b>The extraction pipeline, end to end.</b> Section detection, hierarchical chunking, hybrid retrieval, then a schema-constrained call per batch of chunks.</figcaption>
+              </figure>
+
+              <figure>
+                <div class="rk-frame rk-frame--img">
+                  <img src="assets/img/MSc/MSc_retrieval_eq.svg" alt="Retrieval detail in three parts: chunking a document into a tree of titles and sub-titles; enriched sparse embeddings, where spaCy tokens are extended with a security-domain vocabulary; and retrieval, with the BM25 text score, the hierarchical score combining a chunk with its parent and children, and the final retrieval rule selecting chunks above the threshold." width="22408" height="14394" loading="lazy" decoding="async">
+                </div>
+                <figcaption><b>How a chunk is scored.</b> BM25 over domain-enriched tokens, then a hierarchical score mixing the chunk with its parent and its children, so a passage is retrieved for the section it sits in and not only for the words it contains.</figcaption>
+              </figure>
+
+              <figure>
+                <div class="rk-frame rk-frame--img">
+                  <img src="assets/img/MSc/MSc_tarif_model.svg" alt="Pricing model: in training, a grid of candidate margins and the historical database give nine features and a relevance label derived from the distance to the winning margin, on which XGBoost is trained with a rank-pairwise objective and evaluated by NDCG; in inference, a new contract is scored over the same margin grid and the highest-ranked margin is returned." width="14889" height="9350" loading="lazy" decoding="async">
+                </div>
+                <figcaption><b>Pricing as a ranking problem.</b> Rather than regressing a price, the model ranks a grid of candidate margins for the contract at hand, and the top-ranked one is the recommendation.</figcaption>
+              </figure>
+            </div>
+
             <p class="rk-foot">Based on E. Salaun, M. Belmouadden, R. Pellerin, A. Neumann, C. Vasseur,
             “Leveraging artificial intelligence and strategic data for tender response processes”,
             CENTERIS 2026, <em>Procedia Computer Science</em>, Elsevier. Work carried out at the
@@ -1304,15 +1353,28 @@
                 It works, and the README walks through it, but it is worth being honest about what it
                 costs.</p>
               </div>
+            </div>
 
-              <div class="rk-note rk-warn">
-                <span class="rk-eyebrow">What the tunnel actually does</span>
-                <p>For as long as it runs, a local database is reachable from the internet with no
-                authentication. The server is read-only and the underlying data is public, so the
-                exposure is bounded, but it is real, and the right posture is to keep the tunnel up
-                only while a conversation needs it. Locally over stdio, none of this applies: nothing
-                listens on a port.</p>
+            <div class="rk-sec">
+              <span class="rk-eyebrow">07 — Example</span>
+              <div class="rk-col">
+                <h4>Here is an example of an analysis done by Claude through the MCP interface</h4>
+                <p>The prompt is three words, <span class="rk-mono">Analyse charco industries</span>.
+                Everything under it comes from the server: total awarded, processes and lots won, the
+                competitive win rate, the contract history, the year-by-year record, and who this
+                competitor keeps meeting in the same tenders. The commentary at the end is Claude's,
+                but every number it rests on is a tool call against the SEAO database.</p>
               </div>
+
+              <figure>
+                <div class="rk-frame rk-frame--img rk-frame--scroll" tabindex="0" role="group"
+                     aria-label="Scrollable screenshot of a Claude conversation using the SEAO MCP server">
+                  <img src="assets/img/MCP/MCP_claude_answer.svg" alt="A Claude conversation answering the prompt “Analyse charco industries” with the seao integration: key figures for Charco Industries (19,966,481 $ awarded, 9 processes and 40 lots won, a 9.8% competitive win rate, the Ministère de la Sécurité publique as main buyer), a history of won contracts, a win rate per year table from 2020 to 2026, a co-bidding table ranking rival firms by how often they bid against Charco, and a closing strategic read on the company's strengths and recent weakness." width="1082" height="4069" loading="lazy" decoding="async">
+                </div>
+                <figcaption><b>One prompt, one company, no SQL.</b> Scroll inside the frame for the
+                full answer: key figures, contract history, win rate by year, the rivals most often
+                met in the same tenders, then the strategic reading Claude builds on top of them.</figcaption>
+              </figure>
             </div>
 
             <p class="rk-foot">Source data is Quebec's SEAO open data, published through open.canada.ca in
@@ -3130,8 +3192,7 @@
                 coverage requires, then choose the smallest \(p\) with \(n_c\lt p/\phi\) and
                 \(\gcd(p,n_c)=1\)</em>.</p>
               </div>
-
-              
+            </div>
 
             <!-- ========== 10 ========== -->
             <div class="rk-sec">
@@ -3355,8 +3416,7 @@
                 not a trapezoidal approximation but the <em>exact</em> duration for the velocity
                 profile the two passes construct.</p>
               </div>
-
-              
+            </div>
 
             <!-- ========== 13 ========== -->
             <div class="rk-sec">
@@ -3420,7 +3480,62 @@ lo, hi = i + step, min(n - 1, i + 2 * step)
               </div>
             </div>
 
-            
+            <div class="rk-sec">
+              <span class="rk-eyebrow">14 — Screenshots and complements</span>
+              <div class="rk-col">
+                <h4>Here is pictures of the real cone, raw and with few windings passes</h4>
+              </div>
+
+              <div class="rk-shots">
+                <figure>
+                  <div class="rk-frame rk-frame--img">
+                    <img src="assets/img/Perseus/mandrin2.jpg" alt="The bare wooden mandrel of the nose cone, mounted between the chucks of the four-axis XWinder machine on its aluminium profile frame." width="282" height="199" loading="lazy" decoding="async">
+                  </div>
+                  <figcaption><b>The bare mandrel.</b> The turned nose cone profile, mounted between
+                  chucks on the XWinder before any fibre is laid.</figcaption>
+                </figure>
+                <figure>
+                  <div class="rk-frame rk-frame--img">
+                    <img src="assets/img/Perseus/mandrin_fil.jpg" alt="The same mandrel after a few winding passes: flax tow crosses over the cone in a diamond pattern, with the delivery eye and the carriage of the winding machine at the right of the frame." width="1240" height="754" loading="lazy" decoding="async">
+                  </div>
+                  <figcaption><b>After a few passes.</b> The crossings of the flax tow are the band
+                  pattern the algebra of section 09 predicts, laid on the real surface.</figcaption>
+                </figure>
+              </div>
+
+              <div class="rk-col">
+                <h4>Here is screenshots of the simulation and the trajectories</h4>
+              </div>
+
+              <figure>
+                <div class="rk-frame rk-frame--img">
+                  <img src="assets/img/Perseus/winding2.png" alt="Three-dimensional view of the simulated winding: the nose cone surface with twelve continuous circuits of fibre crossing over it, and the carriage, delivery eye and free tow drawn beside the mandrel." width="1143" height="793" loading="lazy" decoding="async">
+                </div>
+                <figcaption><b>Twelve circuits, laid without stopping.</b> 10.50 m of tow in 1.4 min.
+                The carriage, the delivery eye and the free length of tow between them are simulated
+                with the path, since the eye lead is what the inverse kinematics has to solve for.</figcaption>
+              </figure>
+
+              <figure>
+                <div class="rk-frame rk-frame--img">
+                  <img src="assets/img/Perseus/winding2_analysis1.png" alt="Four analysis plots of the winding: the mandrel profile with the polar radius and the turnaround overtravel; the winding angle against time, oscillating continuously between about 25 and 155 degrees across every turnaround; the unrolled band layout for a one-circuit advance of 30 degrees; and coverage against the axial coordinate after twelve circuits, against the thirty needed to close the layer." width="1347" height="845" loading="lazy" decoding="async">
+                </div>
+                <figcaption><b>The layer, checked four ways.</b> The zone the fibre actually visits,
+                the winding angle staying continuous through every turnaround, the unrolled band
+                layout at one circuit of advance, and the coverage that says how far the layer still
+                is from closed.</figcaption>
+              </figure>
+
+              <figure>
+                <div class="rk-frame rk-frame--img">
+                  <img src="assets/img/Perseus/winding2_analysis2.png" alt="The four machine axes against time over twelve circuits and 83 seconds: spindle turns, carriage position, cross-feed and eye yaw, each drawn with its speed and its dashed speed limit, with the tip and base turnarounds shaded." width="1194" height="884" loading="lazy" decoding="async">
+                </div>
+                <figcaption><b>The same layer, as the machine sees it.</b> Position and speed of each
+                of the four axes, with the axis speed limits dashed and the turnarounds shaded, the
+                turnarounds are where every axis moves fastest, which is what the time law of section
+                12 has to respect.</figcaption>
+              </figure>
+            </div>
 
             <p class="rk-foot">Semester project for the CNES/PERSEUS programme, ASTREOS
             demonstrator, at Arts et Métiers. The project report covers the process, the flax/Elium

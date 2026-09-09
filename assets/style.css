@@ -521,6 +521,30 @@ td:not(:first-child), th:not(:first-child) { font-variant-numeric: tabular-nums;
 }
 .rk figcaption b { color: var(--ink); font-weight: 600; }
 
+/* raster / exported-SVG figures: kept on a light plate so line drawings and
+   application screenshots stay readable under the dark theme too */
+.rk .rk-frame--img { padding: .75rem; overflow-x: visible; }
+.rk .rk-frame--img img {
+  display: block; width: 100%; height: auto;
+  background: #fff; border-radius: 4px;
+}
+.rk .rk-shots {
+  display: grid; gap: 1.1rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  margin: 1.5rem 0 1.75rem;
+}
+.rk .rk-shots figure { margin: 0; }
+@media (max-width: 720px) {
+  .rk .rk-shots { grid-template-columns: 1fr; }
+}
+
+/* very tall screenshots scroll inside their frame instead of pushing the
+   section metres down the page */
+.rk .rk-frame--scroll { max-height: 34rem; overflow-y: auto; }
+.rk .rk-frame--scroll img { max-width: 32rem; margin-inline: auto; }
+.rk .rk-frame--scroll:focus-visible { outline: 2px solid var(--hedge); outline-offset: 2px; }
+
 /* ---------- notebook index ---------- */
 
 .rk .rk-blocks {
