@@ -592,6 +592,28 @@ td:not(:first-child), th:not(:first-child) { font-variant-numeric: tabular-nums;
 .rk .rk-note .rk-eyebrow { color: var(--hedge); }
 .rk .rk-note.rk-warn .rk-eyebrow { color: var(--risk); }
 
+/* ---------- code blocks ---------- */
+
+.rk pre.rk-code {
+  margin: 1.1rem 0 1.35rem;
+  padding: .95rem 1.1rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-left: 3px solid var(--line-strong);
+  border-radius: 4px;
+  overflow-x: auto;
+  box-shadow: var(--rk-shadow);
+  font-family: var(--mono);
+  font-size: .8rem; line-height: 1.6;
+  color: var(--ink);
+  tab-size: 4;
+}
+.rk pre.rk-code code {
+  background: none; padding: 0; border-radius: 0;
+  font-size: inherit; font-family: inherit;
+}
+.rk pre.rk-code .c { color: var(--faint); }
+
 /* ---------- bare lists ---------- */
 
 .rk ul.rk-plain {

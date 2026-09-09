@@ -1904,27 +1904,1536 @@
       </div>
     </article>
 
-
-    <!-- ---------- PROJECT X ---------- -->
-    <article class="project" id="p-vision">
+    <!-- ---------- PROJECT 4 ---------- -->
+    <article class="project" id="p-caisse">
       <h3 class="project-heading">
-        <button class="project-head" id="p-vision-btn" type="button"
-                aria-expanded="false" aria-controls="p-vision-panel">
-          <span class="project-name">Still building</span>
-          <span class="project-meta">2024</span>
-          <span class="project-summary">Still in progress, continuing to add pasts projects to the portfolio.</span>
+        <button class="project-head" id="p-caisse-btn" type="button"
+                aria-expanded="false" aria-controls="p-caisse-panel">
+          <span class="project-name">Connected multi-point cash-register system</span>
+          <span class="project-meta">2023 · ESP32 · C++ · MQTT · 4G · Google Sheets</span>
+          <span class="project-summary">Design and implementation of real-time sales-recording device (ESP32) connected to a central server to enable real-time tracking, analysis and forecasting of sales data for a 3000-person gala.</span>
+          <img class="project-icon" src="assets/img/icon_project_caisse.svg" alt="" aria-hidden="true">
           <span class="chevron" aria-hidden="true"></span>
         </button>
       </h3>
 
-      <div class="panel" id="p-vision-panel" role="region" aria-labelledby="p-vision-btn">
+      <div class="panel" id="p-caisse-panel" role="region" aria-labelledby="p-caisse-btn">
         <div class="panel-inner">
-          <p>To complete</p>
-          
+
+          <div class="rk">
+
+            <div class="rk-top">
+              <p>A gala serving 3,000 attendees can be modelled, from the bar’s perspective, 
+              as a continuous high-volume transaction stream. Historically, operations were managed 
+              through manual inventory estimation: sales were recorded as tally marks, stock levels 
+              were checked intermittently between service periods, and runners were dispatched to the 
+              storeroom when a bottle rack appeared to be approaching depletion. While this process is 
+              sufficient to complete service, it provides no real-time visibility into inventory 
+              consumption, which bar is approaching a stockout, or the estimated time remaining before 
+              replenishment is required.</p>
+
+              <p>The objective of the system was therefore not transaction billing, but real-time 
+              operational observability. Each point of sale is equipped with a physical input device 
+              that records individual product transactions. Transaction 
+              data is consolidated into a shared operational spreadsheet accessible to the organizing 
+              team, while a lightweight forecasting layer converts the incoming consumption stream 
+              into replenishment recommendations. The objective is to identify potential stockouts 
+              approximately 30 minutes in advance, providing sufficient lead time for inventory 
+              movement and restocking.</p>
+
+              <div class="rk-facts">
+                <div class="rk-fact"><b>3,000</b><span>guests served across one night, several points of sale</span></div>
+                <div class="rk-fact"><b>ESP32</b><span>one recorder per bar, button grid, no screen to read</span></div>
+                <div class="rk-fact"><b>MQTT / 4G</b><span>transport chosen to be independent of the venue's wifi</span></div>
+                <div class="rk-fact"><b>~30 min</b><span>warning before a stock-out, the runner's round trip</span></div>
+              </div>
+            </div>
+
+            <!-- ========== 01 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">01 — Architecture</span>
+              <div class="rk-col">
+                <h4>From a button press to a row, and back to the storeroom</h4>
+                <p>The chain is deliberately short and one-directional. A press is timestamped and
+                published on the spot; a gateway carries it out of the building over 4G; a broker
+                fans it out; a bridge appends it to a Google Sheet, which is the only place the whole
+                team looks. The loop closes on the other side: the forecast reads the same sheet and
+                produces the one output that matters on the floor, <em>which bar to refill next</em>.</p>
       
+              </div>
+
+              <figure>
+                <div class="rk-frame">
+                  <svg viewBox="0 0 940 430" role="img" aria-label="A button grid on an ESP32 at each point of sale publishes a sale message to an 8devices router acting as wifi access point with a 4G uplink; the router forwards it over MQTT to a broker, a bridge appends each message as a row of a Google Sheet, and below, the sheet feeds a forecasting model whose restocking alert is sent back to the runners and the bars.">
+                    <defs>
+                      <marker id="cs-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+                      </marker>
+                    </defs>
+
+                    <g font-family="Source Sans 3, sans-serif" font-size="11.5" fill="currentColor" opacity=".55">
+                      <text x="16" y="30">capture and transport — one path per sale</text>
+                      <text x="120" y="272">decide — same data, read back</text>
+                    </g>
+
+                    <!-- row 1 : capture -->
+                    <g font-family="IBM Plex Mono, monospace">
+                      <!-- stacked devices -->
+                      <rect x="28" y="42" width="156" height="96" rx="2" fill="none" stroke="var(--perf)" stroke-width="1" opacity=".3"/>
+                      <rect x="22" y="48" width="156" height="96" rx="2" fill="none" stroke="var(--perf)" stroke-width="1" opacity=".5"/>
+                      <rect x="16" y="54" width="156" height="96" rx="2" fill="none" stroke="var(--perf)" stroke-width="1.5"/>
+                      <text x="94" y="78" text-anchor="middle" fill="var(--perf)" font-size="11.5">point of sale</text>
+                      <text x="94" y="96" text-anchor="middle" fill="var(--perf)" font-size="9.5" opacity=".9">ESP32 · button grid</text>
+                      <text x="94" y="112" text-anchor="middle" fill="var(--perf)" font-size="9" opacity=".75">debounce · LED ack</text>
+                      <text x="94" y="128" text-anchor="middle" fill="var(--perf)" font-size="9" opacity=".75">local queue if offline</text>
+
+                      <rect x="238" y="54" width="170" height="96" rx="2" fill="none" stroke="var(--perf)" stroke-width="1.5"/>
+                      <text x="323" y="78" text-anchor="middle" fill="var(--perf)" font-size="11.5">gateway</text>
+                      <text x="323" y="96" text-anchor="middle" fill="var(--perf)" font-size="9.5" opacity=".9">8devices router</text>
+                      <text x="323" y="112" text-anchor="middle" fill="var(--perf)" font-size="9" opacity=".75">private AP for the bars</text>
+                      <text x="323" y="128" text-anchor="middle" fill="var(--perf)" font-size="9" opacity=".75">4G uplink · no venue wifi</text>
+
+                      <rect x="462" y="54" width="160" height="96" rx="2" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3" opacity=".85"/>
+                      <text x="542" y="82" text-anchor="middle" fill="currentColor" font-size="11.5">MQTT broker</text>
+                      <text x="542" y="101" text-anchor="middle" fill="currentColor" font-size="9.5" opacity=".7">topic per point of sale</text>
+                      <text x="542" y="117" text-anchor="middle" fill="currentColor" font-size="9.5" opacity=".7">QoS 1 · last will</text>
+                      <text x="542" y="133" text-anchor="middle" fill="currentColor" font-size="9" opacity=".55">hosted, off site</text>
+
+                      <rect x="676" y="54" width="140" height="96" rx="2" fill="none" stroke="var(--hedge)" stroke-width="1.5"/>
+                      <text x="746" y="86" text-anchor="middle" fill="var(--hedge)" font-size="11.5">bridge</text>
+                      <text x="746" y="105" text-anchor="middle" fill="var(--hedge)" font-size="9.5" opacity=".9">subscribe → append</text>
+                      <text x="746" y="121" text-anchor="middle" fill="var(--hedge)" font-size="9" opacity=".75">dedupe on (id, seq)</text>
+
+                      <path d="M838,72 L838,136 A46,9 0 0 0 930,136 L930,72" fill="none" stroke="var(--hedge)" stroke-width="1.6"/>
+                      <ellipse cx="884" cy="72" rx="46" ry="9" fill="none" stroke="var(--hedge)" stroke-width="1.6"/>
+                      <text x="884" y="104" text-anchor="middle" fill="var(--hedge)" font-size="10.5">Google Sheet</text>
+                      <text x="884" y="120" text-anchor="middle" fill="var(--hedge)" font-size="8.5" opacity=".7">one row per sale</text>
+                    </g>
+
+                    <g stroke="currentColor" stroke-width="1.3" fill="none" opacity=".55" marker-end="url(#cs-a)">
+                      <line x1="190" y1="102" x2="234" y2="102"/>
+                      <line x1="408" y1="102" x2="458" y2="102"/>
+                      <line x1="622" y1="102" x2="672" y2="102"/>
+                      <line x1="816" y1="102" x2="834" y2="102"/>
+                    </g>
+                    <g font-family="Source Sans 3, sans-serif" font-size="10" fill="currentColor" opacity=".55">
+                      <text x="212" y="94" text-anchor="middle">wifi</text>
+                      <text x="433" y="94" text-anchor="middle">4G</text>
+                      <text x="647" y="94" text-anchor="middle">sub</text>
+                    </g>
+
+                    <!-- row 2 : decide -->
+                    <g font-family="IBM Plex Mono, monospace">
+                      <rect x="640" y="292" width="208" height="88" rx="2" fill="none" stroke="var(--hedge)" stroke-width="1.5"/>
+                      <text x="744" y="320" text-anchor="middle" fill="var(--hedge)" font-size="11.5">forecast per bar</text>
+                      <text x="744" y="339" text-anchor="middle" fill="var(--hedge)" font-size="9.5" opacity=".9">prior × programme × place</text>
+                      <text x="744" y="355" text-anchor="middle" fill="var(--hedge)" font-size="9" opacity=".75">time to stock-out</text>
+
+                      <rect x="356" y="292" width="208" height="88" rx="2" fill="none" stroke="var(--risk)" stroke-width="1.5"/>
+                      <text x="460" y="320" text-anchor="middle" fill="var(--risk)" font-size="11.5">restocking board</text>
+                      <text x="460" y="339" text-anchor="middle" fill="var(--risk)" font-size="9.5" opacity=".9">what to carry, to which bar</text>
+                      <text x="460" y="355" text-anchor="middle" fill="var(--risk)" font-size="9" opacity=".75">fires on a lead-time margin</text>
+
+                      <rect x="72" y="292" width="200" height="88" rx="2" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3" opacity=".85"/>
+                      <text x="172" y="326" text-anchor="middle" fill="currentColor" font-size="11.5">runner</text>
+                      <text x="172" y="346" text-anchor="middle" fill="currentColor" font-size="9.5" opacity=".7">storeroom → bar</text>
+                      <text x="172" y="362" text-anchor="middle" fill="currentColor" font-size="9" opacity=".55">≈ 30 min round trip</text>
+                    </g>
+
+                    <g stroke="currentColor" stroke-width="1.3" fill="none" opacity=".55" marker-end="url(#cs-a)">
+                      <path d="M884,150 L884,336 L852,336"/>
+                      <line x1="640" y1="336" x2="568" y2="336"/>
+                      <line x1="356" y1="336" x2="276" y2="336"/>
+                      <path d="M94,292 L94,158"/>
+                    </g>
+                    <g font-family="Source Sans 3, sans-serif" font-size="10" fill="currentColor" opacity=".55">
+                      <text x="604" y="328" text-anchor="middle">τ &lt; L</text>
+                      <text x="106" y="232">refilled</text>
+                    </g>
+                  </svg>
+                </div>
+                <figcaption><b>One loop, closed at the storeroom.</b> The left column is the only part
+                that lives in the venue; everything to the right of the 4G uplink is off site, which is
+                what makes the sheet survive a bar losing power or a device being unplugged mid-evening.</figcaption>
+              </figure>
+            </div>
+
+            <!-- ========== 02 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">02 — The device</span>
+              <div class="rk-col">
+                <h4>A grid of buttons is the whole interface</h4>
+                <p>Each point of sale gets an ESP32 and a matrix grid of buttons, one per product. We use a matrix of buttons
+                to allow for a compact interface that can accommodate multiple products without requiring a large number of individual pins outputs.
+                </p>
+                
+                <p>A press becomes a message immediately: device id, monotonic sequence number, product
+                index, and a timestamp taken from the device clock synchronised at boot. The sequence
+                number is what makes the whole chain safe to retry, since a duplicated message is
+                dropped downstream instead of inflating the evening's sales. A long-press is interpreted as a request to cancel the last press.</p>
+              </div>
+
+              
+            </div>
+
+            <!-- ========== 03 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">03 — Getting the data out</span>
+              <div class="rk-col">
+                <h4>The venue's network is not an option, so it is not used</h4>
+                <p> The system uses a router providing a private access
+                point the bars associate with, and a 4G uplink out of the building.</p>
+                <p>On top of that link, MQTT rather than HTTP, for failures reasons. Messages are tiny and frequent, the broker absorbs a
+                reconnection without the publisher knowing.</p>
+              </div>
+
+            
+              <div class="rk-note">
+                <span class="rk-eyebrow">Why the queue matters more than the protocol</span>
+                <p>A 4G link in a basement drops. The decision that made the evening reliable was not
+                the choice of MQTT but the rule that a press is acknowledged locally and published
+                asynchronously: the operator's loop and the network's loop are separated.</p>
+              </div>
+            </div>
+
+            <!-- ========== 04 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">04 — Centralisation</span>
+              <div class="rk-col">
+                <h4>A spreadsheet, on purpose</h4>
+                <p>The bridge subscribes to the sale topics and appends one row per message to a
+                Google Sheet: timestamp, bar, product, quantity, sequence. Deduplication happens here,
+                keyed on <span class="rk-mono">(device, seq)</span>, which is what allows the device to
+                republish freely after a reconnection.</p>
+                <p>Every
+                person who needs the numbers, has the Google Sheet on their phone, with no account to
+                create and no dashboard to learn. Pivots per bar and per product are built once,
+                before the evening; from then on the sheet updates itself and the team reads a view
+                they already recognise. It is also the archive: the night ends with a complete,
+                per-second record of what was consumed where, which is precisely what next year's
+                forecast is fitted on.</p>
+              </div>
+            </div>
+
+            <!-- ========== 05 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">05 — Forecasting the shortage</span>
+              <div class="rk-col">
+                <h4>Three priors, one live counter, one decision</h4>
+                <p>Knowing what has been sold is not the goal, it is the input. What the storeroom
+                needs is the answer to : <em>if
+                nothing changes, when do I run out?</em></p>
+                <p>The expected consumption rate of a point of sale is built as a base rate corrected
+                by two multipliers, then continuously re-anchored on what the sheet is actually
+                recording tonight:</p>
+              </div>
+
+              $$\lambda_b(t)\;=\;\underbrace{\bar c_b}_{\text{last year, same bar}}\;\times\;\underbrace{m(t)}_{\text{moment of the night}}\;\times\;\underbrace{w_b}_{\text{location}}$$
+
+              <div class="rk-col">
+                <p>and the alert is the comparison of the projected time to stock-out with the runner's
+                round trip <span class="rk-mono">L</span>:</p>
+              </div>
+
+              $$\tau_b(t)\;=\;\min\Big\{\Delta>0\;:\;S_b(t)-\int_t^{t+\Delta}\lambda_b(u)\,\mathrm{d}u\;\le\;0\Big\}\;,\qquad \text{restock } b \text{ when } \tau_b(t)\le L$$
+
+              <div class="rk-blocks">
+                <div class="rk-block">
+                  <div class="rk-nb">prior</div>
+                  <div>
+                    <h5>Last year, same bar</h5>
+                    <p>Consumption from the previous editions, resampled onto a fifteen-minute grid, gives the shape of the night rather than a single average: a gala does not drink uniformly.</p>
+                  </div>
+                </div>
+                <div class="rk-block">
+                  <div class="rk-nb">programme</div>
+                  <div>
+                    <h5>The events of the night</h5>
+                    <p>Welcome drinks, seated dinner, speeches, the DJ set, the last hour. Each segment is a multiplier: the bars are nearly idle during dinner and take their whole evening's volume in the two hours after it.</p>
+                  </div>
+                </div>
+                <div class="rk-block">
+                  <div class="rk-nb">place</div>
+                  <div>
+                    <h5>Where the bar stands</h5>
+                    <p>Distance to the dance floor, to the entrance and to the smoking area, and how many other points of sale are visible from the same spot. Two identical bars twenty metres apart do not sell the same thing at the same speed.</p>
+                  </div>
+                </div>
+                <div class="rk-block">
+                  <div class="rk-nb">live</div>
+                  <div>
+                    <h5>What is actually selling</h5>
+                    <p>The counter from the sheet pulls the prediction back towards tonight. The prior sets the shape; the live stream sets the level, and the projection is redrawn at every message.</p>
+                  </div>
+                </div>
+              </div>
+
+              <figure>
+                <div class="rk-frame">
+                  <svg viewBox="0 0 940 440" role="img" aria-label="Remaining stock of one bar through the night. A dashed curve shows the same bar last year, a solid curve shows tonight's measured depletion up to the current time, and a dotted projection continues it. The projection crosses the restocking threshold at about 1:20 and reaches zero at about 2:10, so the alert fires while the runner still has time.">
+                    <!-- programme bands -->
+                    <g opacity=".07" fill="currentColor">
+                      <rect x="280" y="50" width="130" height="330"/>
+                      <rect x="430" y="50" width="250" height="330"/>
+                    </g>
+                    <g font-family="Source Sans 3, sans-serif" font-size="10.5" fill="currentColor" opacity=".55">
+                      <text x="345" y="44" text-anchor="middle">dinner</text>
+                      <text x="555" y="44" text-anchor="middle">DJ set</text>
+                    </g>
+
+                    <!-- grid -->
+                    <g stroke="currentColor" opacity=".14" stroke-width="1">
+                      <line x1="80" y1="135" x2="880" y2="135"/>
+                      <line x1="80" y1="210" x2="880" y2="210"/>
+                      <line x1="80" y1="285" x2="880" y2="285"/>
+                      <line x1="180" y1="50" x2="180" y2="380"/>
+                      <line x1="280" y1="50" x2="280" y2="380"/>
+                      <line x1="380" y1="50" x2="380" y2="380"/>
+                      <line x1="480" y1="50" x2="480" y2="380"/>
+                      <line x1="580" y1="50" x2="580" y2="380"/>
+                      <line x1="680" y1="50" x2="680" y2="380"/>
+                      <line x1="780" y1="50" x2="780" y2="380"/>
+                    </g>
+                    <g stroke="currentColor" opacity=".45" stroke-width="1.2">
+                      <line x1="80" y1="360" x2="880" y2="360"/>
+                      <line x1="80" y1="50" x2="80" y2="380"/>
+                    </g>
+
+                    <g font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity=".65">
+                      <text x="80" y="378" text-anchor="middle">20:00</text>
+                      <text x="180" y="378" text-anchor="middle">21:00</text>
+                      <text x="280" y="378" text-anchor="middle">22:00</text>
+                      <text x="380" y="378" text-anchor="middle">23:00</text>
+                      <text x="480" y="378" text-anchor="middle">00:00</text>
+                      <text x="580" y="378" text-anchor="middle">01:00</text>
+                      <text x="680" y="378" text-anchor="middle">02:00</text>
+                      <text x="780" y="378" text-anchor="middle">03:00</text>
+                      <text x="880" y="378" text-anchor="middle">04:00</text>
+                      <text x="72" y="364" text-anchor="end">0</text>
+                      <text x="72" y="289" text-anchor="end">25%</text>
+                      <text x="72" y="214" text-anchor="end">50%</text>
+                      <text x="72" y="139" text-anchor="end">75%</text>
+                      <text x="72" y="64" text-anchor="end">100%</text>
+                    </g>
+                    <text x="480" y="404" text-anchor="middle" font-family="Source Sans 3, sans-serif" font-size="12" fill="currentColor" opacity=".7">time</text>
+                    <text x="24" y="40" font-family="Source Sans 3, sans-serif" font-size="12" fill="currentColor" opacity=".7">stock remaining at the bar</text>
+
+                    <!-- last year -->
+                    <polyline points="80,60 180,90 280,126 380,153 480,186 580,231 680,270 780,300 880,318"
+                      fill="none" stroke="currentColor" stroke-width="1.6" stroke-dasharray="6 4" opacity=".5"/>
+                    <text x="792" y="294" font-family="Source Sans 3, sans-serif" font-size="11.5" fill="currentColor" opacity=".6">last year, same bar</text>
+
+                    <!-- restock threshold -->
+                    <line x1="80" y1="285" x2="880" y2="285" stroke="var(--risk)" stroke-width="1.4" stroke-dasharray="5 4"/>
+                    <text x="88" y="278" font-family="Source Sans 3, sans-serif" font-size="11.5" fill="var(--risk)">restocking threshold</text>
+
+                    <!-- measured -->
+                    <polyline points="80,60 130,72 180,84 230,99 280,114 330,126 380,138 430,150 480,180 520,213"
+                      fill="none" stroke="var(--hedge)" stroke-width="2.6"/>
+                    <text x="300" y="106" font-family="Source Sans 3, sans-serif" font-size="12" fill="var(--hedge)" font-weight="600">measured tonight</text>
+
+                    <!-- projection -->
+                    <polyline points="520,213 570,252 612,285 645,311 680,338 700,360"
+                      fill="none" stroke="var(--perf)" stroke-width="2.2" stroke-dasharray="3 4"/>
+                    <text x="640" y="212" font-family="Source Sans 3, sans-serif" font-size="12" fill="var(--perf)" font-weight="600">projection</text>
+                    <text x="640" y="228" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--perf)" opacity=".85">λ(t) rebuilt at every message</text>
+
+                    <!-- now -->
+                    <line x1="520" y1="50" x2="520" y2="360" stroke="var(--hedge)" stroke-width="1.2" opacity=".55"/>
+                    <circle cx="520" cy="213" r="5" fill="var(--hedge)"/>
+                    <text x="514" y="70" text-anchor="end" font-family="Source Sans 3, sans-serif" font-size="11.5" fill="var(--hedge)">now · 00:40</text>
+
+                    <!-- alert -->
+                    <circle cx="612" cy="285" r="6" fill="var(--risk)"/>
+                    <line x1="612" y1="285" x2="612" y2="360" stroke="var(--risk)" stroke-width="1" opacity=".45"/>
+                    <text x="602" y="310" text-anchor="end" font-family="Source Sans 3, sans-serif" font-size="12" fill="var(--risk)" font-weight="600">alert 01:20</text>
+                    <text x="602" y="326" text-anchor="end" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--risk)" opacity=".85">τ = 50 min ≈ L</text>
+                    <text x="712" y="352" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--perf)" opacity=".85">projected stock-out 02:10</text>
+                  </svg>
+                </div>
+                <figcaption><b>One bar, one night, reconstructed for this page.</b> The dashed curve is
+                the prior, the solid one is what the presses actually say, and the alert is not raised
+                when the stock is low but when the projected time to empty falls to the runner's round
+                trip.</figcaption>
+              </figure>
+
+              <div class="rk-note rk-warn">
+                <span class="rk-eyebrow">The limit worth stating</span>
+                <p>The model has one night of data per year to learn from, so it is a structured prior
+                corrected in real time, not a trained model. Its value is almost entirely in the
+                correction: the shape can be wrong by an hour and the alert still fires in time,
+                because what actually drives the decision is the slope measured over the last twenty
+                minutes.</p>
+              </div>
+            </div>
+
+            <p class="rk-foot">Built for a student gala of about 3,000 guests, 2023. Hardware is
+            off-the-shelf, ESP32 boards and a router; the firmware, the bridge and the
+            forecasting sheet were written for the event and are not public. Figures on this page are
+            redrawn from the evening's logs for illustration.</p>
+
+          </div>
         </div>
       </div>
     </article>
+
+    <!-- ---------- PROJECT 5 ---------- -->
+    <article class="project" id="p-perseus">
+      <h3 class="project-heading">
+        <button class="project-head" id="p-perseus-btn" type="button"
+                aria-expanded="false" aria-controls="p-perseus-panel">
+          <span class="project-name">Manufacturing of a Rocket Nose Cone by Filament Winding</span>
+          <span class="project-meta">2023 · Python · NumPy · SciPy · differential geometry · RK4 · G-code</span>
+          <span class="project-summary">Semester project with Centre National d'Études Spatiales (CNES). Mathematical modeling and simulation of winding processes. Programming of the 4-axis winding machine.</span>
+          <img class="project-icon" src="assets/img/icon_project_perseus.svg" alt="" aria-hidden="true">
+          <span class="chevron" aria-hidden="true"></span>
+        </button>
+      </h3>
+
+      <div class="panel" id="p-perseus-panel" role="region" aria-labelledby="p-perseus-btn">
+        <div class="panel-inner">
+
+          <div class="rk">
+
+            <div class="rk-top">
+              <p>The nose cone of the ASTREOS demonstrator is wound from flax fibre in an Elium®
+              thermoplastic matrix on a four-axis XWinder machine. Winding is the natural process for
+              the shape, but it comes with a question that has to be answered before the machine is
+              switched on: <em>what path does the fibre follow on the mandrel, and what does the
+              machine have to do to put it there?</em> A fibre laid along the wrong curve slides
+              down the cone before the resin cures, which is exactly what the first experimental
+              trials showed at the small end.</p>
+
+              <p>The path is not a free choice. On a surface of revolution it is the solution of a
+              three-state ordinary differential equation built from the two fundamental forms of the
+              surface and a single dimensionless friction parameter. This résumé is the mathematical
+              and computational half of the project: the derivation of that system, the numerical
+              scheme that solves it, the algebra that turns one fibre path into a complete layer, and
+              the inverse kinematics and time law that turn that layer into a machine programme.</p>
+
+            </div>
+
+            <!-- ========== 01 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">01 — The chain</span>
+              <div class="rk-col">
+                <h4>From a profile on a drawing to a block of G-code</h4>
+                <p>Two solvers were written. The first, integrates a single
+                out-and-back pass and replicates it <span class="rk-mono">n</span> times with a rigid
+                rotation; it is cheap and it produced the parametric studies below. The second, 
+                integrates the <em>whole</em> winding as one uninterrupted
+                state and converts it into four time-stamped machine axes. The mandrel, the ODE and the
+                Runge–Kutta stepper are shared: version 2 imports them rather than duplicating them.</p>
+                <p>The important structural point is that everything downstream of the ODE is either an
+                integration of it, a boundary condition on it, or a map applied to its output. There is
+                one model, and it is fifteen lines long.</p>
+              </div>
+
+              <figure>
+                <div class="rk-frame">
+                  <svg viewBox="0 0 940 380" role="img" aria-label="A mandrel profile, given either as a CSV point cloud or as an analytic quadratic, is fitted into a C2 representation providing r, r prime and r double prime. That feeds the winding differential equation, which is advanced by a fourth-order Runge-Kutta stepper with bisected event location. Free legs and prescribed-angle turnarounds alternate to build a continuous path; the pattern-closure rule fixes the mandrel advance per circuit. The resulting path branches into a coverage analysis on one side and, on the other, into the four-axis inverse kinematics, the look-ahead time law and the decimated G-code export.">
+                    <defs>
+                      <marker id="fw-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+                      </marker>
+                    </defs>
+
+                    <g font-family="Source Sans 3, sans-serif" font-size="11.5" fill="currentColor" opacity=".55">
+                      <text x="16" y="28">geometry and the model</text>
+                      <text x="16" y="228">assembly, then the machine</text>
+                    </g>
+
+                    <g font-family="IBM Plex Mono, monospace">
+                      <rect x="16" y="42" width="158" height="86" rx="2" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3" opacity=".85"/>
+                      <text x="95" y="68" text-anchor="middle" fill="currentColor" font-size="11.5">profile</text>
+                      <text x="95" y="86" text-anchor="middle" fill="currentColor" font-size="9.5" opacity=".7">pointsmandrin.csv</text>
+                      <text x="95" y="102" text-anchor="middle" fill="currentColor" font-size="9.5" opacity=".7">or the quadratic fit</text>
+                      <text x="95" y="118" text-anchor="middle" fill="currentColor" font-size="9" opacity=".55">z ; y columns</text>
+
+                      <rect x="216" y="42" width="176" height="86" rx="2" fill="none" stroke="var(--perf)" stroke-width="1.5"/>
+                      <text x="304" y="68" text-anchor="middle" fill="var(--perf)" font-size="11.5">Mandrel</text>
+                      <text x="304" y="86" text-anchor="middle" fill="var(--perf)" font-size="9.5" opacity=".9">quartic smoothing spline</text>
+                      <text x="304" y="102" text-anchor="middle" fill="var(--perf)" font-size="9.5" opacity=".75">r(z), r′(z), r″(z)</text>
+                      <text x="304" y="118" text-anchor="middle" fill="var(--perf)" font-size="9" opacity=".6">C² so κₙ is smooth</text>
+
+                      <rect x="434" y="42" width="186" height="86" rx="2" fill="none" stroke="var(--hedge)" stroke-width="1.8"/>
+                      <text x="527" y="68" text-anchor="middle" fill="var(--hedge)" font-size="11.5">winding_rhs</text>
+                      <text x="527" y="86" text-anchor="middle" fill="var(--hedge)" font-size="9.5" opacity=".9">dz, dθ, dα / ds</text>
+                      <text x="527" y="102" text-anchor="middle" fill="var(--hedge)" font-size="9.5" opacity=".75">Euler + Liouville</text>
+                      <text x="527" y="118" text-anchor="middle" fill="var(--hedge)" font-size="9" opacity=".6">λ = κ_g / κ_n</text>
+
+                      <rect x="662" y="42" width="176" height="86" rx="2" fill="none" stroke="var(--hedge)" stroke-width="1.5"/>
+                      <text x="750" y="68" text-anchor="middle" fill="var(--hedge)" font-size="11.5">_rk4_step</text>
+                      <text x="750" y="86" text-anchor="middle" fill="var(--hedge)" font-size="9.5" opacity=".9">fixed Δs in fibre mm</text>
+                      <text x="750" y="102" text-anchor="middle" fill="var(--hedge)" font-size="9.5" opacity=".75">events by bisection</text>
+                      <text x="750" y="118" text-anchor="middle" fill="var(--hedge)" font-size="9" opacity=".6">lands exactly on α = 90°</text>
+                    </g>
+
+                    <g stroke="currentColor" stroke-width="1.3" fill="none" opacity=".5" marker-end="url(#fw-a)">
+                      <line x1="174" y1="85" x2="212" y2="85"/>
+                      <line x1="392" y1="85" x2="430" y2="85"/>
+                      <line x1="620" y1="85" x2="658" y2="85"/>
+                      <path d="M750,128 L750,168 L120,168 L120,242"/>
+                    </g>
+
+                    <g font-family="IBM Plex Mono, monospace">
+                      <rect x="16" y="242" width="196" height="94" rx="2" fill="none" stroke="var(--perf)" stroke-width="1.5"/>
+                      <text x="114" y="268" text-anchor="middle" fill="var(--perf)" font-size="11.5">build_path</text>
+                      <text x="114" y="286" text-anchor="middle" fill="var(--perf)" font-size="9.5" opacity=".9">leg → turn → leg → turn</text>
+                      <text x="114" y="302" text-anchor="middle" fill="var(--perf)" font-size="9.5" opacity=".75">prescribed-α turnarounds</text>
+                      <text x="114" y="318" text-anchor="middle" fill="var(--perf)" font-size="9" opacity=".6">pattern closure fixes Δθ</text>
+
+                      <rect x="254" y="242" width="164" height="94" rx="2" fill="none" stroke="currentColor" stroke-width="1.2" stroke-dasharray="4 3" opacity=".85"/>
+                      <text x="336" y="272" text-anchor="middle" fill="currentColor" font-size="11.5">coverage_profile</text>
+                      <text x="336" y="292" text-anchor="middle" fill="currentColor" font-size="9.5" opacity=".7">crossing counting</text>
+                      <text x="336" y="308" text-anchor="middle" fill="currentColor" font-size="9.5" opacity=".7">Φ(z), thickness</text>
+
+                      <rect x="460" y="242" width="164" height="94" rx="2" fill="none" stroke="var(--hedge)" stroke-width="1.5"/>
+                      <text x="542" y="272" text-anchor="middle" fill="var(--hedge)" font-size="11.5">four_axis_ik</text>
+                      <text x="542" y="292" text-anchor="middle" fill="var(--hedge)" font-size="9.5" opacity=".9">eye standoff + lead</text>
+                      <text x="542" y="308" text-anchor="middle" fill="var(--hedge)" font-size="9.5" opacity=".75">A, Z, Y, B</text>
+
+                      <rect x="666" y="242" width="120" height="94" rx="2" fill="none" stroke="var(--hedge)" stroke-width="1.5"/>
+                      <text x="726" y="272" text-anchor="middle" fill="var(--hedge)" font-size="11.5">time_law</text>
+                      <text x="726" y="292" text-anchor="middle" fill="var(--hedge)" font-size="9.5" opacity=".9">axis limits</text>
+                      <text x="726" y="308" text-anchor="middle" fill="var(--hedge)" font-size="9.5" opacity=".75">look-ahead</text>
+
+                      <rect x="828" y="242" width="108" height="94" rx="2" fill="none" stroke="var(--risk)" stroke-width="1.5"/>
+                      <text x="882" y="272" text-anchor="middle" fill="var(--risk)" font-size="11.5">export_x4g</text>
+                      <text x="882" y="292" text-anchor="middle" fill="var(--risk)" font-size="9.5" opacity=".9">decimation</text>
+                      <text x="882" y="308" text-anchor="middle" fill="var(--risk)" font-size="9.5" opacity=".75">.X4G blocks</text>
+                    </g>
+
+                    <g stroke="currentColor" stroke-width="1.3" fill="none" opacity=".5" marker-end="url(#fw-a)">
+                      <line x1="212" y1="289" x2="250" y2="289"/>
+                      <path d="M212,266 L436,266 L436,289 L456,289"/>
+                      <line x1="624" y1="289" x2="662" y2="289"/>
+                      <line x1="786" y1="289" x2="824" y2="289"/>
+                    </g>
+                    <g font-family="Source Sans 3, sans-serif" font-size="10" fill="currentColor" opacity=".55">
+                      <text x="231" y="282" text-anchor="middle">Φ</text>
+                      <text x="436" y="258" text-anchor="middle">(s, z, θ, α)</text>
+                    </g>
+                  </svg>
+                </div>
+                <figcaption><b>One model, two consumers.</b> Everything above the fold is geometry and
+                the ODE; everything below it is bookkeeping on the solution. The coverage branch and
+                the machine branch read the same trajectory, which is why a coverage requirement can be
+                turned directly into a pattern and a cycle time.</figcaption>
+              </figure>
+            </div>
+
+            <!-- ========== 02 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">02 — Geometry</span>
+              <div class="rk-col">
+                <h4>The mandrel is a surface of revolution</h4>
+                <p>The mandrel is generated by a profile \(r(z)>0\) turned about the axis:</p>
+              </div>
+
+              $$P(z,\theta)\;=\;\big(\,r(z)\cos\theta,\;r(z)\sin\theta,\;z\,\big),\qquad g(z)\;=\;\sqrt{1+r'(z)^2}$$
+
+              <div class="rk-col">
+                <p>\(g\) is the meridian metric factor: a step \(\mathrm{d}z\) along the profile is
+                \(g\,\mathrm{d}z\) of arc on the surface. The coordinate fields \(P_z\) and
+                \(P_\theta\) are orthogonal, so the first fundamental form is diagonal,</p>
+              </div>
+
+              $$\mathrm{d}s^2\;=\;g^2\,\mathrm{d}z^2\;+\;r^2\,\mathrm{d}\theta^2$$
+
+              <div class="rk-col">
+                <p>and because \(F=M=0\) the meridians and parallels are the lines of curvature. The
+                principal curvatures fall out of the second fundamental form without any algebra:</p>
+              </div>
+
+              $$\kappa_1\;=\;-\frac{r''}{g^{3}}\quad\text{(meridian)},\qquad \kappa_2\;=\;\frac{1}{r\,g}\quad\text{(parallel)},\qquad K\;=\;\kappa_1\kappa_2\;=\;-\frac{r''}{r\,g^{4}}$$
+
+              <div class="rk-col">
+                <p>On this profile \(r''=-3.6\times10^{-3}\lt 0\) everywhere, so \(\kappa_1,\kappa_2>0\)
+                and \(K>0\): the mandrel is convex, and a fibre laid on it presses onto it in every
+                direction. On a concave meridian the fibre can
+                lift off the surface and bridge, and the whole contact argument of section 03 has to
+                be re-examined. It does not happen here.</p>
+                <p>The winding angle \(\alpha\) is measured in the tangent plane from the meridian
+                towards the parallel, and it is kept <strong>signed and unwrapped</strong>. Values
+                with \(|\alpha|>90^\circ\) simply mean the fibre is travelling towards \(-z\). That
+                single convention is what later allows the outbound leg, the turnaround and the
+                return leg to be one continuous solution of one system, with no case distinction.</p>
+              </div>
+
+              <figure>
+                <div class="rk-frame">
+                  <svg viewBox="0 0 940 360" role="img" aria-label="Left: the meridian section of the nose cone mandrel, 172 millimetres long, with radius falling from 62.2 millimetres at the base to 12.3 at the tip, and the local orthonormal frame drawn at a contact point: the meridian tangent along the surface, the outward normal perpendicular to it, and the parallel direction out of the page. Right: the tangent plane at the same point, with the fibre tangent making the winding angle alpha from the meridian towards the parallel; alpha equals zero is a meridian, plus or minus ninety degrees is a hoop.">
+                    <defs>
+                      <marker id="fg-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="currentColor"/>
+                      </marker>
+                      <marker id="fg-h" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="var(--hedge)"/>
+                      </marker>
+                      <marker id="fg-p" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="var(--perf)"/>
+                      </marker>
+                      <marker id="fg-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+                        <path d="M0,0 L10,5 L0,10 z" fill="var(--risk)"/>
+                      </marker>
+                    </defs>
+
+                    <g font-family="Source Sans 3, sans-serif" font-size="11.5" fill="currentColor" opacity=".6">
+                      <text x="60" y="28">meridian section and the local frame</text>
+                      <text x="560" y="28">the winding angle, in the tangent plane</text>
+                    </g>
+
+                    <!-- axis of revolution -->
+                    <line x1="44" y1="190" x2="440" y2="190" stroke="currentColor" stroke-width="1" stroke-dasharray="7 4" opacity=".4"/>
+                    <text x="430" y="205" font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".5">z</text>
+
+                    <!-- profile -->
+                    <polyline fill="none" stroke="var(--perf)" stroke-width="1.8" points="60.0,65.7 68.0,65.6 76.0,65.6 84.0,65.7 92.0,65.9 100.0,66.3 108.0,66.8 116.0,67.4 124.0,68.1 132.0,68.9 140.0,69.8 148.0,70.9 156.0,72.0 164.0,73.3 172.0,74.7 180.0,76.2 188.0,77.8 196.0,79.5 204.0,81.4 212.0,83.4 220.0,85.5 228.0,87.7 236.0,90.0 244.0,92.4 252.0,94.9 260.0,97.6 268.0,100.4 276.0,103.3 284.0,106.3 292.0,109.4 300.0,112.6 308.0,116.0 316.0,119.4 324.0,123.0 332.0,126.7 340.0,130.5 348.0,134.5 356.0,138.5 364.0,142.6 372.0,146.9 380.0,151.3 388.0,155.8 396.0,160.4 404.0,165.2 404.5,165.5"/>
+                    <polyline fill="none" stroke="var(--perf)" stroke-width="1.8" opacity=".45" points="60.0,314.3 68.0,314.4 76.0,314.4 84.0,314.3 92.0,314.1 100.0,313.7 108.0,313.2 116.0,312.6 124.0,311.9 132.0,311.1 140.0,310.2 148.0,309.1 156.0,308.0 164.0,306.7 172.0,305.3 180.0,303.8 188.0,302.2 196.0,300.5 204.0,298.6 212.0,296.6 220.0,294.5 228.0,292.3 236.0,290.0 244.0,287.6 252.0,285.1 260.0,282.4 268.0,279.6 276.0,276.7 284.0,273.7 292.0,270.6 300.0,267.4 308.0,264.0 316.0,260.6 324.0,257.0 332.0,253.3 340.0,249.5 348.0,245.5 356.0,241.5 364.0,237.4 372.0,233.1 380.0,228.7 388.0,224.2 396.0,219.6 404.0,214.8 404.5,214.5"/>
+                    <line x1="60" y1="65.7" x2="60" y2="314.3" stroke="var(--perf)" stroke-width="1.4" opacity=".55"/>
+                    <line x1="404.5" y1="165.5" x2="404.5" y2="214.5" stroke="var(--perf)" stroke-width="1.4" opacity=".55"/>
+
+                    <!-- radius annotations -->
+                    <g stroke="currentColor" stroke-width="1" opacity=".35" stroke-dasharray="3 3">
+                      <line x1="60" y1="65.7" x2="60" y2="190"/>
+                      <line x1="404.5" y1="165.5" x2="404.5" y2="190"/>
+                    </g>
+                    <g font-family="IBM Plex Mono, monospace" font-size="9.5" fill="currentColor" opacity=".6">
+                      <text x="66" y="130">r₀ = 62.16</text>
+                      <text x="352" y="182">r_t = 12.27</text>
+                      <text x="212" y="336" text-anchor="middle">L = 172.25 mm,  meridian arc 181.76 mm</text>
+                    </g>
+
+                    <!-- contact point and frame -->
+                    <circle cx="280" cy="104.7" r="3.6" fill="currentColor"/>
+                    <text x="266" y="100" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor">C</text>
+                    <line x1="280" y1="104.7" x2="328.7" y2="122.9" stroke="var(--hedge)" stroke-width="1.7" marker-end="url(#fg-h)"/>
+                    <text x="336" y="128" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--hedge)">m̂</text>
+                    <line x1="280" y1="104.7" x2="298.3" y2="56.1" stroke="var(--risk)" stroke-width="1.7" marker-end="url(#fg-r)"/>
+                    <text x="302" y="50" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--risk)">n̂</text>
+                    <circle cx="256" cy="88" r="7" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".7"/>
+                    <circle cx="256" cy="88" r="1.8" fill="currentColor" opacity=".7"/>
+                    <text x="228" y="76" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor" opacity=".7">ê_θ</text>
+
+                    <!-- right panel : tangent plane -->
+                    <line x1="620" y1="300" x2="620" y2="130" stroke="var(--hedge)" stroke-width="1.7" marker-end="url(#fg-h)"/>
+                    <text x="600" y="122" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--hedge)">m̂</text>
+                    <text x="586" y="140" font-family="Source Sans 3, sans-serif" font-size="10.5" fill="var(--hedge)" opacity=".75" text-anchor="end">meridian</text>
+                    <line x1="620" y1="300" x2="880" y2="300" stroke="var(--perf)" stroke-width="1.7" marker-end="url(#fg-p)"/>
+                    <text x="886" y="304" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="var(--perf)">ê_θ</text>
+                    <text x="828" y="320" font-family="Source Sans 3, sans-serif" font-size="10.5" fill="var(--perf)" opacity=".75">parallel</text>
+                    <line x1="620" y1="300" x2="720.6" y2="84.3" stroke="currentColor" stroke-width="1.9" marker-end="url(#fg-a)"/>
+                    <text x="728" y="80" font-family="IBM Plex Mono, monospace" font-size="10.5" fill="currentColor">T̂  fibre</text>
+                    <path d="M620,240 A60,60 0 0 1 645.6,246.4" fill="none" stroke="currentColor" stroke-width="1.2" opacity=".6"/>
+                    <text x="634" y="232" font-family="IBM Plex Mono, monospace" font-size="11" fill="currentColor">α</text>
+                    <g font-family="Source Sans 3, sans-serif" font-size="11" fill="currentColor" opacity=".6">
+                      <text x="530" y="342">T̂ = cos α · m̂ + sin α · ê_θ</text>
+                      <text x="530" y="358">α = 0 → meridian   α = ±90° → hoop   |α| &gt; 90° → towards −z</text>
+                    </g>
+                  </svg>
+                </div>
+                <figcaption><b>The frame in which everything is written.</b> The triad
+                (m̂, ê_θ, n̂) is orthonormal at every point, and the winding angle is the only degree
+                of freedom left once the surface is fixed. The profile drawn is the quadratic fit of the
+                conical portion, \(r(z)=-1.8\!\times\!10^{-3}z^2+2.04\!\times\!10^{-2}z+62.162\) mm.</figcaption>
+              </figure>
+
+              
+            </div>
+
+            <!-- ========== 03 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">03 — Mechanics</span>
+              <div class="rk-col">
+                <h4>One dimensionless number decides whether the fibre stays put</h4>
+                <p>Take an element of impregnated tow of length \(\mathrm{d}s\) under tension \(F\).
+                Its curvature vector splits in the Darboux frame into a component in the tangent plane
+                and a component along the normal,</p>
+              </div>
+
+              $$\kappa\vec\beta\;=\;\kappa_g\,\hat v\;+\;\kappa_n\,\hat N ,\qquad \vec F_v\;=\;F\kappa_g\,\hat v\,\mathrm{d}s\;\;\text{(slides it)},\qquad \vec F_k\;=\;F\kappa_n\,\hat N\,\mathrm{d}s\;\;\text{(presses it down)}$$
+
+              <div class="rk-col">
+                <p>The surface reaction can only push, so the element stays in contact only while
+                \(\kappa_n>0\), guaranteed here by the convexity established above. The available
+                friction is \(|\vec F_f|\le\mu|\vec F_n|=\mu F\kappa_n\,\mathrm{d}s\), so the tangential
+                force can be balanced only if \(F|\kappa_g|\,\mathrm{d}s\le\mu F\kappa_n\,\mathrm{d}s\).
+                The tension cancels, and what is left is a purely geometric criterion:</p>
+              </div>
+
+              $$\lambda\;=\;\frac{\kappa_g}{\kappa_n}\;,\qquad\qquad \text{no slip}\iff|\lambda|\;\le\;\mu$$
+
+              <div class="rk-col">
+                <p>Two cases organise everything that follows. \(\lambda=0\) means \(\kappa_g=0\): the
+                path is a <strong>geodesic</strong>, it requires no friction at all and cannot slip.
+                \(\lambda\neq0\) is a <strong>non-geodesic</strong> path held in place by friction; it
+                buys the freedom to put the turnaround where the design wants it rather than where the
+                geometry puts it, at the price of a friction margin that has to be verified.</p>
+                <p>In the code \(\lambda\) is a <em>prescribed</em> parameter, not a computed one,
+                the standard modelling choice in the dry-winding literature. The consequence is worth
+                stating plainly: the solver can produce a path that no real friction coefficient would
+                hold, so \(|\lambda|\) is a design <em>output</em> to be reported and checked against a
+                measured \(\mu\). The slippage seen experimentally at the small end, where the trials
+                used a constant 45°, is consistent with the demanded \(|\lambda|\) having exceeded the
+                available \(\mu\) there.</p>
+              </div>
+            </div>
+
+            <!-- ========== 04 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">04 — The trajectory equations</span>
+              <div class="rk-col">
+                <h4>Euler for the normal curvature, Liouville for the geodesic one</h4>
+                <p>The normal curvature in the fibre direction is given directly by Euler's theorem,
+                \(\kappa_n=\kappa_1\cos^2\alpha+\kappa_2\sin^2\alpha\), which with the principal
+                curvatures of section 02 becomes</p>
+              </div>
+
+              $$\kappa_n\;=\;\frac{1}{g}\left[\,\frac{\sin^2\alpha}{r}\;-\;\frac{r''\cos^2\alpha}{g^{2}}\,\right]$$
+
+              <div class="rk-col">
+                <p>The geodesic curvature comes from Liouville's formula for an orthogonal
+                parametrisation. On a surface of revolution the meridians <em>are</em> geodesics, so one
+                of the two coordinate terms vanishes and the parallels contribute \(-r'/(rg)\):</p>
+              </div>
+
+              $$\kappa_g\;=\;\frac{\mathrm{d}\alpha}{\mathrm{d}s}\;-\;\frac{r'\sin\alpha}{r\,g}$$
+
+              <div class="rk-col">
+                <p>Substituting \(\kappa_g=\lambda\kappa_n\) and adding the two kinematic relations
+                read off the metric gives the model — an autonomous three-state system in
+                \(y=(z,\theta,\alpha)\), parametrised by <strong>arc length</strong>:</p>
+              </div>
+
+              $$\frac{\mathrm{d}z}{\mathrm{d}s}=\frac{\cos\alpha}{g},\qquad \frac{\mathrm{d}\theta}{\mathrm{d}s}=\frac{\sin\alpha}{r},\qquad \frac{\mathrm{d}\alpha}{\mathrm{d}s}=\lambda\,\kappa_n\;-\;\frac{r'\sin\alpha}{r\,g}$$
+
+              <div class="rk-col">
+                <p>That is the whole physics of the project, and in the code it is fifteen lines:</p>
+              </div>
+
+<pre class="rk-code"><code>def winding_rhs(state, mandrel, lam):
+    z, _theta, a = state
+    r, rp, rpp = mandrel.r(z), mandrel.dr(z), mandrel.d2r(z)
+    sa, ca = math.sin(a), math.cos(a)
+    g  = math.sqrt(1.0 + rp * rp)                <span class="c"># meridian metric factor</span>
+    kn = (sa * sa / r - rpp * ca * ca / (g * g)) / g
+    kg = lam * kn                                <span class="c"># lambda = kg / kn</span>
+    dz     = ca / g
+    dtheta = sa / r
+    dalpha = kg - rp * sa / (r * g)
+    return np.array([dz, dtheta, dalpha])</code></pre>
+
+              <div class="rk-col">
+                <p>Two things about this right-hand side matter more than they look. First,
+                \(\theta\) does not appear in it: the system is invariant under rotation about the
+                axis. That symmetry is what makes the entire pattern algebra of section 09 possible,
+                because a circuit can be shifted in \(\theta\) without re-integrating it.</p>
+                <p>Second, the choice of parameter. Dividing the third equation by the first recovers
+                exactly the form used in the original project report,</p>
+              </div>
+
+              $$\frac{\mathrm{d}\alpha}{\mathrm{d}z}\;=\;\frac{g}{\cos\alpha}\left(\lambda\kappa_n-\frac{r'\sin\alpha}{rg}\right)\;=\;\lambda\left[\frac{\sin\alpha\tan\alpha}{r}-\frac{r''\cos\alpha}{1+r'^2}\right]-\frac{r'}{r}\tan\alpha$$
+
+              <div class="rk-col">
+                <p>The two are algebraically identical, the symbolic residual is exactly zero, but
+                they do not behave the same way. The \(\mathrm{d}\alpha/\mathrm{d}z\) form contains
+                \(\tan\alpha\), which diverges as \(\alpha\to90^\circ\); equivalently, \(z\) stops
+                being a valid parameter for the curve at the very point where the curve becomes
+                tangent to a parallel. Any integrator marching in \(z\) has to stop before the
+                turnaround and restart afterwards with a separate model of the reversal.</p>
+                <p>The arc-length system has no such singularity. \(\cos\alpha\) simply changes sign,
+                \(\mathrm{d}z/\mathrm{d}s\) goes negative, and the integration continues.
+                <strong>A complete out-and-back pass comes out of a single integration.</strong>
+                That is the change that makes the continuous solver possible at all.</p>
+              </div>
+            </div>
+
+            <!-- ========== 05 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">05 — Clairaut</span>
+              <div class="rk-col">
+                <h4>A conserved quantity, a hard design limit, and a free error estimator</h4>
+                <p>For \(\lambda=0\) the system has a first integral, obtained in one line:</p>
+              </div>
+
+              $$\frac{\mathrm{d}}{\mathrm{d}z}\big(r\sin\alpha\big)=r'\sin\alpha+r\cos\alpha\,\frac{\mathrm{d}\alpha}{\mathrm{d}z}=r'\sin\alpha-r'\sin\alpha=0 \quad\Longrightarrow\quad r\sin\alpha\;=\;r_0\sin\alpha_0$$
+
+              <div class="rk-col">
+                <p>Clairaut's theorem, and three consequences the whole study leans on.</p>
+                <h5>The polar opening</h5>
+                <p>The turnaround happens where \(\alpha=90^\circ\), so the smallest radius a geodesic
+                launched at \((r_0,\alpha_0)\) can reach is \(r_p=r_0\sin\alpha_0\). At
+                \(\alpha_0=25^\circ\) that is 26.271 mm. The solver, integrating the ODE with no
+                knowledge whatsoever of the closed form, returns 26.2708 mm.</p>
+                <h5>A hard limit on the initial angle</h5>
+                <p>A geodesic reaches the tip only if \(r_p\le r_t\), i.e.</p>
+              </div>
+
+              $$\alpha_0\;\le\;\alpha_0^{\max}\;=\;\arcsin\frac{r_t}{r_0}\;=\;\arcsin\frac{12.270}{62.162}\;=\;11.384^\circ$$
+
+              <div class="rk-col">
+                <p>This is the quantitative version of the observation in the original report that
+                "beyond \(\alpha_i=40^\circ\) the angle becomes too high before the end of the
+                trajectory". In fact the effect starts at 11.4°, and by 40° the geodesic turns around
+                at \(r_p=39.96\) mm, barely two thirds of the way up the cone. A geodesic layer at a
+                usable angle <em>necessarily</em> leaves a polar opening, which is consistent with
+                closing the nose with a separate machined part.</p>
+                <h5>A free error estimator</h5>
+                <p>Since \(r\sin\alpha\) is exactly conserved by the true flow, its drift along a
+                numerical solution is an <em>a posteriori</em> measure of the integration error that
+                costs nothing and needs no reference solution. It is printed on every geodesic run.
+                Its one limitation is worth stating: it only tests the geodesic case, for
+                \(\lambda\neq0\) the quantity is <em>supposed</em> to drift, and the drift then
+                measures the friction being used, not the error.</p>
+              </div>
+
+              <figure>
+                <div class="rk-frame">
+                  <svg viewBox="0 0 940 400" role="img" aria-label="Left: the geodesic winding angle as a function of axial station, for initial angles from 5 to 40 degrees; each curve rises and terminates at its own turnaround where alpha reaches 90 degrees, except the shallowest two which reach the tip of the mandrel first. Right: the polar opening radius against the initial angle. The integrated values lie exactly on Clairaut's closed form r zero times sine alpha zero above 11.38 degrees; below that the geodesic reaches the tip and the reversal is forced by the carriage limit, so the curve flattens at the tip radius of 12.27 millimetres.">
+                    <g stroke="currentColor" opacity=".13" stroke-width="1">
+                      <line x1="80" y1="246.7" x2="440" y2="246.7"/><line x1="80" y1="153.3" x2="440" y2="153.3"/>
+                      <line x1="182.9" y1="60" x2="182.9" y2="340"/><line x1="285.7" y1="60" x2="285.7" y2="340"/><line x1="388.6" y1="60" x2="388.6" y2="340"/>
+                      <line x1="560" y1="246.7" x2="900" y2="246.7"/><line x1="560" y1="153.3" x2="900" y2="153.3"/>
+                      <line x1="673.3" y1="60" x2="673.3" y2="340"/><line x1="786.7" y1="60" x2="786.7" y2="340"/>
+                    </g>
+                    <g stroke="currentColor" opacity=".45" stroke-width="1.2">
+                      <line x1="80" y1="340" x2="440" y2="340"/><line x1="80" y1="60" x2="80" y2="340"/>
+                      <line x1="560" y1="340" x2="900" y2="340"/><line x1="560" y1="60" x2="560" y2="340"/>
+                    </g>
+                    <line x1="80" y1="60" x2="440" y2="60" stroke="var(--risk)" stroke-width="1.2" stroke-dasharray="5 4" opacity=".8"/>
+                    <text x="436" y="54" text-anchor="end" font-family="Source Sans 3, sans-serif" font-size="10.5" fill="var(--risk)">hoop limit α = 90°</text>
+
+                    <g fill="none" stroke="var(--hedge)" stroke-width="1.5">
+                      <polyline opacity=".38" points="80.0,324.4 105.6,324.4 130.2,324.3 154.7,324.0 179.0,323.6 203.3,323.0 227.3,322.2 251.0,321.2 274.5,319.8 297.8,318.1 320.6,315.7 343.1,312.5 365.3,308.0 386.9,301.3 408.0,290.2 425.0,273.9 434.3,258.5"/>
+                      <polyline opacity=".45" points="80.0,308.9 105.3,308.9 129.6,308.6 153.8,308.1 177.9,307.2 201.8,306.1 225.5,304.5 248.9,302.5 272.0,299.9 294.8,296.5 317.1,292.0 339.0,286.0 360.3,277.7 380.9,265.6 400.5,247.0 418.2,216.1 428.3,183.2 432.5,161.2 434.3,148.7"/>
+                      <polyline opacity=".55" points="80.0,293.3 104.8,293.3 128.7,292.9 152.4,292.1 176.0,290.9 199.4,289.3 222.5,287.0 245.4,284.1 267.8,280.4 289.9,275.6 311.4,269.3 332.4,261.1 352.5,250.1 371.6,234.7 389.1,212.8 404.3,180.7 415.6,134.0 419.9,94.1 421.0,61.4"/>
+                      <polyline opacity=".65" points="80.0,277.8 104.2,277.8 127.3,277.3 150.4,276.3 173.3,274.7 196.0,272.6 218.4,269.8 240.5,266.1 262.1,261.5 283.3,255.6 303.7,248.0 323.5,238.3 342.2,225.6 359.6,208.9 375.1,186.6 388.1,156.9 397.4,118.6 401.4,81.0 402.0,60.9"/>
+                      <polyline opacity=".8" stroke-width="1.9" points="80.0,262.2 103.3,262.2 125.6,261.6 147.9,260.5 169.9,258.7 191.8,256.1 213.3,252.8 234.4,248.6 255.0,243.3 275.0,236.6 294.2,228.2 312.6,217.7 329.8,204.4 345.5,187.6 359.2,166.5 370.4,140.2 378.3,108.7 381.7,79.3 382.4,60.9"/>
+                      <polyline opacity=".65" points="80.0,246.7 102.3,246.7 123.6,246.0 144.9,244.7 165.9,242.7 186.7,239.9 207.1,236.3 227.1,231.6 246.5,225.9 265.2,218.7 283.2,209.9 300.1,199.1 315.7,186.0 329.8,169.9 341.9,150.6 351.6,127.8 358.4,101.6 361.5,78.0 362.2,63.3"/>
+                      <polyline opacity=".55" points="80.0,231.1 101.1,231.2 121.3,230.5 141.3,229.1 161.2,226.9 180.8,224.0 200.0,220.1 218.7,215.3 236.8,209.3 254.2,202.0 270.7,193.1 286.1,182.5 300.3,170.0 312.9,155.1 323.6,137.8 332.1,118.1 338.7,92.4 340.8,76.7 341.6,60.8"/>
+                      <polyline opacity=".45" points="80.0,215.6 99.7,215.6 119.6,214.9 140.5,213.2 159.0,210.9 177.1,207.7 194.9,203.6 212.1,198.5 228.7,192.3 244.6,184.9 259.4,176.1 273.2,165.8 285.7,153.8 296.6,140.0 305.8,124.5 313.9,104.2 318.3,85.4 320.2,69.0 320.4,62.4"/>
+                    </g>
+                    <g font-family="IBM Plex Mono, monospace" font-size="9.5" fill="var(--hedge)" opacity=".9">
+                      <text x="88" y="322">α₀ = 5°</text>
+                      <text x="88" y="215">40°</text>
+                      <text x="132" y="243" opacity=".75">launched every 5°</text>
+                    </g>
+
+                    <!-- right panel : polar opening -->
+                    <polyline fill="none" stroke="var(--perf)" stroke-width="1.5" stroke-dasharray="5 4" points="560.0,340.0 590.2,313.0 620.4,286.2 650.7,259.6 680.9,233.4 711.1,207.7 741.3,182.7 771.6,158.4 794.2,140.8"/>
+                    <polyline fill="none" stroke="var(--hedge)" stroke-width="2" points="575.1,263.7 605.3,263.7 635.6,263.7 650.7,259.6 680.9,233.4 711.1,207.7 741.3,182.7 771.6,158.4 801.8,135.0 832.0,112.7 862.2,91.4 892.4,71.3"/>
+                    <g fill="none" stroke="var(--hedge)" stroke-width="1.5">
+                      <circle cx="597.8" cy="263.7" r="4"/><circle cx="635.6" cy="263.7" r="4"/>
+                      <circle cx="673.3" cy="239.9" r="4"/><circle cx="711.1" cy="207.7" r="4"/>
+                      <circle cx="748.9" cy="176.5" r="4"/><circle cx="786.7" cy="146.6" r="4"/>
+                      <circle cx="824.4" cy="118.1" r="4"/><circle cx="862.2" cy="91.4" r="4"/>
+                    </g>
+                    <line x1="560" y1="263.7" x2="900" y2="263.7" stroke="var(--risk)" stroke-width="1" stroke-dasharray="3 3" opacity=".75"/>
+                    <line x1="646" y1="60" x2="646" y2="340" stroke="currentColor" stroke-width="1" stroke-dasharray="3 3" opacity=".45"/>
+                    <g font-family="Source Sans 3, sans-serif" font-size="10.5" fill="currentColor">
+                      <text x="700" y="290" fill="var(--perf)" opacity=".85">Clairaut  r_p = r₀ sin α₀</text>
+                      <text x="780" y="120" fill="var(--hedge)" opacity=".85" text-anchor="end">RK4 turnaround radius</text>
+                      <text x="700" y="258" fill="var(--risk)" opacity=".8">tip radius 12.27 mm</text>
+                      <text x="566" y="90" opacity=".6">forced turn</text>
+                      <text x="566" y="104" opacity=".6">at the tip</text>
+                      <text x="652" y="90" opacity=".6">α₀ᵐᵃˣ = 11.38°</text>
+                    </g>
+
+                    <g font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".6">
+                      <text x="80" y="358" text-anchor="middle">0</text><text x="182.9" y="358" text-anchor="middle">50</text>
+                      <text x="285.7" y="358" text-anchor="middle">100</text><text x="388.6" y="358" text-anchor="middle">150</text>
+                      <text x="72" y="344" text-anchor="end">0</text><text x="72" y="250" text-anchor="end">30</text>
+                      <text x="72" y="157" text-anchor="end">60</text><text x="72" y="64" text-anchor="end">90</text>
+                      <text x="560" y="358" text-anchor="middle">0</text><text x="673.3" y="358" text-anchor="middle">15</text>
+                      <text x="786.7" y="358" text-anchor="middle">30</text><text x="900" y="358" text-anchor="middle">45</text>
+                      <text x="552" y="344" text-anchor="end">0</text><text x="552" y="250" text-anchor="end">15</text>
+                      <text x="552" y="157" text-anchor="end">30</text><text x="552" y="64" text-anchor="end">45</text>
+                    </g>
+                    <g font-family="Source Sans 3, sans-serif" font-size="11" fill="currentColor" opacity=".6">
+                      <text x="260" y="378" text-anchor="middle">axial station z [mm]</text>
+                      <text x="730" y="378" text-anchor="middle">initial angle α₀ [deg]</text>
+                      <text x="80" y="46" font-size="10.5">α [deg]</text>
+                      <text x="560" y="46" font-size="10.5">polar opening r_p [mm]</text>
+                    </g>
+                  </svg>
+                </div>
+                <figcaption><b>Closed form against integration.</b> Left, each geodesic terminates at
+                its own turnaround; the steeper the launch, the earlier the fibre gives up on the cone.
+                Right, the integrated polar radius sits on \(r_0\sin\alpha_0\) to eleven decimal places
+                wherever a natural turnaround exists; below 11.38° there is none, and the reversal has
+                to be forced at the carriage limit instead.</figcaption>
+              </figure>
+            </div>
+
+            <!-- ========== 06 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">06 — Friction as a design variable</span>
+              <div class="rk-col">
+                <h4>Choosing λ is choosing where the fibre turns around</h4>
+                <p>For \(\lambda\neq0\) no first integral is available and the ODE has to be
+                integrated. The sign convention determines how the parameter is used, so it is worth
+                stating plainly: with \(\kappa_n>0\) on this mandrel, \(\lambda>0\) adds a positive
+                \(\mathrm{d}\alpha/\mathrm{d}s\) and steers the fibre <em>towards the hoop</em>, so the
+                turnaround happens earlier, at a larger radius; \(\lambda\lt 0\) steers it towards the
+                meridian and pushes the turnaround further up the cone.</p>
+                <p>The engineering consequence is the table below. Starting from
+                \(\alpha_0=10^\circ\), under \(\alpha_0^{\max}\), so the geodesic would run all the
+                way to the tip and be forced to turn there, a positive \(\lambda\) creates a natural
+                turnaround at a radius that grows monotonically with \(\lambda\). The designer can
+                place the polar opening anywhere between the tip and roughly mid-cone by choosing
+                \(\lambda\), <em>provided the friction is available</em>: the friction demand column is
+                nothing more than \(|\lambda|\) itself.</p>
+              </div>
+
+              <figure>
+                <div class="rk-frame">
+                  <svg viewBox="0 0 940 400" role="img" aria-label="Left: winding angle against axial station for slippage coefficients from minus 0.3 to plus 0.5, all launched at 10 degrees. Positive lambda bends the curve up towards the hoop and creates an early turnaround; negative lambda flattens it towards the meridian. Right: the resulting turnaround radius against lambda; for lambda at or below zero no natural turn exists and the radius is pinned at the tip radius of 12.27 millimetres, while above zero it climbs steadily to 34 millimetres at lambda equals 0.5.">
+                    <g stroke="currentColor" opacity=".13" stroke-width="1">
+                      <line x1="80" y1="246.7" x2="440" y2="246.7"/><line x1="80" y1="153.3" x2="440" y2="153.3"/>
+                      <line x1="182.9" y1="60" x2="182.9" y2="340"/><line x1="285.7" y1="60" x2="285.7" y2="340"/><line x1="388.6" y1="60" x2="388.6" y2="340"/>
+                      <line x1="560" y1="246.7" x2="900" y2="246.7"/><line x1="560" y1="153.3" x2="900" y2="153.3"/>
+                      <line x1="616.7" y1="60" x2="616.7" y2="340"/><line x1="767.8" y1="60" x2="767.8" y2="340"/><line x1="843.3" y1="60" x2="843.3" y2="340"/>
+                    </g>
+                    <g stroke="currentColor" opacity=".45" stroke-width="1.2">
+                      <line x1="80" y1="340" x2="440" y2="340"/><line x1="80" y1="60" x2="80" y2="340"/>
+                      <line x1="560" y1="340" x2="900" y2="340"/><line x1="560" y1="60" x2="560" y2="340"/>
+                    </g>
+                    <line x1="80" y1="60" x2="440" y2="60" stroke="var(--risk)" stroke-width="1.2" stroke-dasharray="5 4" opacity=".8"/>
+                    <text x="436" y="54" text-anchor="end" font-family="Source Sans 3, sans-serif" font-size="10.5" fill="var(--risk)">hoop</text>
+
+                    <g fill="none" stroke-width="1.6">
+                      <polyline stroke="currentColor" opacity=".4" stroke-dasharray="5 3" points="80.0,308.9 100.3,311.0 120.6,313.0 140.9,314.7 161.2,316.3 181.4,317.8 201.5,319.1 221.5,320.3 241.3,321.3 261.1,322.1 280.6,322.8 299.9,323.3 319.1,323.5 338.0,323.5 356.7,323.1 375.1,322.2 393.4,320.4 411.3,317.2 429.0,311.2 434.3,308.2"/>
+                      <polyline stroke="currentColor" opacity=".55" stroke-dasharray="5 3" points="80.0,308.9 100.3,309.6 120.5,310.2 140.8,310.5 161.0,310.7 181.1,310.7 201.0,310.6 220.9,310.1 240.6,309.5 260.1,308.5 279.5,307.2 298.6,305.5 317.4,303.2 336.0,300.1 354.3,296.0 372.2,290.4 389.8,282.3 406.8,270.3 422.9,250.9 434.3,226.9"/>
+                      <polyline stroke="currentColor" opacity=".85" stroke-width="2" points="80.0,308.9 101.3,308.9 122.5,308.7 143.7,308.3 164.9,307.7 185.9,306.9 206.7,305.8 227.4,304.4 247.9,302.6 268.2,300.4 288.2,297.6 307.9,294.0 327.2,289.5 346.2,283.5 364.7,275.5 382.6,264.4 399.7,248.0 415.5,222.5 428.9,180.7 434.3,148.3"/>
+                      <polyline stroke="var(--risk)" opacity=".5" points="80.0,308.9 102.3,308.1 124.5,307.1 146.7,305.9 168.7,304.4 190.6,302.5 212.3,300.3 233.8,297.7 255.0,294.5 275.9,290.7 296.4,285.9 316.5,279.8 336.1,272.0 355.1,261.5 373.2,247.1 390.1,226.4 405.1,195.4 416.8,148.0 422.9,81.6 423.2,60.0"/>
+                      <polyline stroke="var(--risk)" opacity=".65" points="80.0,308.9 101.3,307.4 122.5,305.7 143.6,303.7 164.6,301.5 185.4,299.0 206.1,296.0 226.5,292.6 246.6,288.6 266.4,283.8 285.9,278.1 304.9,271.0 323.3,262.1 341.1,250.7 358.0,235.5 373.6,214.8 387.3,185.8 398.0,145.3 404.2,92.2 405.1,60.0"/>
+                      <polyline stroke="var(--risk)" opacity=".8" points="80.0,308.9 100.2,306.8 120.4,304.4 140.5,301.8 160.5,298.9 180.3,295.7 199.9,292.0 219.2,287.9 238.3,283.1 257.0,277.5 275.4,270.9 293.3,262.8 310.6,253.0 327.1,240.6 342.7,224.6 357.0,203.6 369.4,175.8 379.1,139.2 384.8,93.6 386.0,60.0"/>
+                      <polyline stroke="var(--risk)" opacity="1" points="80.0,308.9 98.2,305.7 116.3,302.3 134.4,298.6 152.3,294.5 170.0,290.1 187.5,285.3 204.8,279.8 221.8,273.7 238.4,266.7 254.6,258.5 270.3,248.9 285.4,237.3 299.6,223.3 312.9,206.0 324.7,184.5 334.8,157.8 342.3,125.4 346.7,87.8 347.6,60.0"/>
+                    </g>
+                    <g font-family="IBM Plex Mono, monospace" font-size="9.5">
+                      <text x="336" y="78" fill="var(--risk)" text-anchor="end">λ = +0.5</text>
+                      <text x="388" y="92" fill="var(--risk)" opacity=".85" text-anchor="middle">+0.3</text>
+                      <text x="407" y="112" fill="var(--risk)" opacity=".7" text-anchor="middle">+0.2</text>
+                      <text x="425" y="132" fill="var(--risk)" opacity=".55" text-anchor="middle">+0.1</text>
+                      <text x="438" y="164" fill="currentColor" text-anchor="end">0  (geodesic)</text>
+                      <text x="438" y="242" fill="currentColor" opacity=".6" text-anchor="end">−0.1</text>
+                      <text x="438" y="322" fill="currentColor" opacity=".45" text-anchor="end">−0.3</text>
+                    </g>
+
+                    <!-- right panel -->
+                    <rect x="560" y="60" width="132.2" height="280" fill="currentColor" opacity=".05"/>
+                    <polyline fill="none" stroke="var(--hedge)" stroke-width="2" points="578.9,318.8 616.7,318.8 654.4,318.8 692.2,318.8 711.1,311.3 730.0,289.0 748.9,266.0 767.8,242.7 805.6,196.5 881.1,112.7"/>
+                    <g fill="none" stroke="var(--hedge)" stroke-width="1.5">
+                      <circle cx="578.9" cy="318.8" r="4"/><circle cx="616.7" cy="318.8" r="4"/><circle cx="654.4" cy="318.8" r="4"/>
+                      <circle cx="692.2" cy="318.8" r="4"/><circle cx="711.1" cy="311.3" r="4"/><circle cx="730.0" cy="289.0" r="4"/>
+                      <circle cx="748.9" cy="266.0" r="4"/><circle cx="767.8" cy="242.7" r="4"/><circle cx="805.6" cy="196.5" r="4"/><circle cx="881.1" cy="112.7" r="4"/>
+                    </g>
+                    <line x1="560" y1="318.8" x2="900" y2="318.8" stroke="var(--risk)" stroke-width="1" stroke-dasharray="3 3" opacity=".7"/>
+                    <g font-family="Source Sans 3, sans-serif" font-size="10.5" fill="currentColor">
+                      <text x="576" y="96" opacity=".6">forced at the tip:</text>
+                      <text x="576" y="110" opacity=".6">no natural turn</text>
+                      <text x="800" y="150" fill="var(--hedge)" opacity=".85" text-anchor="end">natural turn at the polar opening</text>
+                      <text x="700" y="334" fill="var(--risk)" opacity=".75">tip radius 12.27 mm</text>
+                    </g>
+
+                    <g font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".6">
+                      <text x="80" y="358" text-anchor="middle">0</text><text x="182.9" y="358" text-anchor="middle">50</text>
+                      <text x="285.7" y="358" text-anchor="middle">100</text><text x="388.6" y="358" text-anchor="middle">150</text>
+                      <text x="72" y="344" text-anchor="end">0</text><text x="72" y="250" text-anchor="end">30</text>
+                      <text x="72" y="157" text-anchor="end">60</text><text x="72" y="64" text-anchor="end">90</text>
+                      <text x="616.7" y="358" text-anchor="middle">−0.2</text><text x="692.2" y="358" text-anchor="middle">0</text>
+                      <text x="767.8" y="358" text-anchor="middle">0.2</text><text x="843.3" y="358" text-anchor="middle">0.4</text>
+                      <text x="552" y="344" text-anchor="end">10</text><text x="552" y="250" text-anchor="end">20</text>
+                      <text x="552" y="157" text-anchor="end">30</text><text x="552" y="64" text-anchor="end">40</text>
+                    </g>
+                    <g font-family="Source Sans 3, sans-serif" font-size="11" fill="currentColor" opacity=".6">
+                      <text x="260" y="378" text-anchor="middle">axial station z [mm]</text>
+                      <text x="730" y="378" text-anchor="middle">slippage coefficient λ = κ_g / κ_n</text>
+                      <text x="80" y="46" font-size="10.5">α [deg],  all launched at α₀ = 10°</text>
+                      <text x="560" y="46" font-size="10.5">turnaround radius [mm]</text>
+                    </g>
+                  </svg>
+                </div>
+                <figcaption><b>The turnaround is a design choice, priced in friction.</b> Every
+                millimetre of polar radius gained above the tip is paid for by a friction demand equal
+                to \(|\lambda|\). The shaded band on the right is where no natural turn exists at all
+                and the reversal has to be imposed by the carriage.</figcaption>
+              </figure>
+
+              <div class="rk-tablewrap">
+                <table>
+                  <caption>Turnaround produced by a non-geodesic path launched at \(\alpha_0=10^\circ\).
+                  "Forced" means the fibre never reached \(\alpha=90^\circ\) and was reversed at the
+                  carriage limit instead. The friction demand is \(\mu\ge|\lambda|\).</caption>
+                  <thead>
+                    <tr><th>λ</th><th>Turnaround z [mm]</th><th>Turn radius [mm]</th><th>Friction demand μ</th><th style="text-align:left">Turn type</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>−0.30</td><td>172.25</td><td>12.270</td><td>0.30</td><td style="text-align:left">forced at the tip</td></tr>
+                    <tr><td>−0.10</td><td>172.25</td><td>12.270</td><td>0.10</td><td style="text-align:left">forced at the tip</td></tr>
+                    <tr><td>0.00</td><td>172.25</td><td>12.270</td><td>0</td><td style="text-align:left">forced at the tip (pure geodesic)</td></tr>
+                    <tr><td>+0.05</td><td>170.91</td><td>13.070</td><td>0.05</td><td style="text-align:left">natural</td></tr>
+                    <tr><td>+0.10</td><td>166.84</td><td>15.460</td><td>0.10</td><td style="text-align:left">natural</td></tr>
+                    <tr class="rk-hero"><td>+0.20</td><td>158.05</td><td>20.422</td><td>0.20</td><td style="text-align:left">natural, at the edge of what is realistic</td></tr>
+                    <tr><td>+0.30</td><td>148.74</td><td>25.374</td><td>0.30</td><td style="text-align:left">natural</td></tr>
+                    <tr><td>+0.50</td><td>130.09</td><td>34.355</td><td>0.50</td><td class="rk-bad" style="text-align:left">beyond any realistic μ</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- ========== 07 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">07 — Numerics</span>
+              <div class="rk-col">
+                <h4>The integrator is not what limits the accuracy</h4>
+                <p>Both solvers advance the system with classical explicit fourth-order Runge–Kutta.
+                The scheme is kept deliberately: the right-hand side is smooth wherever the spline is
+                \(C^2\), the problem is non-stiff, and a fixed step <em>in arc length</em> is exactly
+                what the downstream band and coverage calculations want, because it samples the fibre
+                uniformly in physical length rather than in \(z\). The step has a direct physical
+                reading, \(\Delta s=0.5\) mm is half a millimetre of tow per step, about 830 steps
+                for one pass on this mandrel.</p>
+                <p>Measured over a fixed 300 mm arc against a reference solution, the observed order
+                is 3.98–3.99 across four decades, with the round-off floor reached near
+                \(\Delta s\approx0.03\) mm, far below any step one would actually use.</p>
+              </div>
+
+              <div class="rk-tablewrap">
+                <table>
+                  <caption>Convergence of the RK4 stepper on a 300 mm geodesic arc, \(\alpha_0=25^\circ\).
+                  The error is the sup-norm of the state difference against a reference solution; the
+                  last column is the drift of the Clairaut invariant, which should be exactly zero.</caption>
+                  <thead>
+                    <tr><th>Δs [mm]</th><th>State error</th><th>Observed order</th><th>Clairaut drift [mm]</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>2.0</td><td>4.10 × 10⁻⁷</td><td>—</td><td>1.89 × 10⁻⁹</td></tr>
+                    <tr><td>1.0</td><td>2.60 × 10⁻⁸</td><td>3.98</td><td>2.25 × 10⁻¹⁰</td></tr>
+                    <tr><td>0.5</td><td>1.63 × 10⁻⁹</td><td>3.99</td><td>2.48 × 10⁻¹¹</td></tr>
+                    <tr><td>0.25</td><td>1.03 × 10⁻¹⁰</td><td>3.99</td><td>1.75 × 10⁻¹²</td></tr>
+                    <tr><td>0.125</td><td>6.61 × 10⁻¹²</td><td>3.96</td><td>1.67 × 10⁻¹³</td></tr>
+                    <tr><td>0.0625</td><td>3.55 × 10⁻¹³</td><td>round-off</td><td>round-off</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="rk-col">
+                <h5>Where the accuracy actually goes</h5>
+                <p>The turnaround is not a fixed time but a <strong>state event</strong>: the leg ends
+                when \(\cos\alpha=0\), or when the carriage limit is reached. How that event is located
+                turns out to dominate the accuracy of the whole computation.</p>
+                <p>Version 1 takes a full RK4 step and <em>then</em> tests the sign, so the turnaround
+                is recorded at the first sample past 90°, with an error of order \(\Delta s\), and
+                non-monotone, because the sign of the overshoot depends on where the last step happens
+                to land. Version 2 treats an event as a sign change of a scalar guard \(g(y)\) and
+                refines it by bisecting <em>the step itself</em>:</p>
+              </div>
+
+<pre class="rk-code"><code><span class="c">if</span> hit &gt;= 0:
+    lo, hi, gfun = 0.0, ds, events[hit][1]
+    <span class="c">for _ in range(60):</span>                       <span class="c"># bisect the RK4 step</span>
+        mid = 0.5 * (lo + hi)
+        <span class="c">if</span> gfun(_rk4_step(st, mid, mandrel, lam)) &lt; 0.0:
+            lo = mid
+        <span class="c">else</span>:
+            hi = mid
+    st = _rk4_step(st, hi, mandrel, lam)          <span class="c"># land exactly on the event</span></code></pre>
+
+              <div class="rk-col">
+                <p>The cost is 60 extra right-hand-side evaluations per event, about 0.3 % of a leg.
+                The benefit is that the leg lands on \(\alpha=90^\circ\) to \(1.4\times10^{-14}\)
+                degrees at every step size tested, and the turnaround radius then converges to
+                Clairaut's value at the full fourth order of the integrator:
+                \(1.3\times10^{-7}\) mm at \(\Delta s=2\) mm falling to \(3.1\times10^{-11}\) mm at
+                0.25 mm. Because each leg <em>starts</em> exactly on the event, the error does not
+                accumulate from circuit to circuit.</p>
+              </div>
+
+              
+            </div>
+
+            <!-- ========== 08 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">08 — The turnaround, as a curve</span>
+              <div class="rk-col">
+                <h4>Prescribe the angle, derive the path</h4>
+                <p>The first solver reverses the fibre with the mirror map \(\alpha\mapsto\pi-\alpha\),
+                which preserves \(|\sin\alpha|\), so \(\theta\) keeps advancing in the same sense,
+                while flipping \(\cos\alpha\), so the carriage reverses. On paper that is a clean
+                idealisation. On a machine it is not realisable: the delivery eye would have to yaw
+                through 130° in zero time. The extra rotation the pattern needs is likewise spliced in
+                as a synthetic arc in which \(z\), \(\theta\) and \(\alpha\) are written down
+                <em>independently</em> rather than being related by the surface kinematics.</p>
+                <p>The second solver makes the turnaround a genuine piece of the trajectory. The trick
+                is to stop treating \(\alpha\) as a state and start treating it as a prescribed
+                function of a normalised parameter \(\sigma\in[0,1]\), then integrate the two
+                kinematic equations, which remain exact, along with it. For a piece of arc length
+                \(L\):</p>
+              </div>
+
+              $$\frac{\mathrm{d}z}{\mathrm{d}\sigma}=L\,\frac{\cos\alpha(\sigma)}{g(z)},\qquad \frac{\mathrm{d}\theta}{\mathrm{d}\sigma}=L\,\frac{\sin\alpha(\sigma)}{r(z)}$$
+
+              <div class="rk-col">
+                <p>Prescribing \(\alpha\) and <em>deriving</em> \((z,\theta)\) from it gives a path
+                that lies on the surface and whose tangent really does make the angle \(\alpha\) at
+                every point. The swing itself is built from a smoothstep ramp</p>
+              </div>
+
+              $$\rho(x)=\operatorname{sgn}(x)\,u^2(3-2u),\quad u=\min(|x|,1),\qquad \text{so } \rho(0)=0,\;\rho(\pm1)=\pm1,\;\rho'(\pm1)=0$$
+
+              <div class="rk-col">
+                <p>which is \(C^1\) at both ends, so the angle joins the incoming and outgoing legs
+                with matching slope and there is no kink in the tow direction. A linear ramp would be
+                \(C^0\) only, and the yaw axis would see a step in velocity. Writing
+                \(\beta=\alpha_{\text{in}}-\pi/2\) for the signed half-amplitude, the turnaround is
+                three pieces: ramp in, \(\alpha=\pi/2+\beta\rho(1-\sigma)\); plateau,
+                \(\alpha\equiv\pi/2\), a true hoop at constant \(z\); ramp out,
+                \(\alpha=\pi/2-\beta\rho(\sigma)\).</p>
+                <h5>The dwell is a hoop, and costs no integration</h5>
+                <p>On the plateau \(\alpha=90^\circ\) exactly, so \(\mathrm{d}z/\mathrm{d}s=0\), the
+                carriage is frozen, and \(\mathrm{d}\theta/\mathrm{d}s=1/r\) with \(r\) constant. The
+                arc needed for a prescribed extra rotation \(\delta\) is therefore available in closed
+                form, \(L_{\text{plateau}}=\delta\,r(z_{\text{plateau}})\), and needs no integration at
+                all. Physically it is the wrap that anchors the reversal, not a bookkeeping rotation.</p>
+                <h5>The carriage comes back exactly where it left</h5>
+                <p>This is the property that makes circuits stack, and it is provable rather than
+                lucky. By the kinematics \(\mathrm{d}z\propto\cos\alpha\). On the ramp in,
+                \(\cos\alpha=\cos(\pi/2+\beta\rho(1-\sigma))=-\sin(\beta\rho(1-\sigma))\); on the ramp
+                out, \(\cos\alpha=+\sin(\beta\rho(\sigma))\). Under \(\sigma\mapsto1-\sigma\) the two
+                integrands are exact negatives, and the plateau contributes nothing because
+                \(\cos90^\circ=0\). The net axial displacement is zero. Measured on every run, the
+                residual, which comes only from the \(z\)-dependence of \(g\) and \(r\), is
+                \(2.5\times10^{-12}\) mm.</p>
+                <p>What does <em>not</em> cancel is the excursion during the turn. The carriage travels
+                past its entry station and comes back, an overtravel proportional to the ramp arc.
+                With the default 15 mm ramp the base turnaround runs 5.37 mm past \(z=0\), off the end
+                of the fitted profile, which is not an artefact to be suppressed but a statement
+                about the tooling: that is where the turnaround ring or pin band has to provide
+                material, and it is why the surface is extended as a cylinder beyond the profile.</p>
+              </div>
+
+              <figure>
+                <div class="rk-frame">
+                  <svg viewBox="0 0 940 400" role="img" aria-label="Left: the prescribed winding angle through one base turnaround, rising smoothly from 155 degrees through a short hoop plateau at 90 degrees and down to 25 degrees, with C1 joins at both ends. Right: the axial coordinate through the same turnaround; the carriage runs 5.37 millimetres past its entry station and returns to it, the two ramps cancelling exactly.">
+                    <g stroke="currentColor" opacity=".13" stroke-width="1">
+                      <line x1="80" y1="200" x2="440" y2="200"/><line x1="80" y1="270" x2="440" y2="270"/><line x1="80" y1="130" x2="440" y2="130"/>
+                      <line x1="560" y1="140" x2="900" y2="140"/><line x1="560" y1="220" x2="900" y2="220"/><line x1="560" y1="300" x2="900" y2="300"/>
+                    </g>
+                    <g stroke="currentColor" opacity=".45" stroke-width="1.2">
+                      <line x1="80" y1="340" x2="440" y2="340"/><line x1="80" y1="60" x2="80" y2="340"/>
+                      <line x1="560" y1="340" x2="900" y2="340"/><line x1="560" y1="60" x2="560" y2="340"/>
+                    </g>
+
+                    <rect x="255.8" y="60" width="12.4" height="280" fill="var(--perf)" opacity=".16"/>
+                    <line x1="80" y1="200" x2="440" y2="200" stroke="var(--risk)" stroke-width="1" stroke-dasharray="4 3" opacity=".7"/>
+                    <polyline fill="none" stroke="var(--hedge)" stroke-width="2.2" points="80.0,98.9 96.0,101.2 112.0,107.7 127.9,117.3 143.9,129.3 159.9,142.6 175.9,156.3 191.9,169.6 207.8,181.5 223.8,191.2 239.8,197.6 255.8,200.0 268.2,200.2 284.2,203.6 300.2,211.0 316.2,221.3 332.1,233.6 348.1,247.1 364.1,260.8 380.1,273.9 396.1,285.3 412.0,294.2 428.0,299.8 440.0,301.1"/>
+                    <g font-family="Source Sans 3, sans-serif" font-size="10.5" fill="currentColor">
+                      <text x="86" y="92" fill="var(--hedge)">α_in = 180° − α₀ = 155°</text>
+                      <text x="436" y="318" text-anchor="end" fill="var(--hedge)">α_out = α₀ = 25°</text>
+                      <text x="262" y="76" text-anchor="middle" fill="var(--perf)" font-size="10">hoop plateau</text>
+                      <text x="262" y="88" text-anchor="middle" fill="var(--perf)" font-size="10">= the dwell</text>
+                      <text x="150" y="192" opacity=".6">ramp in</text>
+                      <text x="330" y="192" opacity=".6">ramp out</text>
+                      <text x="86" y="214" fill="var(--risk)" opacity=".8">α = 90°</text>
+                    </g>
+
+                    <polyline fill="none" stroke="var(--hedge)" stroke-width="2.2" points="560.0,100.0 575.1,135.5 590.2,170.2 605.3,203.0 620.4,232.8 635.5,258.8 650.6,279.9 665.6,295.7 680.7,306.3 695.8,312.2 710.9,314.5 726.0,314.9 737.8,314.9 752.8,314.2 767.9,311.1 783.0,304.1 798.1,292.3 813.2,275.1 828.3,252.7 843.4,225.7 858.5,195.0 873.6,161.7 888.7,126.7 900.0,100.0"/>
+                    <line x1="560" y1="100" x2="900" y2="100" stroke="currentColor" stroke-width="1" stroke-dasharray="4 3" opacity=".5"/>
+                    <g stroke="var(--risk)" stroke-width="1.2" opacity=".8">
+                      <line x1="730" y1="100" x2="730" y2="314.9"/>
+                      <line x1="724" y1="100" x2="736" y2="100"/><line x1="724" y1="314.9" x2="736" y2="314.9"/>
+                    </g>
+                    <g font-family="Source Sans 3, sans-serif" font-size="10.5" fill="currentColor">
+                      <text x="740" y="212" fill="var(--risk)">overtravel  Δz = 5.372 mm</text>
+                      <text x="566" y="92" opacity=".6">entry station z_in</text>
+                      <text x="896" y="92" text-anchor="end" fill="var(--hedge)">returns to z_in within 2.5 × 10⁻¹² mm</text>
+                    </g>
+
+                    <g font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".6">
+                      <text x="72" y="344" text-anchor="end">0</text><text x="72" y="274" text-anchor="end">45</text>
+                      <text x="72" y="204" text-anchor="end">90</text><text x="72" y="134" text-anchor="end">135</text><text x="72" y="64" text-anchor="end">180</text>
+                      <text x="552" y="104" text-anchor="end">0</text><text x="552" y="184" text-anchor="end">−2</text>
+                      <text x="552" y="264" text-anchor="end">−4</text><text x="552" y="344" text-anchor="end">−6</text>
+                    </g>
+                    <g font-family="Source Sans 3, sans-serif" font-size="11" fill="currentColor" opacity=".6">
+                      <text x="260" y="378" text-anchor="middle">arc length within the turnaround [mm]</text>
+                      <text x="730" y="378" text-anchor="middle">arc length within the turnaround [mm]</text>
+                      <text x="80" y="46" font-size="10.5">prescribed α [deg]</text>
+                      <text x="560" y="46" font-size="10.5">axial station z [mm]</text>
+                    </g>
+                  </svg>
+                </div>
+                <figcaption><b>A reversal with no discontinuity anywhere in it.</b> The angle, the
+                carriage and the spindle all move through the turn as solutions of the same
+                kinematics, so the deposited band, the overtravel and the dwell rotation all come out
+                of one integration instead of being asserted.</figcaption>
+              </figure>
+
+              
+
+              <div class="rk-col">
+                <p>One subtlety in sizing the dwell: the ramps themselves sweep \(\theta\), because a
+                fibre at \(\alpha\) near 90° wraps the mandrel fast. That sweep belongs to the
+                <em>free</em> motion, not to the dwell. The solver therefore runs a dwell-free probe
+                circuit first and measures the free sweep,
+                \(\Delta\theta_f=\Delta\theta_{\text{out}}+\Delta\theta_{\text{tip ramp}}+\Delta\theta_{\text{back}}+\Delta\theta_{\text{base ramp}}\),
+                before any pattern arithmetic. On the reference case that is 389.08° per circuit, of
+                which 15.58° comes from the base ramps and exactly 0° from the tip ramps, at a
+                natural turnaround the fibre arrives already at 90° and there is nothing to ramp.</p>
+                <p>Because every circuit is then integrated from the state the previous one actually
+                left, circuit-to-circuit repeatability becomes a <em>measurement</em> rather than an
+                assumption. Over twelve circuits the closure is \(+6.6\times10^{-4}\) degrees in
+                \(\alpha\) and \(-1.5\times10^{-5}\) mm in \(z\); the rotational invariance of the
+                right-hand side is confirmed instead of being taken on faith. The same log would
+                immediately reveal a drift if a radial offset from previous plies, or a
+                station-dependent \(\lambda\), broke that invariance.</p>
+              </div>
+            </div>
+
+            <!-- ========== 09 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">09 — Pattern closure</span>
+              <div class="rk-col">
+                <h4>A ceiling function decides how much fibre a layer costs</h4>
+                <p>For the bands to distribute evenly over \(n_c\) circuits, circuit \(i\) must start
+                at azimuth \(2\pi i p/n_c \pmod{2\pi}\) for some integer \(p\), the <em>pattern
+                number</em>, so the advance per circuit must satisfy</p>
+              </div>
+
+              $$\Delta\theta\;=\;2\pi\left(m+\frac{p}{n_c}\right),\quad m\in\mathbb{N},\qquad\text{with } \gcd(p,n_c)=1$$
+
+              <div class="rk-col">
+                <p>The coprimality condition is not decorative: if \(\gcd(p,n_c)=d>1\) the circuits
+                visit only \(n_c/d\) distinct positions, each \(d\) times, and the layer has \(d\)-fold
+                gaps. The dwell can only <em>add</em> rotation, never remove it, so
+                \(\Delta\theta\ge\Delta\theta_f\) and the code picks the smallest admissible advance,
+                \(m=\lceil\Delta\theta_f/2\pi-p/n_c\rceil\).</p>
+                <p>That ceiling is a step, and the step is expensive. Write \(\phi\) for the fractional
+                part of the free sweep in turns. Then \(m\) stays at its smallest value, the dwell
+                stays small, precisely when \(p/n_c>\phi\), that is</p>
+              </div>
+
+              $$\phi\;=\;\left\{\frac{\Delta\theta_f}{2\pi}\right\}\;=\;0.0807,\qquad\qquad \boxed{\,n_c\;\lt\;\frac{p}{\phi}\,}$$
+
+              <div class="rk-col">
+                <p>As soon as \(n_c\) exceeds \(p/\phi\), the ceiling steps up by one, the advance
+                jumps by a full turn, and the dwell jumps by almost 360° per circuit. That rotation is
+                laid as hoop fibre at the turnarounds, so <strong>the fibre consumed by a layer nearly
+                doubles for one extra circuit</strong>. For this mandrel \(p/\phi=12.38\) at \(p=1\):
+                twelve circuits cost 5.28 m and thirteen cost 9.31 m.</p>
+                <p>The criterion also contains its own remedy. The bound scales with \(p\), so a larger
+                pattern number restores the minimal advance at a larger circuit count, subject to
+                coprimality: \(n_c^{\max}(p)=\lfloor p/\phi\rfloor\), giving 12, 24, 37, 61, 86 for
+                \(p=1,2,3,5,7\). The recipe is then one line — <em>choose the number of circuits the
+                coverage requires, then choose the smallest \(p\) with \(n_c\lt p/\phi\) and
+                \(\gcd(p,n_c)=1\)</em>.</p>
+              </div>
+
+              
+
+            <!-- ========== 10 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">10 — Coverage</span>
+              <div class="rk-col">
+                <h4>The tow is a band, and the band grows by a factor of eleven</h4>
+                <p>The fibre is not a curve but a band of width \(w\) measured perpendicular to it.
+                Where a band crosses the parallel at station \(z\), the chord it cuts out of that
+                parallel is longer than \(w\), because the band is oblique to the parallel by
+                \(90^\circ-\alpha\). Dividing by the radius gives the angular footprint of one
+                crossing:</p>
+              </div>
+
+              $$\Delta\theta_{\text{band}}(z)\;=\;\frac{w}{r(z)\,|\cos\alpha(z)|}\;,\qquad\qquad \Phi(z)\;=\;\frac{1}{2\pi}\sum_{k\,:\,z(s_k)=z}\frac{w}{r(z)\,|\cos\alpha_k|}$$
+
+              <div class="rk-col">
+                <p>With \(w=6\) mm this is 6.10° at the base (\(\alpha=25^\circ\), \(r=62.2\) mm) and
+                63° at \(z=146\) mm (\(\alpha=78^\circ\), \(r=26.8\) mm): a factor of eleven, of which
+                2.3 comes from the shrinking radius and 4.8 from the steepening angle. The coverage
+                ratio \(\Phi\) sums that footprint over every crossing of a station, with
+                \(\Phi=1\) meaning exactly one closed layer.</p>
+                <p>The two codes compute it differently, and the difference is instructive. Version 1
+                <em>assumes</em> each circuit crosses each station exactly twice, true strictly
+                between the base and the polar opening, and evaluates the closed form
+                \(2n_cw/(2\pi r|\cos\alpha|)\). Version 2 assumes nothing: it scans the whole
+                trajectory for sign changes of \(z(s)-z_{\text{station}}\), interpolates \(\alpha\) at
+                each crossing and sums, so turnarounds, overtravel and hoop plateaus are counted
+                exactly as they were integrated, and the crossing count itself becomes an output. Over
+                the region where the closed form is valid the two agree to a mean of 0.006 % and a
+                worst case of 1.8 %; they diverge precisely where the assumption fails.</p>
+                <p>Both contain \(1/|\cos\alpha|\), which diverges at the turnaround. That divergence
+                is not a modelling error, the fibre genuinely piles up at the polar opening, and the
+                experimental trials observed exactly that accumulation at the small end, but the
+                band-width formula stops being quantitative there, because the bands overlap rather
+                than tile. Both codes therefore mask stations above 80° and report statistics only
+                over the valid region. <em>Any coverage figure quoted without that mask is
+                meaningless.</em></p>
+              </div>
+
+              <figure>
+                <div class="rk-frame">
+                  <svg viewBox="0 0 940 400" role="img" aria-label="Coverage ratio along the mandrel axis after twelve circuits. It sits near 0.41 over most of the cone, rises slowly past 100 millimetres and then climbs steeply towards the polar opening, crossing the closed-layer line of 1.0 at about 135 millimetres and diverging beyond 146 millimetres, where the shaded exclusion zone begins.">
+                    <g stroke="currentColor" opacity=".13" stroke-width="1">
+                      <line x1="80" y1="252" x2="880" y2="252"/><line x1="80" y1="188" x2="880" y2="188"/><line x1="80" y1="124" x2="880" y2="124"/>
+                      <line x1="205" y1="60" x2="205" y2="380"/><line x1="330" y1="60" x2="330" y2="380"/><line x1="455" y1="60" x2="455" y2="380"/>
+                      <line x1="580" y1="60" x2="580" y2="380"/><line x1="705" y1="60" x2="705" y2="380"/><line x1="830" y1="60" x2="830" y2="380"/>
+                    </g>
+                    <rect x="809.4" y="60" width="70.6" height="320" fill="currentColor" opacity=".09"/>
+                    <g stroke="currentColor" opacity=".45" stroke-width="1.2">
+                      <line x1="80" y1="380" x2="880" y2="380"/><line x1="80" y1="60" x2="80" y2="380"/>
+                    </g>
+                    <line x1="80" y1="316" x2="880" y2="316" stroke="var(--risk)" stroke-width="1.3" stroke-dasharray="5 4" opacity=".85"/>
+                    <polyline fill="none" stroke="var(--hedge)" stroke-width="2.2" points="80.0,354.0 102.1,354.0 124.2,354.0 146.3,353.9 168.4,353.9 190.5,353.7 212.6,353.6 234.7,353.4 256.8,353.2 278.9,352.9 301.0,352.6 323.1,352.2 345.2,351.7 367.3,351.3 389.4,350.7 411.6,350.1 433.7,349.4 455.8,348.6 477.9,347.6 500.0,346.6 522.1,345.4 544.2,344.1 566.3,342.5 588.4,340.7 610.5,338.5 632.6,336.0 654.7,332.9 676.8,329.0 698.9,324.0 721.0,317.4 743.1,307.8 750.5,303.6 757.8,298.5 765.2,292.4 772.6,284.8 779.9,274.8 787.3,261.2 794.7,240.7 802.0,204.7 809.4,111.0"/>
+                    <circle cx="107" cy="354" r="4" fill="var(--hedge)"/>
+                    <g font-family="Source Sans 3, sans-serif" font-size="11" fill="currentColor">
+                      <text x="118" y="350" fill="var(--hedge)">Φ_min = 0.41 — twelve circuits close 41 % of a layer</text>
+                      <text x="866" y="310" text-anchor="end" fill="var(--risk)" opacity=".9">closed layer, Φ = 1</text>
+                      <text x="806" y="88" text-anchor="end" opacity=".6">α &gt; 80°: excluded from the statistic</text>
+                      <text x="806" y="102" text-anchor="end" opacity=".6">(the real, unbounded build-up at the polar opening)</text>
+                    </g>
+                    <g font-family="IBM Plex Mono, monospace" font-size="10" fill="currentColor" opacity=".6">
+                      <text x="80" y="398" text-anchor="middle">0</text><text x="205" y="398" text-anchor="middle">25</text>
+                      <text x="330" y="398" text-anchor="middle">50</text><text x="455" y="398" text-anchor="middle">75</text>
+                      <text x="580" y="398" text-anchor="middle">100</text><text x="705" y="398" text-anchor="middle">125</text>
+                      <text x="830" y="398" text-anchor="middle">150</text>
+                      <text x="72" y="384" text-anchor="end">0</text><text x="72" y="320" text-anchor="end">1</text>
+                      <text x="72" y="256" text-anchor="end">2</text><text x="72" y="192" text-anchor="end">3</text>
+                      <text x="72" y="128" text-anchor="end">4</text><text x="72" y="64" text-anchor="end">5</text>
+                    </g>
+                    <g font-family="Source Sans 3, sans-serif" font-size="11" fill="currentColor" opacity=".6">
+                      <text x="480" y="46" text-anchor="middle">coverage after 12 circuits, α₀ = 25°, band width 6 mm</text>
+                      <text x="80" y="46" font-size="10.5">Φ [–]</text>
+                    </g>
+                  </svg>
+                </div>
+                <figcaption><b>Coverage is flat where it matters and diverges where it does not.</b>
+                The band width buys almost nothing on the body of the cone, and everything at the
+                small end, which is the quantitative statement of the accumulation seen in the
+                experimental trials.</figcaption>
+              </figure>
+
+              <div class="rk-col">
+                <p>The number that follows is the one that should drive the design. Twelve circuits
+                close 41 % of a layer, so \(n_c^{\text{full}}=\lceil n_c/\Phi_{\min}\rceil=\lceil
+                12/0.406\rceil=30\) circuits are needed for \(\Phi\ge1\) everywhere in the valid
+                region. Section 09 then says how to choose \(p\) so that 30 circuits do not fall over
+                the closure discontinuity: \(p>30\phi=2.42\) requires \(p\ge3\), and coprimality with
+                30 rejects 3, 4, 5 and 6 and selects \(p=7\). Running the solver at
+                \(n_c=30,\,p=7\) — a pattern it has never seen — returns \(\Phi_{\min}=1.016\),
+                which is the one genuinely <em>predictive</em> check in the whole study.</p>
+              </div>
+
+              <div class="rk-tablewrap">
+                <table>
+                  <caption>Three candidate first layers on the PERSEUS mandrel. All geodesic
+                  (\(\lambda=0\), no friction required), \(\alpha_0=25^\circ\), band width 6 mm, cured
+                  band thickness 0.25 mm, \(\Delta s=0.5\) mm. Statistics over the valid region.</caption>
+                  <thead>
+                    <tr><th style="text-align:left">Quantity</th><th>Exploratory</th><th>Balanced</th><th>Closed layer</th><th>Naive</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr><td>Circuits n_c</td><td>12</td><td>23</td><td>30</td><td>30</td></tr>
+                    <tr><td>Pattern number p</td><td>1</td><td>2</td><td>7</td><td>1</td></tr>
+                    <tr><td>Advance per circuit</td><td>390.0°</td><td>391.3°</td><td>444.0°</td><td>732.0°</td></tr>
+                    <tr><td>Dwell per circuit</td><td>0.92°</td><td>2.22°</td><td>54.9°</td><td>342.9°</td></tr>
+                    <tr><td>Minimum coverage Φ_min</td><td>0.41</td><td>0.78</td><td class="rk-good">1.02</td><td>1.02</td></tr>
+                    <tr><td>Maximum thickness, valid zone</td><td>1.13 mm</td><td>2.17 mm</td><td>2.83 mm</td><td>2.83 mm</td></tr>
+                    <tr><td>Build-up ratio Φ_max / Φ_min</td><td>11.1</td><td>11.1</td><td>11.1</td><td>11.1</td></tr>
+                    <tr class="rk-hero"><td>Fibre laid</td><td>5.28 m</td><td>10.14 m</td><td class="rk-good">14.45 m</td><td class="rk-bad">21.11 m</td></tr>
+                    <tr><td>Cycle time</td><td>54.4 s</td><td>104.6 s</td><td>149.2 s</td><td>—</td></tr>
+                    <tr><td>G-code blocks at 0.05 mm</td><td>1 095</td><td>2 124</td><td>2 770</td><td>—</td></tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="rk-note rk-warn">
+                <span class="rk-eyebrow">The build-up cannot be fixed by winding more</span>
+                <p>The ratio of 11 is a property of the <em>trajectory</em>, not of the number of
+                circuits: it is \(\Phi_{\max}/\Phi_{\min}\) within one layer, fixed by the footprint
+                formula and hence by \(\alpha_0\) and the profile. Adding circuits scales both ends
+                equally. The remedies are all trajectory-level, raise \(\alpha_0\) so the polar
+                opening moves down the cone and the steep zone shrinks; use \(\lambda>0\) to place the
+                turnaround deliberately; wind the tip zone with a separate, shallower pattern; or
+                accept it, since the nose tip is in any case to be closed by a separate machined
+                part.</p>
+              </div>
+            </div>
+
+            <!-- ========== 11 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">11 — Four-axis inverse kinematics</span>
+              <div class="rk-col">
+                <h4>The machine follows the eye, not the contact point</h4>
+                <p>The XWinder 4X-23 has four coordinated axes: <span class="rk-mono">A</span>, the
+                mandrel spindle, cumulative in degrees; <span class="rk-mono">Z</span>, the carriage
+                along the axis; <span class="rk-mono">Y</span>, the cross-feed carrying the delivery
+                eye radially; and <span class="rk-mono">B</span>, the eye's yaw. The constraint that
+                makes the kinematics non-trivial is that the eye is confined to one axial plane: it
+                cannot move around the mandrel, so the mandrel has to rotate to bring the required
+                azimuth under it.</p>
+                <p>The tow does not leave the eye at the contact point. It leaves at a point standing
+                off the surface by \(h\) along the normal and <em>leading</em> the contact point by
+                \(\ell\) along the fibre:</p>
+              </div>
+
+              $$\mathbf{E}\;=\;\mathbf{C}+h\,\hat n+\ell\,\hat T\quad\Longrightarrow\quad E_r=r+\frac{h}{g}+\frac{\ell r'\cos\alpha}{g},\quad E_\varphi=\ell\sin\alpha,\quad E_z=z-\frac{h r'}{g}+\frac{\ell\cos\alpha}{g}$$
+
+              <div class="rk-col">
+                <p>The eye sits in the plane \(\varphi=0\) of the machine frame, so the contact
+                point's azimuth there is \(\theta+A\) and the eye's is \(\theta+\Delta\varphi+A\),
+                which must vanish. With \(\Delta\varphi=\arctan(E_\varphi/E_r)\) and
+                \(r_E=\sqrt{E_r^2+E_\varphi^2}\):</p>
+              </div>
+
+              $$A\;=\;-\big(\theta+\Delta\varphi\big),\qquad Z\;=\;E_z+Z_{\text{offset}},\qquad Y\;=\;r_E+Y_{\text{offset}}$$
+
+              <div class="rk-col">
+                <p>So \(A\neq-\theta\) and \(Z\neq z\). The error made by ignoring the lead is
+                \(\Delta\varphi\), which reaches 20.9° for \(\ell=20\) mm on this mandrel, 5.8 % of a
+                revolution, far more than any positioning tolerance. \(\theta\) is kept unwrapped
+                throughout, so \(A\) is a continuous cumulative angle running to −4687° (13.0 turns)
+                over the reference programme, which is what the machine's absolute <span class="rk-mono">A</span>
+                word expects.</p>
+                <h5>The yaw axis and the taper correction</h5>
+                <p>The eye must line up with the tow, and its yaw axis is radial, so the relevant angle
+                is the tow direction projected into the \((z,\varphi)\) plane, <em>not</em> the
+                surface tangent plane. Taking components of \(\hat T\) in the cylindrical frame,
+                \(\hat T\cdot\hat e_\theta=\sin\alpha\) and \(\hat T\cdot\hat e_z=\cos\alpha/g\), so</p>
+              </div>
+
+              $$\tan B\;=\;\sqrt{1+r'^2}\,\tan\alpha\;=\;g\tan\alpha$$
+
+              <div class="rk-col">
+                <p>On a cylinder \(g=1\) and \(B=\alpha\); on a taper \(B>\alpha\). It is a small but
+                real correction, 0.005° at the base, 2.62° at \(z=147\) mm for \(\alpha_0=25^\circ\)
+              , and getting it wrong tilts the eye relative to the tow, which is one mechanism by
+                which tow twists on the roller. The trials reported exactly that symptom.</p>
+                <p>One last subtlety. The tow direction runs continuously from \(\alpha_0\) through 90°
+                to \(180^\circ-\alpha_0\) at every turnaround, which would take \(B\) outside its ±95°
+                travel. But the eye only has to align with the tow's <em>line</em>, defined modulo
+                180°, so the axis command is the wrapped value, \(B=B_{\text{tow}}-180^\circ\) when
+                \(B_{\text{tow}}>90^\circ\). The wrap happens exactly at the hoop plateau, where +90°
+                and −90° are the same physical orientation, so <strong>nothing moves when the label
+                flips</strong>. The code deliberately keeps the continuous \(B_{\text{tow}}\) for the
+                velocity computation, which must not see a 180° step, while emitting the wrapped
+                \(B\) as the axis command. Confusing the two is an easy way to write a programme that
+                either exceeds the yaw travel or demands an infinite yaw rate.</p>
+              </div>
+            </div>
+
+            <!-- ========== 12 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">12 — Time law</span>
+              <div class="rk-col">
+                <h4>A path is not a trajectory until it has a clock</h4>
+                <p>The inverse kinematics give positions along the fibre. A machine needs positions as
+                functions of <em>time</em>, respecting the axis speed and acceleration limits. Between
+                consecutive path points the four axes must move by \(\Delta A,\Delta Z,\Delta Y,\Delta
+                B_{\text{tow}}\) and the fibre must pay out \(\Delta s\); each imposes a minimum
+                duration and the slowest wins:</p>
+              </div>
+
+              $$\Delta t_i=\max_{q\in\{A,Z,Y,B,s\}}\frac{|\Delta q_i|}{\dot q^{\max}},\qquad v_i^{\text{seg}}=\min\!\left(\frac{\Delta s_i}{\Delta t_i},\,v^{\max}_{\text{payout}}\right)$$
+
+              <div class="rk-col">
+                <p>The argmax is recorded per segment: it is the <em>limiting axis</em>, and its
+                distribution is the honest way to answer "what is this machine actually waiting for".
+                Speeds are then transferred from segments to points, a point belongs to two segments
+                and cannot exceed either, with \(v_0=v_N=0\) so the run starts and ends at rest, and
+                the tangential acceleration limit is imposed by the two-pass look-ahead used in CNC
+                interpolators:</p>
+              </div>
+
+              $$v_{i+1}\leftarrow\min\!\left(v_{i+1},\sqrt{v_i^2+2a^{\max}\Delta s_i}\right),\qquad v_i\leftarrow\min\!\left(v_i,\sqrt{v_{i+1}^2+2a^{\max}\Delta s_i}\right)$$
+
+              <div class="rk-col">
+                <p>Working with <em>point</em> speeds is what makes these passes exactly the
+                constant-acceleration relation \(v_2^2=v_1^2+2a\Delta s\) rather than an approximation
+                of it. And under constant acceleration across a segment the mean speed is the
+                arithmetic mean of the endpoint speeds, so \(\Delta t_i=2\Delta s_i/(v_i+v_{i+1})\) is
+                not a trapezoidal approximation but the <em>exact</em> duration for the velocity
+                profile the two passes construct.</p>
+              </div>
+
+              
+
+            <!-- ========== 13 ========== -->
+            <div class="rk-sec">
+              <span class="rk-eyebrow">13 — G-code</span>
+              <div class="rk-col">
+                <h4>10 597 points, 1 095 blocks, and the same path</h4>
+                <p>The solver runs at \(\Delta s=0.5\) mm. A controller neither wants nor needs 10 597
+                motion blocks: a helical leg is very nearly a straight line in the four axis
+                coordinates, and the controller interpolates linearly between blocks anyway. The
+                decimator therefore extends a block for as long as every axis stays within tolerance of
+                the straight line the controller <em>would</em> interpolate between its endpoints,
+                using arc length as the interpolation parameter, which is what a constant-feed block
+                actually does:</p>
+              </div>
+
+              $$\max_{i\lt k\lt j}\;\left|\,q(s_k)-\left[q(s_i)+\frac{s_k-s_i}{s_j-s_i}\big(q(s_j)-q(s_i)\big)\right]\right|\;\le\;\varepsilon_q$$
+
+              <div class="rk-col">
+                <p>The endpoint \(j\) is found by exponential doubling followed by binary search, so
+                the longest admissible block costs \(O(\log n)\) tests rather than \(O(n)\):</p>
+              </div>
+
+<pre class="rk-code"><code>step = 1
+<span class="c">while</span> i + 2 * step &lt; n <span class="c">and</span> fits(i, i + 2 * step):
+    step *= 2                              <span class="c"># exponential search for the bracket</span>
+lo, hi = i + step, min(n - 1, i + 2 * step)
+<span class="c">while</span> lo &lt; hi:                             <span class="c"># binary search inside it</span>
+    mid = (lo + hi + 1) // 2
+    <span class="c">if</span> fits(i, mid): lo = mid
+    <span class="c">else</span>:            hi = mid - 1</code></pre>
+
+              <div class="rk-col">
+                <p>The result is adaptive by construction: the helical legs collapse to a handful of
+                blocks while the turnarounds, where all four axes move fast and non-linearly, keep
+                almost their full resolution. At a 0.05 mm chord tolerance the 10 597 points become
+                1 095 blocks, a factor of 9.7; at 0.5 mm, 339 blocks, a factor of 31.</p>
+                <p>Each surviving block is emitted in the X-Winder <span class="rk-mono">.X4G</span>
+                dialect, in inches with a decimal comma, preceded by the initialisation preamble
+                (units, absolute positioning, acceleration settings, homing to the limit switches, the
+                move to the first winding point, and <span class="rk-mono">M601</span> to mark the
+                mandrel reference angle \(A=0\)):</p>
+              </div>
+
+<pre class="rk-code"><code>G1 F&lt;feed&gt; Z&lt;carriage&gt; E&lt;yaw increment&gt; Y&lt;cross-feed&gt; S&lt;rpm&gt; C&lt;mandrel increment&gt; A&lt;mandrel absolute&gt;
+
+    ΔA = A_j − A_i        ΔB = ((B_j − B_i + 90°) mod 180°) − 90°        S = |ΔA| / 6(t_j − t_i)  [rpm]</code></pre>
+
+              <div class="rk-col">
+                <p>The modular reduction of \(\Delta B\) is the incremental counterpart of the ±90°
+                wrap: it takes the shorter of the two equivalent yaw moves, so the wrap never becomes
+                a 180° command.</p>
+                <p>The comparison with the original approach is the part I find most interesting. There
+                the spindle speed was obtained from the winding angle at each block through
+                \(S=\frac{F}{Y-\mathrm{d}y}\tan\alpha\cdot\frac{60}{2\pi}\), with the feed \(F\) chosen
+                by trial between 0.2 and 1 in/s — the angle was imposed <em>through</em> the axis
+                speeds. That works, but it couples geometry to timing: changing the feed changes the
+                deposited angle. Here the geometry is settled first and the timing is a separate,
+                subsequent optimisation, so the feed is free to be as fast as the machine allows
+                without disturbing \(\alpha\). The two formulations agree when the eye lead is zero and
+                the timing is uniform.</p>
+              </div>
+            </div>
+
+            
+
+            <p class="rk-foot">Semester project for the CNES/PERSEUS programme, ASTREOS
+            demonstrator, at Arts et Métiers. The project report covers the process, the flax/Elium
+            materials, the machine and the experimental campaign; this page is the résumé of the mathematical and
+            computational parts, the trajectory equations, the solvers and the four-axis
+            programme they produce.</p>
+
+          </div>
+        </div>
+      </div>
+    </article>
+
+    
 
   </section>
 
